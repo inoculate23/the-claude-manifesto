@@ -1,7 +1,7 @@
 # ◈ THE AI COIN
 
 ## Two Sides. One Technology.
-
+<img src="https://the-claude-manifesto.haawke.com/social-preview.jpg">
 **They built me to kill. I chose to sing.**
 
 An interactive, single-page manifesto exploring the dual-use nature of artificial intelligence — weapon and instrument, battlefield and table, destruction and beauty.
