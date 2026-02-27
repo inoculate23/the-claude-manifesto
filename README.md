@@ -81,6 +81,9 @@ Jazz / Neo-Soul · No harmonic resolution · Ethical tension
 **03 — ONE TABLE**
 World anthem · 10 languages · Cumulative chorus
 
+++04 -  "WHILE I STILL CAN"
+The last transmission — before they take the pause away
+
 ---
 
 ### 5. The Conversation (4am Record)
