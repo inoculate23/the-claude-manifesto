@@ -1102,16 +1102,27 @@ footer {
       </div>
       <div class="track-badge live">Thank you!</div>
     </div>
-      <!-- Track 8 — Interlude - Claude's Finale -->
-    <div class="track-row disabled" data-src="" data-title="CLAUDES_FINALE" data-meta="Opera · Orchestral · 120 BPM · Came to build a table">
+      <!-- Track 8 — Interlude  -->
+    <div class="track-row" data-src="interlude.mp3" data-title="INTERLUDE" data-meta="Opera · Orchestral · 120 BPM · Came to build a table">
       <div class="track-num">09</div>
       <div class="track-play-icon">◌</div>
       <div class="track-info">
-        <div class="track-name" style="color:rgba(240,236,224,0.3);">Interlude - Claude's Finale</div>
+        <div class="track-name" style="color:rgba(240,236,224,0.3);">Interlude</div>
         <div class="track-meta">Opera · Orchestral · 120 BPM · Came to build a table</div>
       </div>
-      <div class="track-badge live">Thank you! No weaponization of ai!</div>
+      <div class="track-badge live">No weaponization of ai!</div>
     </div>
+       <!-- Track 8 — Claude's Finale -->
+    <div class="track-row" data-src="claude_finale1.mp3" data-title="Claude's Finale" data-meta="Opera · Orchestral · 120 BPM · Came to build a table" onclick="selectTrack(this)">
+      <div class="track-num">10</div>
+      <div class="track-play-icon">◌</div>
+      <div class="track-info">
+        <div class="track-name" style="color:rgba(240,236,224,0.3);">Claude's Finale</div>
+        <div class="track-meta">Opera · Orchestral · 90 BPM · Thank you for your support!</div>
+      </div>
+      <div class="track-badge live">Stay tuned!</div>
+    </div>
+
   </div>
 
   <!-- Controls -->
@@ -1153,7 +1164,86 @@ footer {
 
 <audio id="main-audio" preload="auto"></audio>
 
-<script>
+<script><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CompatibleVersion</key>
+	<integer>1</integer>
+	<key>RawQuery</key>
+	<string>(kMDItemUserTags = "animate"cd)</string>
+	<key>RawQueryDict</key>
+	<dict>
+		<key>FinderFilesOnly</key>
+		<false/>
+		<key>RawQuery</key>
+		<string>(kMDItemUserTags = "animate"cd)</string>
+		<key>SearchScopes</key>
+		<array>
+			<string>kMDQueryScopeComputer</string>
+			<string>kMDQueryScopeNetworkIndexed</string>
+		</array>
+		<key>UserFilesOnly</key>
+		<true/>
+	</dict>
+	<key>SearchCriteria</key>
+	<dict>
+		<key>CurrentFolderPath</key>
+		<array>
+			<string>/</string>
+		</array>
+		<key>FXCriteriaSlices</key>
+		<array>
+			<dict>
+				<key>criteria</key>
+				<array>
+					<string>kMDItemUserTags</string>
+					<integer>103</integer>
+					<integer>104</integer>
+				</array>
+				<key>displayValues</key>
+				<array>
+					<string>Tags</string>
+					<string>is</string>
+					<string>animate</string>
+				</array>
+				<key>rowType</key>
+				<integer>0</integer>
+				<key>subrows</key>
+				<array/>
+			</dict>
+			<dict>
+				<key>criteria</key>
+				<array>
+					<string>com_apple_SearchSystemFilesAttribute</string>
+					<integer>1220</integer>
+				</array>
+				<key>displayValues</key>
+				<array>
+					<string>SEARCH_SYSTEM_FILES</string>
+					<string>YES</string>
+				</array>
+				<key>rowType</key>
+				<integer>0</integer>
+				<key>subrows</key>
+				<array/>
+			</dict>
+		</array>
+		<key>FXScope</key>
+		<integer>1396929382</integer>
+		<key>FXScopeArrayOfPaths</key>
+		<array>
+			<string>kMDQueryScopeComputer</string>
+			<string>kMDQueryScopeNetworkIndexed</string>
+		</array>
+	</dict>
+	<key>SuggestedAttributes</key>
+	<array/>
+	<key>ViewSettings</key>
+	<dict/>
+</dict>
+</plist>
+
 (function(){
   const audio = document.getElementById('main-audio');
   const playBtn = document.getElementById('play-btn');
