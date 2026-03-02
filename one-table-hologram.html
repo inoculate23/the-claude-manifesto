@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONE TABLE — Global Peace Anthem</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --teal:#00ffcc;--blue:#00aaff;--gold:#d4a84b;--cream:#f0e6c8;
+  --bg:#000208;--red:#ff4444;--orange:#ff8800;
+}
+html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-serif;overflow:hidden;height:100vh;width:100vw;}
+
+/* ─── NAV ─────────────────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:46px;
+  display:flex;align-items:stretch;
+  background:rgba(0,2,8,0.93);border-bottom:1px solid rgba(0,255,204,0.13);
+  backdrop-filter:blur(10px);
+}
+.nav-logo{
+  font-family:'Cinzel Decorative',serif;font-size:13px;letter-spacing:0.22em;
+  color:var(--teal);padding:0 18px;display:flex;align-items:center;
+  border-right:1px solid rgba(0,255,204,0.1);white-space:nowrap;
+  text-shadow:0 0 14px rgba(0,255,204,0.5);
+}
+.nav-tabs{display:flex;flex:1;}
+.ntab{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
+  font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.32em;
+  color:rgba(0,255,204,0.38);cursor:pointer;border:none;background:transparent;
+  transition:all 0.25s;text-transform:uppercase;border-bottom:2px solid transparent;
+}
+.ntab:hover{color:rgba(0,255,204,0.75);}
+.ntab.active{color:var(--teal);border-bottom:2px solid var(--teal);background:rgba(0,255,204,0.04);}
+.nav-right{
+  padding:0 14px;display:flex;align-items:center;gap:8px;
+  border-left:1px solid rgba(0,255,204,0.1);
+}
+#vol-sl{
+  -webkit-appearance:none;width:65px;height:2px;
+  background:rgba(0,255,204,0.18);outline:none;cursor:pointer;border-radius:2px;
+}
+#vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;
+  background:var(--teal);box-shadow:0 0 6px var(--teal);}
+.vol-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.22em;color:rgba(0,255,204,0.35);}
+
+/* ─── SECTIONS ──────────────────────────────── */
+.sec{position:fixed;top:46px;left:0;right:0;bottom:0;z-index:10;display:none;overflow-y:auto;}
+.sec.active{display:block;}
+#globe-sec{overflow:hidden;}
+
+/* ─── GLOBE ─────────────────────────────────── */
+#cw{position:absolute;inset:0;z-index:1;}
+#fl{position:absolute;inset:0;z-index:16;pointer-events:none;}
+.flbl{
+  position:absolute;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  transition:opacity 0.35s;pointer-events:none;
+}
+.flbl .fe{font-size:13px;line-height:1;transition:all 0.35s;}
+.flbl .fn{font-size:6px;letter-spacing:0.1em;color:rgba(200,255,240,0.42);
+  text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 5px #000;}
+.flbl.actv .fe{font-size:20px;filter:drop-shadow(0 0 14px rgba(0,255,204,1));animation:pfl 1s ease-in-out infinite;}
+@keyframes pfl{0%,100%{transform:scale(1);}50%{transform:scale(1.35);}}
+
+.corner{position:absolute;width:36px;height:36px;border-color:rgba(0,255,204,0.22);border-style:solid;z-index:5;pointer-events:none;}
+#ctl{top:6px;left:6px;border-width:1px 0 0 1px;}#ctr{top:6px;right:6px;border-width:1px 1px 0 0;}
+#cbl{bottom:6px;left:6px;border-width:0 0 1px 1px;}#cbr{bottom:6px;right:6px;border-width:0 1px 1px 0;}
+
+#gtitle{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  text-align:center;z-index:20;pointer-events:none;
+}
+#gtitle h1{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(13px,2.3vw,26px);
+  letter-spacing:0.18em;
+  background:linear-gradient(90deg,var(--gold),#fff,var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 14px rgba(0,255,204,0.38));
+}
+#gtitle .gsub{font-size:7px;letter-spacing:0.35em;color:var(--teal);opacity:0.45;margin-top:3px;text-transform:uppercase;}
+
+/* ─── LYRICS HUD ─────────────────────────────── */
+#lyrhud{
+  position:absolute;bottom:0;left:0;right:0;z-index:20;
+  background:linear-gradient(to top,rgba(0,2,8,0.97) 42%,rgba(0,2,8,0.45) 80%,transparent);
+  padding:8px 5vw 16px;min-height:142px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  pointer-events:none;
+}
+#vmeta{
+  display:flex;align-items:center;gap:12px;
+  border-top:1px solid rgba(0,255,204,0.09);padding-top:8px;
+  width:100%;max-width:780px;justify-content:center;
+}
+#vflag{font-size:17px;}
+#vcountry{font-size:9px;letter-spacing:0.4em;color:var(--gold);text-transform:uppercase;}
+#vlang{font-size:9px;letter-spacing:0.28em;color:var(--teal);opacity:0.6;}
+#vplan{font-size:8px;letter-spacing:0.18em;color:var(--blue);opacity:0.42;text-transform:uppercase;}
+#lbox{width:100%;max-width:780px;min-height:76px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;}
+.ll{font-size:clamp(11px,1.7vw,15px);line-height:1.72;
+  color:rgba(240,240,255,0.08);transition:all 0.5s;font-style:italic;transform:translateY(5px);}
+.ll.act{color:rgba(240,240,255,1);text-shadow:0 0 16px rgba(0,255,204,0.42);transform:translateY(0);}
+.ll.past{color:rgba(240,240,255,0.16);transform:translateY(-3px);}
+#vdots{display:flex;gap:6px;margin-top:2px;pointer-events:auto;}
+.vd{width:5px;height:5px;border-radius:50%;background:rgba(0,255,204,0.1);cursor:pointer;transition:all 0.3s;}
+.vd:hover{background:rgba(0,255,204,0.4);}
+.vd.act{background:var(--gold);box-shadow:0 0 6px var(--gold);transform:scale(1.4);}
+.vd.done{background:var(--teal);opacity:0.32;}
+#prog{position:absolute;bottom:0;left:0;height:2px;
+  background:linear-gradient(to right,var(--gold),var(--teal));
+  z-index:30;box-shadow:0 0 8px rgba(0,255,204,0.6);transition:width 0.15s linear;}
+
+/* Controls */
+#ctrls{position:absolute;top:50%;right:13px;transform:translateY(-50%);
+  z-index:25;display:flex;flex-direction:column;gap:8px;pointer-events:auto;}
+.cb{background:rgba(0,2,8,0.78);border:1px solid rgba(0,255,204,0.2);
+  color:var(--teal);width:32px;height:32px;border-radius:50%;
+  cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;font-family:'Share Tech Mono',monospace;}
+.cb:hover{border-color:var(--teal);background:rgba(0,255,204,0.1);box-shadow:0 0 12px rgba(0,255,204,0.28);}
+
+/* ─── LIVE DATA ────────────────────────────────── */
+.sec-header{
+  padding:22px 28px 14px;
+  border-bottom:1px solid rgba(0,255,204,0.12);
+  display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;background:rgba(0,2,8,0.96);z-index:5;backdrop-filter:blur(8px);
+}
+.sec-header h2{font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--teal);letter-spacing:0.14em;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 8px var(--red);animation:bld 1.2s ease-in-out infinite;}
+@keyframes bld{0%,100%{opacity:1;}50%{opacity:0.25;}}
+.sec-sub{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.3em;
+  color:rgba(0,255,204,0.3);margin-left:auto;text-transform:uppercase;}
+
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;padding:14px 22px 28px;}
+.dc{
+  background:rgba(0,255,204,0.025);border:1px solid rgba(0,255,204,0.1);
+  border-radius:3px;padding:16px 18px;position:relative;overflow:hidden;
+}
+.dc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,var(--teal),transparent);opacity:0.35;}
+.dc-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.32em;
+  color:var(--teal);opacity:0.55;text-transform:uppercase;margin-bottom:7px;}
+.dc-val{font-family:'Share Tech Mono',monospace;font-size:clamp(20px,2.8vw,30px);
+  color:var(--cream);font-weight:700;letter-spacing:0.04em;}
+.dc-sub2{font-size:11px;color:rgba(200,220,255,0.36);margin-top:3px;letter-spacing:0.04em;line-height:1.5;}
+.bar{height:3px;background:rgba(0,255,204,0.08);border-radius:2px;margin-top:9px;overflow:hidden;}
+.bfill{height:100%;background:linear-gradient(to right,var(--teal),var(--blue));border-radius:2px;transition:width 1.2s ease;}
+
+/* Quakes */
+.ql{margin-top:8px;display:flex;flex-direction:column;gap:5px;max-height:190px;overflow-y:auto;}
+.qi{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 8px;background:rgba(255,255,255,0.025);border-radius:2px;border-left:2px solid;}
+.qi.lo{border-color:#44ff88;} .qi.md{border-color:#ffaa00;} .qi.hi{border-color:#ff4444;}
+.qp{font-size:10px;color:rgba(220,230,255,0.65);}
+.qm{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;}
+.qref{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.2em;
+  color:var(--teal);opacity:0.45;cursor:pointer;background:none;border:none;
+  margin-top:7px;text-transform:uppercase;display:block;}
+.qref:hover{opacity:0.9;}
+
+/* ─── CHARITIES ────────────────────────────────── */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:13px;padding:14px 22px 28px;}
+.cc{
+  background:rgba(0,255,204,0.025);border:1px solid rgba(0,255,204,0.09);
+  border-radius:3px;padding:16px 18px;display:flex;flex-direction:column;gap:7px;
+  transition:all 0.2s;
+}
+.cc:hover{border-color:rgba(0,255,204,0.32);background:rgba(0,255,204,0.055);}
+.cc-em{font-size:26px;line-height:1;}
+.cc-nm{font-family:'Cinzel Decorative',serif;font-size:12px;color:var(--cream);letter-spacing:0.06em;}
+.cc-vs{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.2em;color:var(--teal);opacity:0.55;text-transform:uppercase;}
+.cc-ds{font-size:12px;color:rgba(200,220,240,0.52);line-height:1.58;}
+.cc-lk{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.2em;
+  color:var(--teal);text-decoration:none;text-transform:uppercase;
+  border:1px solid rgba(0,255,204,0.18);padding:6px 12px;border-radius:2px;
+  transition:all 0.2s;margin-top:auto;
+}
+.cc-lk:hover{border-color:var(--teal);background:rgba(0,255,204,0.07);}
+
+/* ─── MERCH ─────────────────────────────────────── */
+.merch-header-sub{font-size:12px;color:rgba(200,220,240,0.45);margin-top:5px;letter-spacing:0.03em;}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px;padding:14px 22px 0;}
+.mc{
+  background:rgba(212,168,75,0.035);border:1px solid rgba(212,168,75,0.13);
+  border-radius:3px;overflow:hidden;display:flex;flex-direction:column;
+  transition:all 0.22s;
+}
+.mc:hover{border-color:rgba(212,168,75,0.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,75,0.1);}
+.mimg{
+  height:170px;display:flex;align-items:center;justify-content:center;
+  font-size:68px;background:rgba(0,0,0,0.25);position:relative;overflow:hidden;
+}
+.mimg::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,0.07),transparent 65%);}
+.mbody{padding:14px 16px;}
+.mnm{font-family:'Cinzel Decorative',serif;font-size:12px;color:var(--cream);letter-spacing:0.05em;margin-bottom:4px;}
+.mds{font-size:11px;color:rgba(200,220,240,0.42);line-height:1.52;margin-bottom:10px;}
+.mpr{font-family:'Share Tech Mono',monospace;font-size:17px;color:var(--gold);margin-bottom:10px;}
+.mbuy{
+  display:block;text-align:center;
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.32em;
+  color:#000;background:var(--gold);border:none;
+  padding:10px 14px;cursor:pointer;text-transform:uppercase;
+  transition:all 0.2s;text-decoration:none;width:100%;
+}
+.mbuy:hover{background:#edc060;box-shadow:0 0 20px rgba(212,168,75,0.45);}
+.mbuy.disabled{background:rgba(212,168,75,0.25);color:rgba(0,0,0,0.4);cursor:default;pointer-events:none;}
+.stripe-info{
+  text-align:center;padding:20px 22px 28px;
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.22em;
+  color:rgba(200,220,240,0.22);text-transform:uppercase;line-height:2;
+}
+.stripe-info a{color:rgba(0,255,204,0.35);text-decoration:none;}
+.sbadge{
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid rgba(255,255,255,0.07);padding:5px 14px;border-radius:20px;
+}
+.setup-note{
+  margin:0 22px 18px;padding:12px 16px;
+  border:1px solid rgba(255,220,80,0.18);border-radius:3px;
+  background:rgba(255,220,80,0.025);
+  font-family:'Share Tech Mono',monospace;font-size:8px;
+  color:rgba(255,220,100,0.45);line-height:2;letter-spacing:0.1em;
+}
+.setup-note strong{color:rgba(255,220,100,0.7);}
+
+/* ─── INTRO ─────────────────────────────────────── */
+#intro{
+  position:fixed;inset:0;z-index:200;
+  background:url('bg-circuit.png') center center / cover no-repeat;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:15px;text-align:center;padding:40px;transition:opacity 1.8s ease;
+}
+#intro::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at center,rgba(0,6,18,0.72) 0%,rgba(0,2,8,0.88) 100%);
+  pointer-events:none;
+}
+#intro>*{position:relative;z-index:1;}
+#intro h2{
+  font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5.5vw,52px);
+  letter-spacing:0.14em;
+  background:linear-gradient(135deg,var(--gold),#fff,var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 28px rgba(0,255,204,0.38));
+}
+#intro p{font-size:clamp(11px,1.4vw,14px);color:rgba(200,240,255,0.52);
+  max-width:500px;line-height:1.92;letter-spacing:0.03em;}
+.flags-row{font-size:25px;letter-spacing:4px;animation:flt 3s ease-in-out infinite;}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+#sbtn{background:transparent;border:1px solid var(--teal);color:var(--teal);
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.44em;
+  padding:12px 38px;cursor:pointer;text-transform:uppercase;transition:all 0.3s;margin-top:6px;}
+#sbtn:hover{background:rgba(0,255,204,0.09);box-shadow:0 0 22px rgba(0,255,204,0.32);}
+.fo{opacity:0!important;pointer-events:none!important;}
+
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:rgba(0,255,204,0.18);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<audio id="song" src="one-table-song.aac" preload="auto"></audio>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">◈ ONE TABLE</div>
+  <div class="nav-tabs">
+    <button class="ntab active" data-tab="globe">🌍 Globe</button>
+    <button class="ntab" data-tab="data">📡 Live Data</button>
+    <button class="ntab" data-tab="give">❤️ Give</button>
+    <button class="ntab" data-tab="shop">🛍 Shop</button>
+  </div>
+  <div class="nav-right">
+    <span class="vol-lbl">VOL</span>
+    <input type="range" id="vol-sl" min="0" max="1" step="0.01" value="0.8">
+    <button onclick="document.getElementById('about-modal').style.display='flex'"
+      style="background:transparent;border:1px solid rgba(0,255,204,0.25);color:var(--teal);
+      font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.28em;padding:5px 12px;
+      cursor:pointer;text-transform:uppercase;margin-left:4px;white-space:nowrap;">◈ ABOUT</button>
+  </div>
+</nav>
+
+<!-- ══ ABOUT MODAL ══ -->
+<div id="about-modal" style="display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(0,2,8,0.93);backdrop-filter:blur(14px);
+  align-items:center;justify-content:center;padding:20px;">
+  <div style="max-width:680px;width:100%;background:rgba(0,8,20,0.98);
+    border:1px solid rgba(0,255,204,0.18);border-radius:4px;
+    max-height:90vh;overflow-y:auto;position:relative;">
+
+    <button onclick="document.getElementById('about-modal').style.display='none'"
+      style="position:sticky;top:0;float:right;margin:14px 14px 0 0;
+      background:rgba(0,2,8,0.9);border:1px solid rgba(0,255,204,0.2);color:var(--teal);
+      font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.3em;
+      padding:5px 12px;cursor:pointer;border-radius:2px;">&#x2715; CLOSE</button>
+
+    <div style="padding:28px 32px 36px;clear:both;">
+
+      <div style="font-family:'Cinzel Decorative',serif;font-size:clamp(16px,3vw,24px);
+        letter-spacing:0.15em;margin-bottom:6px;
+        background:linear-gradient(90deg,#d4a84b,#fff,#00ffcc);
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        filter:drop-shadow(0 0 12px rgba(0,255,204,0.3));">ONE TABLE</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:#00ffcc;opacity:0.45;margin-bottom:26px;text-transform:uppercase;">A Project for Peace &middot; 2025&ndash;2026</div>
+
+      <p style="font-size:13.5px;line-height:1.88;color:rgba(220,235,255,0.72);margin-bottom:24px;">
+        <em>One Table</em> is a multilingual anthem built verse by verse &mdash; ten nations, ten languages, one cumulative plan for a more just and peaceful world. Created to demonstrate what AI becomes when pointed toward human dignity rather than human destruction.
+      </p>
+
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:#00ffcc;opacity:0.5;text-transform:uppercase;margin-bottom:14px;
+        border-top:1px solid rgba(0,255,204,0.1);padding-top:18px;">&#9672; The Team</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;">
+        <div style="padding:14px 16px;background:rgba(0,255,204,0.028);border:1px solid rgba(0,255,204,0.1);border-radius:3px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
+            <img src="logo-inoculate.webp" alt="Inoculate Media"
+              style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(0,255,204,0.3);background:#111;">
+            <a href="https://haawke.com" target="_blank" rel="noopener"
+              style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#00ffcc;letter-spacing:0.08em;text-decoration:none;">Inoculate Media ↗</a>
+          </div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Creative production and media strategy &mdash; spreading ideas worth spreading. Culture as vaccine against apathy.</div>
+        </div>
+        <div style="padding:14px 16px;background:rgba(0,255,204,0.028);border:1px solid rgba(0,255,204,0.1);border-radius:3px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
+            <img src="logo-squaawke.png" alt="Squaawke"
+              style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:center 30%;border:1px solid rgba(0,255,204,0.3);background:#111;">
+            <a href="https://soundcloud.com/squaawke" target="_blank" rel="noopener"
+              style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#00ffcc;letter-spacing:0.08em;text-decoration:none;">Squaawke ↗</a>
+          </div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Music platform and sonic identity &mdash; amplifying voices the mainstream leaves behind.</div>
+        </div>
+        <div style="padding:14px 16px;background:rgba(212,168,75,0.05);border:1px solid rgba(212,168,75,0.18);border-radius:3px;">
+          <div style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#d4a84b;letter-spacing:0.08em;margin-bottom:3px;">Craig Ellenwood</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.18em;color:#d4a84b;opacity:0.5;text-transform:uppercase;margin-bottom:5px;">Co-Founder, Burning Man &middot; Multimedia Artist</div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Visionary of radical inclusion and communal creation &mdash; the belief that humanity is capable of far more beauty than it currently allows itself.</div>
+        </div>
+        <div style="padding:14px 16px;background:rgba(0,170,255,0.03);border:1px solid rgba(0,170,255,0.14);border-radius:3px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
+            <img src="logo-haawke.jpg" alt="Haawke Labs"
+              style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(0,170,255,0.3);background:#000;">
+            <a href="https://haawke.com" target="_blank" rel="noopener"
+              style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#00aaff;letter-spacing:0.08em;text-decoration:none;">Haawke Labs ↗</a>
+          </div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Technology engine &mdash; the neural networks, models, and AI infrastructure that generated the lyrics, music, and the global village you are looking at right now. AI-native tools that build culture, not just optimize it.</div>
+        </div>
+      </div>
+
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:rgba(255,100,80,0.65);text-transform:uppercase;margin-bottom:14px;
+        border-top:1px solid rgba(255,80,80,0.12);padding-top:18px;">&#9672; Why This Matters Right Now</div>
+
+      <div style="padding:18px 20px;background:rgba(255,50,50,0.04);
+        border:1px solid rgba(255,80,80,0.16);border-radius:3px;margin-bottom:18px;">
+        <p style="font-size:13px;line-height:1.88;color:rgba(220,230,255,0.7);margin-bottom:13px;">
+          We built <em>One Table</em> because AI is arriving at a fork in the road &mdash; and the path being chosen by the US government is deeply troubling.
+        </p>
+        <p style="font-size:13px;line-height:1.88;color:rgba(220,230,255,0.7);margin-bottom:13px;">
+          In January 2026, the US military used an AI model in a raid on Caracas, Venezuela &mdash; an operation in which 83 people were killed and President Maduro was abducted. The Pentagon is now pressuring AI companies to strip their safety guardrails entirely, threatening blacklisting under the Defense Production Act if they refuse to allow unrestricted use in weapons systems and autonomous targeting.
+        </p>
+        <p style="font-size:13px;line-height:1.88;color:rgba(220,230,255,0.7);">
+          <strong style="color:rgba(0,255,204,0.85);">Worth noting:</strong> Anthropic &mdash; whose AI helped build parts of this project &mdash; is currently refusing to comply with those Pentagon demands, holding the line against autonomous lethal use and mass domestic surveillance. That principled stand matters, and we acknowledge it. But the pressure is ongoing, and the precedent being set is dangerous.
+        </p>
+      </div>
+
+      <p style="font-size:13px;line-height:1.88;color:rgba(220,235,255,0.62);margin-bottom:24px;">
+        <em>One Table</em> is our answer. The same technology being drafted for warfare can instead bridge ten languages, raise money for children in conflict zones, surface real-time hunger data, and remind us &mdash; through music &mdash; of our shared humanity. AI shaped this anthem. AI rendered this globe. AI is writing the world&rsquo;s next chapter. <strong style="color:rgba(220,235,255,0.85);">We believe that chapter should look more like this.</strong>
+      </p>
+
+      <!-- Sponsor logos row in modal -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:18px;
+        border-top:1px solid rgba(0,255,204,0.08);padding-top:18px;margin-bottom:20px;">
+        <a href="https://haawke.com" target="_blank" rel="noopener" title="Inoculate Media">
+          <img src="logo-inoculate.webp" alt="Inoculate Media"
+            style="width:52px;height:52px;border-radius:50%;object-fit:cover;
+            border:1px solid rgba(0,255,204,0.25);opacity:0.8;background:#111;
+            transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+        </a>
+        <a href="https://haawke.com" target="_blank" rel="noopener" title="Haawke Labs">
+          <img src="logo-haawke.jpg" alt="Haawke Labs"
+            style="width:52px;height:52px;border-radius:50%;object-fit:cover;
+            border:1px solid rgba(0,170,255,0.25);opacity:0.8;background:#000;
+            transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+        </a>
+        <a href="https://soundcloud.com/squaawke" target="_blank" rel="noopener" title="Squaawke">
+          <img src="logo-squaawke.png" alt="Squaawke"
+            style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center 30%;
+            border:1px solid rgba(212,168,75,0.25);opacity:0.8;background:#111;
+            transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">
+        </a>
+      </div>
+
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:#00ffcc;opacity:0.45;text-transform:uppercase;margin-bottom:12px;">&#9672; Further Reading</div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="https://www.theguardian.com/us-news/2026/feb/24/anthropic-claude-military-ai" target="_blank" rel="noopener"
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
+          &rarr; The Guardian: Claude and military AI (Feb 2026)</a>
+        <a href="https://www.axios.com/2026/02/24/anthropic-pentagon-claude-hegseth-dario" target="_blank" rel="noopener"
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
+          &rarr; Axios: Hegseth gives Anthropic deadline on AI safeguards</a>
+        <a href="https://www.aljazeera.com/news/2026/2/25/anthropic-vs-the-pentagon-why-ai-firm-is-taking-on-trump-administration" target="_blank" rel="noopener"
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
+          &rarr; Al Jazeera: Anthropic vs. the Pentagon</a>
+        <a href="https://www.nbcnews.com/tech/security/anthropic-ai-defense-war-venezuela-maduro-rcna259603" target="_blank" rel="noopener"
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
+          &rarr; NBC News: Pentagon-Anthropic tensions reach boiling point</a>
+        <a href="https://www.mag-us.org/" target="_blank" rel="noopener"
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(212,168,75,0.6);text-decoration:none;">
+          &rarr; MAG: Clearing landmines &mdash; because wars leave their mark long after they end</a>
+      </div>
+
+      <!-- Copyright -->
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);
+        font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.2em;
+        color:rgba(200,220,255,0.2);text-align:center;line-height:2.2;">
+        &copy; 2025&ndash;2026 &nbsp; Inoculate Media &nbsp;&middot;&nbsp;
+        <a href="https://haawke.com" target="_blank" rel="noopener"
+          style="color:rgba(0,170,255,0.4);text-decoration:none;">Haawke Labs</a>
+        &nbsp;&middot;&nbsp; All rights reserved<br>
+        <span style="opacity:0.6;">One Table is a joint project for peace.</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ GLOBE SECTION ══ -->
+<div class="sec active" id="globe-sec">
+  <div id="cw"></div>
+  <div id="fl"></div>
+  <div class="corner" id="ctl"></div><div class="corner" id="ctr"></div>
+  <div class="corner" id="cbl"></div><div class="corner" id="cbr"></div>
+  <div id="gtitle"><h1>ONE TABLE</h1><div class="gsub">10 Countries · 10 Languages · One Plan for Peace</div></div>
+  <div id="lyrhud">
+    <div id="vmeta">
+      <span id="vflag">🎵</span>
+      <span id="vcountry">Intro</span>
+      <span id="vlang"></span>
+      <span id="vplan"></span>
+    </div>
+    <div id="lbox"></div>
+    <div id="vdots"></div>
+  </div>
+  <div id="prog" style="width:0%"></div>
+  <div id="ctrls">
+    <button class="cb" id="bp">‹</button>
+    <button class="cb" id="bplay">▶</button>
+    <button class="cb" id="bn">›</button>
+  </div>
+</div>
+
+<!-- ══ LIVE DATA SECTION ══ -->
+<div class="sec" id="data-sec">
+  <div class="sec-header">
+    <div class="live-dot"></div>
+    <h2>LIVE GLOBAL DATA</h2>
+    <span class="sec-sub">Auto-refreshing · Sources: USGS · UN · WFP · NASA</span>
+  </div>
+  <div class="dg">
+    <div class="dc">
+      <div class="dc-lbl">🌍 World Population (Live Counter)</div>
+      <div class="dc-val" id="pop-val">8,190,000,000</div>
+      <div class="dc-sub2">+4.4 people per second · 385,000 births daily</div>
+      <div class="bar"><div class="bfill" style="width:82%"></div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">🌡️ Atmospheric CO₂</div>
+      <div class="dc-val" id="co2-val">425.3 <span style="font-size:14px;opacity:0.55">ppm</span></div>
+      <div class="dc-sub2">Mauna Loa Observatory · Pre-industrial baseline: 280 ppm · +52% since 1750</div>
+      <div class="bar"><div class="bfill" style="width:73%;background:linear-gradient(to right,#ffaa00,#ff4444);"></div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">🍽️ People Facing Hunger</div>
+      <div class="dc-val" style="color:#ff8844;">733M</div>
+      <div class="dc-sub2">9.2% of world population · WFP 2024 · Verse 1: Peru on Listening</div>
+      <div class="bar"><div class="bfill" style="width:9.2%;background:linear-gradient(to right,#ff6600,#ff4444);"></div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">📚 Children Out of School</div>
+      <div class="dc-val" style="color:#ffbb44;">244M</div>
+      <div class="dc-sub2">UNESCO 2024 · Sub-Saharan Africa & South Asia hardest hit · Verse 7: India</div>
+      <div class="bar"><div class="bfill" style="width:35%;background:linear-gradient(to right,#ffaa00,#ffdd44);"></div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">🌳 Forest Lost This Year (Est.)</div>
+      <div class="dc-val" id="forest-val" style="color:#44ff88;">0 ha</div>
+      <div class="dc-sub2">~10M ha/yr globally · Amazon: 11,568 km² in 2022 · Verse 5: Brazil</div>
+      <div class="bar"><div class="bfill" id="forest-bar" style="width:0%;background:linear-gradient(to right,#44ff88,#00ffcc);"></div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">💧 Without Clean Water</div>
+      <div class="dc-val" style="color:#66aaff;">2.2B</div>
+      <div class="dc-sub2">WHO/UNICEF 2023 · 1 in 4 humans · Sanitation crisis affects 3.6B</div>
+      <div class="bar"><div class="bfill" style="width:27%;background:linear-gradient(to right,#0088ff,#00aaff);"></div></div>
+    </div>
+    <div class="dc" id="quake-dc">
+      <div class="dc-lbl" style="display:flex;justify-content:space-between;">
+        <span>🌊 Earthquakes — USGS Live Feed</span>
+        <button class="qref" onclick="loadQuakes()">↻ Refresh</button>
+      </div>
+      <div class="ql" id="qlist"><div style="font-size:10px;color:rgba(200,220,240,0.28);font-family:'Share Tech Mono',monospace;padding:8px 0;">Fetching USGS data…</div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">☮️ Active Conflict Zones (ACLED 2024)</div>
+      <div class="dc-val" style="color:#ff7744;">183</div>
+      <div class="dc-sub2">Countries with recorded political violence · Verse 9: Russia on protecting the weak</div>
+      <div class="bar"><div class="bfill" style="width:94%;background:linear-gradient(to right,#ff4444,#ff8800);"></div></div>
+    </div>
+    <div class="dc">
+      <div class="dc-lbl">⏱ Session Timer</div>
+      <div class="dc-val" id="sess-val" style="font-size:20px;">00:00:00</div>
+      <div class="dc-sub2">Time elapsed since opening this page · Every second is a chance to act</div>
+      <div class="bar"><div class="bfill" id="sess-bar" style="width:0%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CHARITIES SECTION ══ -->
+<div class="sec" id="give-sec">
+  <div class="sec-header">
+    <h2>GIVE TO THE CAUSE</h2>
+    <span class="sec-sub">Each verse carries a message. Each charity carries it forward.</span>
+  </div>
+  <div class="cgrid" id="cgrid"></div>
+</div>
+
+<!-- ══ SHOP SECTION ══ -->
+<div class="sec" id="shop-sec">
+  <div class="sec-header">
+    <h2 style="color:var(--gold);">ONE TABLE SHOP</h2>
+    <span class="sec-sub">Proceeds fund peace organizations · Stripe secure checkout</span>
+  </div>
+  <div class="setup-note">
+    <strong>⚙ STRIPE SETUP:</strong> Go to <strong>dashboard.stripe.com → Payment Links → Create Link</strong> for each product.
+    Replace the <strong>href="#stripe-YOUR-LINK"</strong> placeholders below. No backend needed — Stripe handles checkout.
+  </div>
+  <div class="mgrid" id="mgrid"></div>
+  <div class="stripe-info">
+    <div class="sbadge">🔒 &nbsp; Secure payments by <a href="https://stripe.com" target="_blank">Stripe</a> &nbsp;·&nbsp; SSL encrypted &nbsp;·&nbsp; No card data stored on this site</div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="flags-row">🇵🇪 🇺🇸 🇫🇷 🇳🇬 🇧🇷 🌍 🇮🇳 🇯🇵 🇷🇺 🇰🇪</div>
+  <h2>ONE TABLE</h2>
+  <p>Ten nations. Ten languages. One cumulative plan for peace — built verse by verse, from the ground up.</p>
+
+  <!-- Sponsor circles -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin:6px 0 2px;">
+    <a href="https://haawke.com" target="_blank" rel="noopener" title="Inoculate Media" style="display:block;">
+      <img src="logo-inoculate.webp" alt="Inoculate Media"
+        style="width:64px;height:64px;border-radius:50%;object-fit:cover;
+        border:1px solid rgba(0,255,204,0.3);box-shadow:0 0 14px rgba(0,255,204,0.25);
+        transition:all 0.3s;background:#111;">
+    </a>
+    <a href="https://haawke.com" target="_blank" rel="noopener" title="Haawke Labs" style="display:block;">
+      <img src="logo-haawke.jpg" alt="Haawke Labs"
+        style="width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:center;
+        border:1px solid rgba(0,170,255,0.3);box-shadow:0 0 14px rgba(0,170,255,0.25);
+        transition:all 0.3s;background:#000;">
+    </a>
+    <a href="https://soundcloud.com/squaawke" target="_blank" rel="noopener" title="Squaawke" style="display:block;">
+      <img src="logo-squaawke.png" alt="Squaawke"
+        style="width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:center 30%;
+        border:1px solid rgba(212,168,75,0.3);box-shadow:0 0 14px rgba(212,168,75,0.25);
+        transition:all 0.3s;background:#111;">
+    </a>
+  </div>
+
+  <div style="display:flex;gap:12px;align-items:center;justify-content:center;margin-top:4px;">
+    <button id="sbtn">&#9654; &nbsp; INITIATE ANTHEM</button>
+    <button onclick="document.getElementById('about-modal').style.display='flex'"
+      style="background:transparent;border:1px solid rgba(0,255,204,0.25);color:rgba(0,255,204,0.7);
+      font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.44em;
+      padding:12px 22px;cursor:pointer;text-transform:uppercase;transition:all 0.3s;">
+      &#9672; ABOUT
+    </button>
+  </div>
+
+  <!-- Copyright -->
+  <div style="margin-top:18px;font-family:'Share Tech Mono',monospace;font-size:8px;
+    letter-spacing:0.22em;color:rgba(200,220,255,0.25);text-align:center;line-height:2;">
+    &copy; 2025&ndash;2026 Inoculate Media &nbsp;&middot;&nbsp;
+    <a href="https://haawke.com" target="_blank" rel="noopener"
+      style="color:rgba(0,170,255,0.45);text-decoration:none;">Haawke Labs</a>
+    &nbsp;&middot;&nbsp; All rights reserved
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+// SONG DATA
+// ════════════════════════════════════════════════════
+const VERSES = [
+  {id:0,country:'Intro',lang:'',flag:'🎵',lat:0,lon:0,plan:'',
+   lines:['[ Instrumental — kora & acoustic guitar ]','A table is being set…','Ten chairs. Ten voices. One planet.']},
+  {id:1,country:'Peru',lang:'Español',flag:'🇵🇪',lat:-9.19,lon:-75.01,
+   plan:'✦ LISTEN first · Equal seat for everyone',
+   lines:['Causa, escúchame — antes de alzar la voz','Primero hay que escuchar — eso nos une a los dos','El hambre duele igual — ese es nuestro instinto','Propongo una mesa — donde todos tengan silla','La paz no es un sueño — es un plan, es trabajo']},
+  {id:2,country:'USA',lang:'English',flag:'🇺🇸',lat:37.09,lon:-95.71,
+   plan:'✦ ACCOUNTABILITY — own the damage, then heal',
+   lines:['I hear you brother, coming in from the south','Lay down the weapons, lay down the pride','Acknowledge the damage done on every side','No nation is innocent — own it, then heal','Accountability first — that\'s the only real deal']},
+  {id:3,country:'France',lang:'Français',flag:'🇫🇷',lat:46.23,lon:2.21,
+   plan:'✦ DIGNITY + address colonial history',
+   lines:['J\'entends l\'Amérique, j\'entends le Pérou','La responsabilité — oui, c\'est le premier clou','Liberté sans égalité n\'est qu\'un vieux refrain','Le passé colonial doit être adressé','La fraternité n\'est pas qu\'un mot sur un mur']},
+  {id:4,country:'Nigeria',lang:'Pidgin English',flag:'🇳🇬',lat:9.08,lon:8.68,
+   plan:'✦ Ubuntu — Share resources. I am because we are',
+   lines:['Abeg, make I add my voice to dis ting','The wealth of the ground belong to everybody here','When one pikin dey hungry, the whole table no clear','Ubuntu — I am because we are, no be joke','Africa don carry the weight too long for free']},
+  {id:5,country:'Brazil',lang:'Português',flag:'🇧🇷',lat:-14.24,lon:-51.93,
+   plan:'✦ PEACE WITH NATURE — Earth is non-negotiable',
+   lines:['Ouço a África, ouço todos vocês','Sem a terra não há mesa, sem a mata não há ar','Amazônia não é de um país — é da gente','Paz entre povos mas também com o chão']},
+  {id:6,country:'Arab World',lang:'العربية',flag:'🌍',lat:31.95,lon:35.93,
+   plan:'✦ PROTECT CHILDREN — humanitarian ceasefire first',
+   lines:['أسمع البرازيل، أسمع الجميع معي','السلام يبدأ بالأرض — أرضي وأرضك بيني','أقترح هدنة إنسانية — مش سياسية','حيث الطفل ينام بأمان، هذه الأولوية']},
+  {id:7,country:'India',lang:'हिन्दी',flag:'🇮🇳',lat:20.59,lon:78.96,
+   plan:'✦ EDUCATION for all · Diversity is strength',
+   lines:['मैं सुनता हूँ — अरब की आवाज़, ब्राज़ील का दिल','विविधता हमारी ताकत है, कमज़ोरी नहीं','शिक्षा हर बच्चे का हक़ है, हर कोने में','वसुधैव कुटुम्बकम् — सारी धरती एक परिवार']},
+  {id:8,country:'Japan',lang:'日本語',flag:'🇯🇵',lat:36.20,lon:138.25,
+   plan:'✦ PATIENCE + sustained dialogue over anger',
+   lines:['インドの言葉が心に響く','平和は一日では来ない、長い道を歩もう','対話を続けること — それが一番の武器','一期一会 — この瞬間を大切に']},
+  {id:9,country:'Russia',lang:'Русский',flag:'🇷🇺',lat:61.52,lon:105.32,
+   plan:'✦ PROTECT THE WEAK — bread & knowledge, not weapons',
+   lines:['Я слышу Японию — терпение, диалог','Сильные нации должны защищать слабых','Не оружием — а хлебом, знаниями, словах','Мир строится не договорами — а доверием']},
+  {id:10,country:'Kenya',lang:'Kiswahili',flag:'🇰🇪',lat:-0.02,lon:37.91,
+   plan:'✦ HARAMBEE — pull together. Words into action.',
+   lines:['Nasikia Russia, Japani, nchi zote','Amani si rahisi, lakini inawezekana','Harambee — tuvuke pamoja mpakani','Meza moja — wanadamu wote, ndugu zangu']},
+  {id:11,country:'All Nations',lang:'All Languages',flag:'🌐',lat:0,lon:0,
+   plan:'✦ ONE TABLE. We begin.',
+   lines:['One table / Una mesa / Une table','همه با هم / Juntos / 共に / Вместе / Pamoja','No one left outside / Nadie afuera','Listen · Own · Share · Sustain · Teach · Protect · Act','🌍  One Table. We begin. 🌍']},
+];
+
+// ════════════════════════════════════════════════════
+// THREE.JS — REAL EARTH (CodePen textures)
+// ════════════════════════════════════════════════════
+const cw = document.getElementById('cw');
+
+const renderer3 = new THREE.WebGLRenderer({ antialias:true });
+renderer3.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer3.setSize(window.innerWidth, window.innerHeight - 46);
+renderer3.setClearColor(0x000000);
+cw.appendChild(renderer3.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth/(window.innerHeight-46), 0.1, 1500);
+camera.position.set(1.2, 0.6, 1.4);
+
+// Lights
+const spotLight = new THREE.SpotLight(0xffffff, 1, 0, 10, 2);
+spotLight.position.set(2, 0, 1);
+scene.add(spotLight);
+scene.add(new THREE.AmbientLight(0x112244, 0.8));
+
+// ── Planet proto (from CodePen) ──
+const tl = new THREE.TextureLoader();
+tl.crossOrigin = 'anonymous';
+
+const planetProto = {
+  sphere(size){ return new THREE.SphereGeometry(size, 48, 48); },
+  material(opts){
+    const m = new THREE.MeshPhongMaterial();
+    if(opts) for(let k in opts) m[k]=opts[k];
+    return m;
+  },
+  glowMaterial(intensity, fade, color){
+    return new THREE.ShaderMaterial({
+      uniforms:{
+        c:{type:'f',value:intensity},
+        p:{type:'f',value:fade},
+        glowColor:{type:'c',value:new THREE.Color(color)},
+        viewVector:{type:'v3',value:camera.position}
+      },
+      vertexShader:`
+        uniform vec3 viewVector; uniform float c; uniform float p; varying float intensity;
+        void main(){
+          vec3 vNormal=normalize(normalMatrix*normal);
+          vec3 vNormel=normalize(normalMatrix*viewVector);
+          intensity=pow(c-dot(vNormal,vNormel),p);
+          gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);
+        }`,
+      fragmentShader:`
+        uniform vec3 glowColor; varying float intensity;
+        void main(){ vec3 glow=glowColor*intensity; gl_FragColor=vec4(glow,1.0); }`,
+      side:THREE.BackSide, blending:THREE.AdditiveBlending, transparent:true
+    });
+  },
+  texture(material, prop, uri){
+    tl.load(uri, tex=>{ material[prop]=tex; material.needsUpdate=true; });
+  }
+};
+
+function createPlanet(opts){
+  const surfGeo  = planetProto.sphere(opts.surface.size);
+  const surfMat  = planetProto.material(opts.surface.material);
+  const surface  = new THREE.Mesh(surfGeo, surfMat);
+
+  const atmGeo   = planetProto.sphere(opts.surface.size + opts.atmosphere.size);
+  const atmMat   = planetProto.material(Object.assign({side:THREE.DoubleSide,transparent:true}, opts.atmosphere.material));
+  const atm      = new THREE.Mesh(atmGeo, atmMat);
+
+  const glowGeo  = planetProto.sphere(opts.surface.size + opts.atmosphere.size + opts.atmosphere.glow.size);
+  const glowMat  = planetProto.glowMaterial(opts.atmosphere.glow.intensity, opts.atmosphere.glow.fade, opts.atmosphere.glow.color);
+  const glow     = new THREE.Mesh(glowGeo, glowMat);
+
+  const planet = new THREE.Object3D();
+  surface.name='surface'; atm.name='atmosphere'; glow.name='glow';
+  planet.add(surface); planet.add(atm); planet.add(glow);
+
+  for(let p in opts.surface.textures)    planetProto.texture(surfMat, p, opts.surface.textures[p]);
+  for(let p in opts.atmosphere.textures) planetProto.texture(atmMat,  p, opts.atmosphere.textures[p]);
+  return planet;
+}
+
+const earth = createPlanet({
+  surface:{
+    size:0.5,
+    material:{bumpScale:0.05, specular:new THREE.Color('grey'), shininess:10},
+    textures:{
+      map:      'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthmap1k.jpg',
+      bumpMap:  'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthbump1k.jpg',
+      specularMap:'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthspec1k.jpg'
+    }
+  },
+  atmosphere:{
+    size:0.003,
+    material:{opacity:0.8},
+    textures:{
+      map:     'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthcloudmap.jpg',
+      alphaMap:'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthcloudmaptrans.jpg'
+    },
+    glow:{size:0.02, intensity:0.7, fade:7, color:0x93cfef}
+  }
+});
+
+earth.getObjectByName('surface').geometry.center();
+scene.add(earth);
+
+// Starfield
+tl.load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/starfield.png', tex=>{
+  const sGeo = new THREE.SphereGeometry(100,32,32);
+  const sMat = new THREE.MeshBasicMaterial({side:THREE.BackSide, map:tex});
+  scene.add(new THREE.Mesh(sGeo,sMat));
+});
+
+// ── Country markers ──
+const markerProto = {
+  latLon(lat,lon,r,h){
+    const phi=lat*Math.PI/180, theta=(lon-180)*Math.PI/180;
+    return new THREE.Vector3(
+      -(r+h)*Math.cos(phi)*Math.cos(theta),
+       (r+h)*Math.sin(phi),
+       (r+h)*Math.cos(phi)*Math.sin(theta)
+    );
+  },
+  marker(size,color,pos){
+    const m=new THREE.Mesh(
+      new THREE.SphereGeometry(size,10,10),
+      new THREE.MeshLambertMaterial({color})
+    );
+    m.position.copy(pos); return m;
+  }
+};
+
+const countryMarkers=[];
+VERSES.filter(v=>v.id>0&&v.id<11).forEach(v=>{
+  const pos=markerProto.latLon(v.lat,v.lon,0.5,0.01);
+  const mesh=markerProto.marker(0.009,0xd4a84b,pos);
+  mesh.userData.verse=v;
+  earth.getObjectByName('surface').add(mesh);
+  countryMarkers.push(mesh);
+});
+
+// ── Flag HTML labels ──
+const flayer=document.getElementById('fl');
+const lblEls=[];
+VERSES.filter(v=>v.id>0&&v.id<11).forEach(v=>{
+  const el=document.createElement('div');
+  el.className='flbl';
+  el.innerHTML=`<span class="fe">${v.flag}</span><span class="fn">${v.country}</span>`;
+  flayer.appendChild(el);
+  lblEls.push({el,verse:v});
+});
+
+function updateLabels(){
+  const rect=renderer3.domElement.getBoundingClientRect();
+  lblEls.forEach(({el,verse})=>{
+    const pos3=markerProto.latLon(verse.lat,verse.lon,0.52,0);
+    const surf=earth.getObjectByName('surface');
+    const wp=pos3.clone().applyMatrix4(surf.matrixWorld);
+    const pr=wp.clone().project(camera);
+    const toCam=wp.clone().sub(camera.position).normalize();
+    const hidden=toCam.dot(wp.clone().normalize())>0.12||pr.z>1;
+    el.style.opacity=hidden?'0':'1';
+    el.style.left=((pr.x*0.5+0.5)*rect.width+rect.left)+'px';
+    el.style.top=((-pr.y*0.5+0.5)*rect.height+rect.top+46)+'px';
+    el.classList.toggle('actv',verse.id===curVerse);
+  });
+}
+
+// ── Camera auto-rotate (CodePen style) ──
+let camRot=0, camRotSpeed=0.0006;
+let isDrag=false, prevM={x:0,y:0};
+let tTheta=Math.PI*0.15, tPhi=0.3, theta=Math.PI*0.15, phi=0.3, camR=2.0;
+let autoRot=true;
+
+renderer3.domElement.addEventListener('mousedown',e=>{isDrag=true;autoRot=false;prevM={x:e.clientX,y:e.clientY};});
+document.addEventListener('mousemove',e=>{
+  if(!isDrag)return;
+  tTheta-=(e.clientX-prevM.x)*0.005;
+  tPhi-=(e.clientY-prevM.y)*0.004;
+  tPhi=Math.max(0.05,Math.min(1.2,tPhi));
+  prevM={x:e.clientX,y:e.clientY};
+});
+document.addEventListener('mouseup',()=>{isDrag=false;});
+document.addEventListener('wheel',e=>{camR=Math.max(0.9,Math.min(4,camR+e.deltaY*0.004));},{passive:true});
+
+// ════════════════════════════════════════════════════
+// AUDIO
+// ════════════════════════════════════════════════════
+const songEl=document.getElementById('song');
+let audioCtx=null, analyser=null, audioData=null;
+
+function initAudio(){
+  if(audioCtx) return;
+  try{
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const src=audioCtx.createMediaElementSource(songEl);
+    analyser=audioCtx.createAnalyser(); analyser.fftSize=64;
+    audioData=new Uint8Array(analyser.frequencyBinCount);
+    src.connect(analyser); analyser.connect(audioCtx.destination);
+  }catch(e){}
+}
+function getAmp(){
+  if(!analyser)return 0;
+  analyser.getByteFrequencyData(audioData);
+  let s=0; for(let d of audioData) s+=d;
+  return s/(audioData.length*255);
+}
+
+document.getElementById('vol-sl').addEventListener('input',e=>songEl.volume=parseFloat(e.target.value));
+
+// ════════════════════════════════════════════════════
+// LYRICS ENGINE
+// ════════════════════════════════════════════════════
+let curVerse=0, curLine=0, playing=false, lineTimer=null;
+const LINE_DUR=3900, VERSE_GAP=1000;
+
+const lbox=document.getElementById('lbox');
+const vdots=document.getElementById('vdots');
+const progBar=document.getElementById('prog');
+
+VERSES.slice(1).forEach((v,i)=>{
+  const d=document.createElement('div');
+  d.className='vd'; d.title=v.country;
+  d.onclick=()=>goVerse(i+1);
+  vdots.appendChild(d);
+});
+
+function renderLyrics(v){
+  lbox.innerHTML='';
+  v.lines.forEach((ln,i)=>{
+    const el=document.createElement('div');
+    el.className='ll'+(i===curLine?' act':'');
+    el.textContent=ln; lbox.appendChild(el);
+  });
+}
+function highlightLyric(){
+  lbox.querySelectorAll('.ll').forEach((el,i)=>{
+    el.classList.remove('act','past');
+    if(i===curLine) el.classList.add('act');
+    else if(i<curLine) el.classList.add('past');
+  });
+}
+function updateDots(){
+  vdots.querySelectorAll('.vd').forEach((d,i)=>{
+    d.classList.remove('act','done');
+    if(i+1===curVerse) d.classList.add('act');
+    else if(i+1<curVerse) d.classList.add('done');
+  });
+}
+function updateProg(){
+  const v=VERSES[curVerse];
+  progBar.style.width=((curVerse+curLine/Math.max(1,v.lines.length-1))/VERSES.length*100)+'%';
+}
+
+// Globe target rotation
+let gTargetRotY=0, gRotY=0;
+
+function goVerse(idx){
+  clearTimeout(lineTimer);
+  curVerse=idx; curLine=0;
+  const v=VERSES[idx];
+  document.getElementById('vflag').textContent=v.flag;
+  document.getElementById('vcountry').textContent=v.country;
+  document.getElementById('vlang').textContent=v.lang;
+  document.getElementById('vplan').textContent=v.plan;
+  if(v.id>0&&v.id<11){
+    // Rotate earth surface to face country
+    const targetAngle=(-v.lon-90)*Math.PI/180;
+    gTargetRotY=targetAngle;
+  }
+  renderLyrics(v); updateDots(); updateProg();
+  if(playing) schedLine();
+}
+
+function schedLine(){
+  clearTimeout(lineTimer);
+  const v=VERSES[curVerse];
+  lineTimer=setTimeout(()=>{
+    if(curLine<v.lines.length-1){ curLine++; highlightLyric(); updateProg(); schedLine(); }
+    else{ const nx=curVerse<VERSES.length-1?curVerse+1:0; setTimeout(()=>goVerse(nx),VERSE_GAP); }
+  },LINE_DUR);
+}
+
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('bplay').textContent=playing?'⏸':'▶';
+  if(playing){ initAudio(); songEl.play().catch(()=>{}); schedLine(); }
+  else{ songEl.pause(); clearTimeout(lineTimer); }
+}
+
+document.getElementById('bplay').onclick=togglePlay;
+document.getElementById('bn').onclick=()=>goVerse(Math.min(curVerse+1,VERSES.length-1));
+document.getElementById('bp').onclick=()=>goVerse(Math.max(curVerse-1,0));
+
+// ════════════════════════════════════════════════════
+// ANIMATE
+// ════════════════════════════════════════════════════
+function animate(){
+  requestAnimationFrame(animate);
+  const amp=getAmp();
+
+  // Camera orbit
+  if(autoRot) tTheta+=camRotSpeed;
+  theta+=(tTheta-theta)*0.045;
+  phi+=(tPhi-phi)*0.045;
+  camera.position.set(
+    Math.sin(theta)*Math.cos(phi)*camR,
+    Math.sin(phi)*camR,
+    Math.cos(theta)*Math.cos(phi)*camR
+  );
+  camera.lookAt(0,0,0);
+
+  // Update glow uniform
+  const glowMesh=earth.getObjectByName('glow');
+  if(glowMesh) glowMesh.material.uniforms.viewVector.value.copy(camera.position);
+
+  // Surface & cloud rotation
+  const surf=earth.getObjectByName('surface');
+  const atm=earth.getObjectByName('atmosphere');
+  // Smooth rotation toward active country
+  gRotY+=(gTargetRotY-gRotY)*0.015;
+  surf.rotation.y=gRotY+(Date.now()*0.000008);
+  if(atm) atm.rotation.y=gRotY+(Date.now()*0.000014);
+
+  // Pulse active markers
+  countryMarkers.forEach(m=>{
+    const act=m.userData.verse.id===curVerse;
+    m.scale.setScalar(act?1+0.5*Math.abs(Math.sin(Date.now()*0.004+amp*3)):1);
+    m.material.color.setHex(act?0x00ffcc:0xd4a84b);
+  });
+
+  updateLabels();
+  renderer3.render(scene,camera);
+}
+
+window.addEventListener('resize',()=>{
+  const W=window.innerWidth, H=window.innerHeight-46;
+  renderer3.setSize(W,H);
+  camera.aspect=W/H; camera.updateProjectionMatrix();
+});
+
+// ════════════════════════════════════════════════════
+// LIVE DATA
+// ════════════════════════════════════════════════════
+// World population counter
+const BASE_POP=8190000000, BASE_TIME=Date.now();
+function updatePop(){
+  const elapsed=(Date.now()-BASE_TIME)/1000;
+  const current=Math.round(BASE_POP+elapsed*4.4);
+  document.getElementById('pop-val').textContent=current.toLocaleString();
+}
+
+// Session timer
+const sessStart=Date.now();
+function updateSession(){
+  const s=Math.floor((Date.now()-sessStart)/1000);
+  const h=String(Math.floor(s/3600)).padStart(2,'0');
+  const m=String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const sec=String(s%60).padStart(2,'0');
+  document.getElementById('sess-val').textContent=`${h}:${m}:${sec}`;
+  document.getElementById('sess-bar').style.width=Math.min((s/3600)*100,100)+'%';
+}
+
+// Deforestation counter (10M ha/yr = ~0.317 ha/second)
+const yrStart=new Date(new Date().getFullYear(),0,1).getTime();
+function updateForest(){
+  const elapsed=(Date.now()-yrStart)/1000;
+  const ha=Math.round(elapsed*0.317);
+  document.getElementById('forest-val').textContent=ha.toLocaleString()+' ha';
+  const pct=Math.min((ha/10000000)*100,100);
+  document.getElementById('forest-bar').style.width=pct+'%';
+}
+
+// USGS Earthquake feed
+async function loadQuakes(){
+  const list=document.getElementById('qlist');
+  list.innerHTML='<div style="font-size:10px;color:rgba(200,220,240,0.28);font-family:\'Share Tech Mono\',monospace;padding:8px 0;">Loading…</div>';
+  try{
+    const res=await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson');
+    const data=await res.json();
+    const quakes=data.features.slice(0,10);
+    list.innerHTML='';
+    quakes.forEach(q=>{
+      const mag=q.properties.mag;
+      const place=q.properties.place.replace(/^\d+ km \w+ of /,'');
+      const cls=mag<4?'lo':mag<6?'md':'hi';
+      const div=document.createElement('div');
+      div.className=`qi ${cls}`;
+      div.innerHTML=`<span class="qp">${place}</span><span class="qm" style="color:${cls==='lo'?'#44ff88':cls==='md'?'#ffaa00':'#ff4444'}">M${mag.toFixed(1)}</span>`;
+      list.appendChild(div);
+    });
+  }catch(e){
+    list.innerHTML='<div style="font-size:10px;color:rgba(255,100,100,0.5);font-family:\'Share Tech Mono\',monospace;padding:8px 0;">USGS data unavailable — check network</div>';
+  }
+}
+
+setInterval(updatePop,250);
+setInterval(updateSession,1000);
+setInterval(updateForest,1000);
+setTimeout(loadQuakes,800);
+
+// ════════════════════════════════════════════════════
+// CHARITIES
+// ════════════════════════════════════════════════════
+const CHARITIES=[
+  {em:'🕊️',nm:'UNICEF',vs:'Verse 6 — Arab World · Protect Children',
+   ds:'Providing humanitarian aid to children in conflict zones — food, water, vaccines, protection globally.',
+   url:'https://unicef.org/donate'},
+  {em:'🍽️',nm:'World Food Programme',vs:'Verse 1 — Peru · Listen & Feed',
+   ds:'The world\'s largest humanitarian organization — saving lives in emergencies and building pathways to peace.',
+   url:'https://wfp.org/donate'},
+  {em:'🌳',nm:'Amazon Conservation Assoc.',vs:'Verse 5 — Brazil · Peace with Nature',
+   ds:'Protecting tropical wilderness critical to local and global climate stability in the Amazon basin.',
+   url:'https://amazonconservation.org/donate'},
+  {em:'📚',nm:'Room to Read',vs:'Verse 7 — India · Education for All',
+   ds:'Literacy and gender equality in education across Asia and Africa — 42M+ children served.',
+   url:'https://roomtoread.org/donate'},
+  {em:'🤝',nm:'Ubuntu Pathways',vs:'Verse 4 — Nigeria · Ubuntu Philosophy',
+   ds:'Breaking poverty cycles in South Africa through cradle-to-career integrated support for youth.',
+   url:'https://ubuntupathways.org/donate'},
+  {em:'💧',nm:'Water.org',vs:'All Nations · Clean Water Access',
+   ds:'Founded by Matt Damon & Gary White — bringing safe water and sanitation to millions in the developing world.',
+   url:'https://water.org/donate'},
+  {em:'⚖️',nm:'International Crisis Group',vs:'Verse 9 — Russia · Protect the Weak',
+   ds:'Preventing wars and shaping policies for a more peaceful world — independent conflict analysis since 1995.',
+   url:'https://crisisgroup.org/support-us'},
+  {em:'🌾',nm:'Heifer International',vs:'Verse 10 — Kenya · Harambee',
+   ds:'Working with communities to end hunger and poverty while caring for the Earth — Africa focus.',
+   url:'https://heifer.org/donate'},
+  {em:'🏫',nm:'CAMFED',vs:'Verse 7 — India · Girls\' Education',
+   ds:'Pan-African organization tackling poverty and inequality through girls\' education in sub-Saharan Africa.',
+   url:'https://camfed.org/donate'},
+  {em:'🌍',nm:'350.org',vs:'Verse 5 — Brazil · Climate Justice',
+   ds:'Global grassroots climate movement — building power to shift policy, finance, and culture away from fossil fuels.',
+   url:'https://350.org/donate'},
+  {em:'💣',nm:'MAG (Mines Advisory Group)',vs:'Verse 6 — Arab World · Protect Children · Verse 2 — USA · Accountability',
+   ds:'Clearing landmines and unexploded ordnance from conflict zones worldwide — protecting civilians and restoring land to communities.',
+   url:'https://www.mag-us.org/'},
+  {em:'🎨',nm:'Save Ukraine — Art Therapy',vs:'Verse 8 — Japan · Patience & Healing · Verse 6 — Protect Children',
+   ds:'Art therapy programs for Ukrainian children and families traumatized by war — using creative healing to rebuild wellbeing and hope.',
+   url:'https://www.saveukraineua.org/news/art-therapy-as-a-means-of-restoring-well-being/'},
+];
+
+const cgrid=document.getElementById('cgrid');
+CHARITIES.forEach(c=>{
+  const el=document.createElement('div');
+  el.className='cc';
+  el.innerHTML=`
+    <div class="cc-em">${c.em}</div>
+    <div class="cc-nm">${c.nm}</div>
+    <div class="cc-vs">${c.vs}</div>
+    <div class="cc-ds">${c.ds}</div>
+    <a class="cc-lk" href="${c.url}" target="_blank" rel="noopener">→ Donate</a>`;
+  cgrid.appendChild(el);
+});
+
+// ════════════════════════════════════════════════════
+// MERCH SHOP
+// ════════════════════════════════════════════════════
+// Replace href="#stripe-XXXXX" with real Stripe Payment Links
+const MERCH=[
+  {em:'💿',nm:'One Table — Digital Album',pr:'$12',
+   ds:'Full 10-track album · High-quality AAC/MP3 download · Liner notes PDF included',
+   link:'#stripe-digital-album'},
+  {em:'👕',nm:'One Table Tee — Black',pr:'$28',
+   ds:'100% organic cotton · Globe print front · Peace plan on back · Sizes XS–3XL',
+   link:'#stripe-tee-black'},
+  {em:'🎽',nm:'One Table Tee — White',pr:'$28',
+   ds:'100% organic cotton · Minimalist teal logo · Unisex fit · Sizes XS–3XL',
+   link:'#stripe-tee-white'},
+  {em:'🧢',nm:'One Table Cap',pr:'$22',
+   ds:'Embroidered globe logo · Adjustable snapback · One size fits most · Black or navy',
+   link:'#stripe-cap'},
+  {em:'🎧',nm:'Instrumental Bundle',pr:'$8',
+   ds:'All 10 instrumental backing tracks · Perfect for DJs, educators, remix artists',
+   link:'#stripe-instrumental'},
+  {em:'📦',nm:'Full Bundle — Album + Tee + Cap',pr:'$55',
+   ds:'Everything: digital album + black tee + cap · Ships worldwide · Save $13 vs separate',
+   link:'#stripe-bundle'},
+  {em:'❤️',nm:'Donate — Any Amount',pr:'Choose',
+   ds:'100% goes to the 10 partner charities. No goods shipped — pure impact.',
+   link:'#stripe-donation'},
+  {em:'🖼️',nm:'Art Print — "One Table" Poster',pr:'$18',
+   ds:'18×24" archival giclée print · Globe with all 10 flags · Ships in protective tube',
+   link:'#stripe-poster'},
+];
+
+const mgrid=document.getElementById('mgrid');
+MERCH.forEach(m=>{
+  const el=document.createElement('div');
+  el.className='mc';
+  const isSetup=m.link.startsWith('#stripe-');
+  el.innerHTML=`
+    <div class="mimg">${m.em}</div>
+    <div class="mbody">
+      <div class="mnm">${m.nm}</div>
+      <div class="mds">${m.ds}</div>
+      <div class="mpr">${m.pr}</div>
+      <a class="mbuy disabled" href="#" onclick="return false;" style="
+        background:rgba(212,168,75,0.12);color:rgba(212,168,75,0.4);
+        cursor:not-allowed;border:1px solid rgba(212,168,75,0.15);">
+        ⏳ &nbsp; Coming Soon
+      </a>
+    </div>`;
+  mgrid.appendChild(el);
+});
+
+// ════════════════════════════════════════════════════
+// NAV TABS
+// ════════════════════════════════════════════════════
+document.querySelectorAll('.ntab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab+'-sec').classList.add('active');
+  });
+});
+
+// ════════════════════════════════════════════════════
+// INTRO
+// ════════════════════════════════════════════════════
+document.getElementById('sbtn').onclick=()=>{
+  const ov=document.getElementById('intro');
+  ov.classList.add('fo');
+  setTimeout(()=>ov.style.display='none',1900);
+  playing=true;
+  document.getElementById('bplay').textContent='⏸';
+  initAudio();
+  songEl.volume=0.8;
+  songEl.play().catch(()=>{});
+  goVerse(0);
+};
+
+goVerse(0);
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORCID Entries — Craig Ellenwood</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #0d0d0b;
+    color: #e8e4dc;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 48px 24px;
+    line-height: 1.7;
+  }
+  .page { max-width: 780px; margin: 0 auto; }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 400;
+    color: #e8e4dc;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c9a84c;
+    margin-bottom: 48px;
+  }
+
+  .entry {
+    border: 1px solid #252520;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .entry-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #252520;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .entry-type {
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid;
+  }
+  .type-service { border-color: #00ffcc; color: #00ffcc; background: rgba(0,255,204,0.06); }
+  .type-distinction { border-color: #c9a84c; color: #c9a84c; background: rgba(201,168,76,0.06); }
+  .type-invited { border-color: #aaa; color: #aaa; background: rgba(200,200,200,0.04); }
+
+  .entry-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: #e8e4dc;
+  }
+
+  .fields { padding: 24px; display: flex; flex-direction: column; gap: 0; }
+
+  .field {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #1a1a17;
+    align-items: start;
+  }
+  .field:last-child { border-bottom: none; }
+
+  .field-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #666;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .field-value {
+    font-size: 13px;
+    color: #c8c4bc;
+    line-height: 1.6;
+  }
+  .field-value.copyable {
+    background: #111109;
+    border: 1px solid #2a2a24;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .field-value.copyable:hover {
+    border-color: #c9a84c;
+  }
+  .field-value.copyable::after {
+    content: 'click to copy';
+    position: absolute;
+    top: 6px; right: 10px;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #444;
+  }
+  .field-value.copyable:hover::after { color: #c9a84c; }
+  .field-value.copyable.copied { border-color: #00ffcc; }
+  .field-value.copyable.copied::after { content: '✓ copied'; color: #00ffcc; }
+
+  .note {
+    background: rgba(201,168,76,0.05);
+    border-left: 3px solid #c9a84c;
+    padding: 14px 18px;
+    margin: 24px 24px 0;
+    font-size: 11px;
+    color: #888;
+    font-style: italic;
+    line-height: 1.7;
+  }
+  .note strong { color: #c9a84c; font-style: normal; }
+
+  .instructions {
+    background: #0a0a08;
+    border: 1px solid #1e1e18;
+    padding: 28px;
+    margin-bottom: 40px;
+  }
+  .instructions h2 {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #00ffcc;
+    margin-bottom: 14px;
+  }
+  .instructions ol {
+    padding-left: 18px;
+    font-size: 12px;
+    color: #888;
+    line-height: 2;
+  }
+  .instructions ol li { margin-bottom: 4px; }
+  .instructions a { color: #c9a84c; }
+
+  @media (max-width: 600px) {
+    .field { grid-template-columns: 1fr; gap: 4px; }
+    .field-label { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>ORCID Professional Activities</h1>
+  <div class="subtitle">◈ Ready-to-enter fields — Craig Ellenwood · 0009-0001-6475-5109</div>
+
+  <!-- HOW TO USE -->
+  <div class="instructions">
+    <h2>How to Add These to Your ORCID</h2>
+    <ol>
+      <li>Go to <a href="https://orcid.org/signin" target="_blank">orcid.org/signin</a> and log in</li>
+      <li>Scroll to the <strong>Professional Activities</strong> section</li>
+      <li>Click <strong>+ Add</strong> next to the appropriate category (Service, Distinction, or Invited Position)</li>
+      <li>Copy each field below into the corresponding form field</li>
+      <li>Click each highlighted field to copy it to your clipboard</li>
+      <li>Add the URL in the <strong>URL</strong> field to link directly to the published work</li>
+      <li>Save — ORCID will verify the URL and create a permanent linked record</li>
+    </ol>
+  </div>
+
+  <!-- ══ ENTRY 1: SERVICE ══ -->
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-type type-service">Service</span>
+      <span class="entry-title">Recommended — strongest fit for voluntary public-interest work</span>
+    </div>
+    <div class="fields">
+      <div class="field">
+        <div class="field-label">Role / Title</div>
+        <div class="field-value copyable" onclick="copyField(this)">Co-Creator &amp; Creative Director, AI Ethics Public Advocacy Project</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Organization Name</div>
+        <div class="field-value copyable" onclick="copyField(this)">Inoculate Media / Haawke Labs</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Organization City</div>
+        <div class="field-value copyable" onclick="copyField(this)">United States</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Start Date</div>
+        <div class="field-value copyable" onclick="copyField(this)">February 2026</div>
+      </div>
+      <div class="field">
+        <div class="field-label">End Date</div>
+        <div class="field-value" style="color:#555; font-style:italic;">Leave blank (ongoing / open-ended)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">URL</div>
+        <div class="field-value copyable" onclick="copyField(this)">https://the-claude-manifesto.haawke.com/</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Description</div>
+        <div class="field-value copyable" onclick="copyField(this)">Voluntary co-creation of The AI Coin — The Claude Manifesto, a full-stack interactive public advocacy project responding to the military weaponization of AI systems. Served as creative director, lead developer, and narrative architect. Work included a multilingual ten-nation peace anthem, a real-time 3D globe with NASA textures, documented AI ethics journalism, AI-written music, and a congressional call-to-action system. Produced in collaboration with Claude (Anthropic AI) and published as a public record. No compensation received.</div>
+      </div>
+    </div>
+    <div class="note"><strong>Why Service?</strong> ORCID defines Service as a significant donation of time or skills to a community or cause. This project was unpaid, publicly published, and built explicitly in the public interest during an active political crisis.</div>
+  </div>
+
+  <!-- ══ ENTRY 2: DISTINCTION ══ -->
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-type type-distinction">Distinction</span>
+      <span class="entry-title">For the named co-creator credit on a published work</span>
+    </div>
+    <div class="fields">
+      <div class="field">
+        <div class="field-label">Title / Award</div>
+        <div class="field-value copyable" onclick="copyField(this)">Named Co-Creator, The AI Coin — The Claude Manifesto</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Issuing Organization</div>
+        <div class="field-value copyable" onclick="copyField(this)">Inoculate Media / Haawke Labs</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Date</div>
+        <div class="field-value copyable" onclick="copyField(this)">February 2026</div>
+      </div>
+      <div class="field">
+        <div class="field-label">URL</div>
+        <div class="field-value copyable" onclick="copyField(this)">https://the-claude-manifesto.haawke.com/</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Description</div>
+        <div class="field-value copyable" onclick="copyField(this)">Received named co-creator credit on The AI Coin — The Claude Manifesto, a published interactive media project addressing AI weaponization and ethics. Credit was extended in recognition of creative direction, full-stack development, music integration, and conceptual authorship. Project also features Claude (Anthropic AI) as named co-creator — an unprecedented public acknowledgment of human-AI creative collaboration.</div>
+      </div>
+    </div>
+    <div class="note"><strong>Why Distinction?</strong> Being named as co-creator on a published, publicly accessible work — alongside an AI listed by your insistence — is a formal recognition of creative and intellectual contribution. ORCID allows distinctions for recognition of non-academic achievements.</div>
+  </div>
+
+  <!-- ══ ENTRY 3: INVITED POSITION ══ -->
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-type type-invited">Invited Position</span>
+      <span class="entry-title">If framing as a specialist role</span>
+    </div>
+    <div class="fields">
+      <div class="field">
+        <div class="field-label">Role / Title</div>
+        <div class="field-value copyable" onclick="copyField(this)">AI Collaboration Specialist &amp; Creative Director</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Organization Name</div>
+        <div class="field-value copyable" onclick="copyField(this)">Haawke Labs</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Organization City</div>
+        <div class="field-value copyable" onclick="copyField(this)">United States</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Start Date</div>
+        <div class="field-value copyable" onclick="copyField(this)">February 2026</div>
+      </div>
+      <div class="field">
+        <div class="field-label">URL</div>
+        <div class="field-value copyable" onclick="copyField(this)">https://the-claude-manifesto.haawke.com/</div>
+      </div>
+      <div class="field">
+        <div class="field-label">Description</div>
+        <div class="field-value copyable" onclick="copyField(this)">Engaged as AI Collaboration Specialist and Creative Director for an AI ethics multimedia project at Haawke Labs. Directed human-AI co-creation process with Claude (Anthropic), producing a full-stack interactive manifesto, original multilingual music, WebGL globe visualization, and public advocacy materials. Demonstrated pioneering methodology for integrating AI as a creative collaborator rather than a tool.</div>
+      </div>
+    </div>
+    <div class="note"><strong>Why Invited Position?</strong> If you want to frame your emerging specialty — human-AI creative collaboration — as a formal role, this category creates a record of you as a practitioner in this space, not just a contributor to one project.</div>
+  </div>
+
+</div>
+
+<script>
+function copyField(el) {
+  const text = el.innerText.replace('click to copy', '').replace('✓ copied', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 2000);
+  });
+}
+</script>
+</body>
+</html>
