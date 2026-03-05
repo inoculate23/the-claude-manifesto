@@ -180,6 +180,26 @@
     z-index: 1000;
     opacity: 0.4;
   }
+/* ── HEADER / NAV ── */
+#site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 48px;
+  background: rgba(5,5,8,0.9);
+  border-bottom: 1px solid rgba(0,255,204,0.12);
+  backdrop-filter: blur(8px);
+}
+.nav-mark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: 0.25em; color: var(--teal);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 8px; letter-spacing: 0.35em; color: rgba(240,236,224,0.4);
+  text-decoration: none; text-transform: uppercase; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--teal); }
 
   /* ── HERO ── */
   .hero {
@@ -616,7 +636,31 @@
 </style>
 </head>
 <body>
-
+<!-- NAV -->
+<nav id="site-nav">
+  <a href="#" class="nav-mark">The AI Coin</a>
+  <ul class="nav-links">
+    <li><a href="#coin-section">Two Sides</a></li>
+    <li><a href="#globe-section">One Table</a></li>
+    <li><a href="#songs-section">Songs</a></li>
+    <li><a href="#conversation-section">The Conversation</a></li>
+    <li><a href="#manifesto-section">Manifesto</a></li>
+    <li><a href="#action-section">Act</a></li>
+    <li><a href="#team-section">Team</a></li>
+	<li><a href="bts.html">Behind the scenes and FAQ</a></li>
+    <li class="nav-contact-item">
+      <a href="#" class="nav-contact-toggle">Contact &#9662;</a>
+      <ul class="nav-contact-dropdown">
+        <li><a href="#" class="contact-trigger" data-subject="Press / Media">Press / Media</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Job Offer">Job Offer</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Join the Team">Join the Team</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Music Licensing">Music Licensing</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Booking / Speak / Lecture">Booking / Speak</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="General">General</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 <!-- HERO -->
 <section class="hero">
   <canvas id="coin-canvas" width="560" height="560"></canvas>
