@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -788,17 +789,17 @@
     <li><a href="https://the-claude-manifesto.haawke.com/#manifesto-section">Manifesto</a></li>
     <li><a href="https://the-claude-manifesto.haawke.com/#action-section">Act</a></li>
     <li class="nav-dropdown">
-      <a href="#">Contact</a>
+      <a href="#" class="nav-contact-toggle">Contact &#9662;</a>
       <ul class="nav-dropdown-menu">
-        <li><a href="/cdn-cgi/l/email-protection#49393b2c3a3a092128283e222c672a2624">Press / Media</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#066574676f6128636a6a63687169696246616b676f6a2865696b397573646c6365723b4c6964264960606374">Job Offer</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#a8cbdac9c1cf86cdc4c4cdc6dfc7c7cce8cfc5c9c1c486cbc7c597dbddcac2cdcbdc95e2c7c1c688dcc0cd88fccdc9c5">Join the Team</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#7b18091a121c551e17171e150c14141f3b1c161a12175518141644080e19111e180f46360e0812185b3712181e150812151c">Music Licensing</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#4023322129276e252c2c252e372f2f2400272d21292c6e232f2d7f3335222a2523347d022f2f2b292e27">Booking / Speak</a></li>
-        <li><a href="/cdn-cgi/l/email-protection#d0b3a2b1b9b7feb5bcbcb5bea7bfbfb490b7bdb1b9bcfeb3bfbd">General</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Press / Media">Press / Media</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Job Offer">Job Offer</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Join the Team">Join the Team</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Music Licensing">Music Licensing</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="Booking / Speak / Lecture">Booking / Speak</a></li>
+        <li><a href="#" class="contact-trigger" data-subject="General">General</a></li>
       </ul>
     </li>
-  </ul>
+    </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -811,12 +812,13 @@
   <a href="https://the-claude-manifesto.haawke.com/#conversation-section">The Conversation</a>
   <a href="https://the-claude-manifesto.haawke.com/#manifesto-section">Manifesto</a>
   <a href="https://the-claude-manifesto.haawke.com/#action-section">Act</a>
-  <a href="/cdn-cgi/l/email-protection#fc8c8e998f8fbc949d9d8b9799d29f9391" class="mob-sub">→ Press / Media</a>
-  <a href="/cdn-cgi/l/email-protection#beddccdfd7d990dbd2d2dbd0c9d1d1dafed9d3dfd7d290ddd1d381cdcbdcd4dbddca83f4d1dc9ef1d8d8dbcc" class="mob-sub">→ Job Offer</a>
-  <a href="/cdn-cgi/l/email-protection#224150434b450c474e4e474c554d4d4662454f434b4e0c414d4f1d515740484741561f684d4b4c02564a47027647434f" class="mob-sub">→ Join the Team</a>
-  <a href="/cdn-cgi/l/email-protection#751607141c125b101919101b021a1a11351218141c195b161a184a0600171f101601483800061c1655391c16101b061c1b12" class="mob-sub">→ Music Licensing</a>
-  <a href="/cdn-cgi/l/email-protection#294a5b48404e074c45454c475e46464d694e44484045074a4644165a5c4b434c4a5d146b46464240474e" class="mob-sub">→ Booking / Speak</a>
-  <a href="/cdn-cgi/l/email-protection#e38091828a84cd868f8f868d948c8c87a3848e828a8fcd808c8e" class="mob-sub">→ General</a>
+  <a href="#" class="contact-trigger" data-subject="General" style="border-top:1px solid rgba(201,168,76,0.12);margin-top:4px;">Contact</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Press / Media">→ Press / Media</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Job Offer">→ Job Offer</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Join the Team">→ Join the Team</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Music Licensing">→ Music Licensing</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Booking / Speak / Lecture">→ Booking / Speak</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="General">→ General</a>
 </div>
 
 <!-- HERO -->
@@ -1582,3 +1584,111 @@
 
 </body>
 </html>
+
+<style>
+#contact-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,8,.75);backdrop-filter:blur(4px);z-index:900;opacity:0;transition:opacity .35s ease}
+#contact-overlay.open{opacity:1}
+#contact-drawer{position:fixed;top:0;right:0;width:100%;max-width:520px;height:100vh;background:#0d0d12;border-left:1px solid rgba(201,168,76,.2);z-index:901;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+#contact-drawer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#0a0a0f,#c9a84c,#e8d49a)}
+#contact-drawer.open{transform:translateX(0)}
+#drawer-inner{padding:40px 36px 60px}
+#drawer-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}
+#drawer-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#c9a84c}
+#drawer-close{color:#555;cursor:pointer;font-size:14px;padding:4px 8px;transition:color .2s;background:none;border:none}
+#drawer-close:hover{color:#fff}
+#drawer-title{font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700;color:#fff;margin-bottom:8px}
+#drawer-sub{font-family:'Playfair Display',Georgia,serif;font-size:13px;color:#555;font-style:italic;margin-bottom:32px;line-height:1.6}
+.d-field-group{margin-bottom:28px}
+.d-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:#555;display:block;margin-bottom:10px}
+.d-pills{display:flex;flex-wrap:wrap;gap:6px}
+.d-pill input[type=radio]{display:none}
+.d-pill label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;padding:6px 12px;border:1px solid rgba(201,168,76,.2);color:#555;cursor:pointer;transition:all .2s}
+.d-pill label:hover{border-color:#c9a84c;color:#c9a84c}
+.d-pill input[type=radio]:checked+label{background:rgba(201,168,76,.1);border-color:#c9a84c;color:#c9a84c}
+.d-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.d-field{margin-bottom:12px}
+.d-field label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:#555;display:block;margin-bottom:6px}
+.d-opt{opacity:.4}
+.d-field input,.d-field textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);color:#e8e0d0;font-family:'Space Mono',monospace;font-size:12px;padding:10px 14px;outline:none;transition:border-color .2s}
+.d-field input:focus,.d-field textarea:focus{border-color:#c9a84c}
+.d-field input::placeholder,.d-field textarea::placeholder{color:rgba(255,255,255,.12);font-style:italic}
+.d-field textarea{resize:vertical;min-height:100px;line-height:1.6}
+.d-footer{display:flex;align-items:center;justify-content:space-between;margin-top:28px}
+#drawer-submit{background:transparent;border:1px solid #c9a84c;color:#c9a84c;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:12px 24px;cursor:pointer;transition:all .25s}
+#drawer-submit:hover{color:#0a0a0f;background:#c9a84c}
+.d-orcid{font-family:'Space Mono',monospace;font-size:10px;color:rgba(201,168,76,0.3);text-decoration:none;letter-spacing:.05em;transition:color .2s}
+.d-orcid:hover{color:#c9a84c}
+@media(max-width:560px){#contact-drawer{max-width:100%}#drawer-inner{padding:32px 20px 60px}.d-row{grid-template-columns:1fr}}
+</style>
+
+<div id="contact-overlay"></div>
+<div id="contact-drawer" aria-hidden="true">
+<div id="drawer-inner">
+<div id="drawer-header">
+<div id="drawer-eyebrow">&#9672; The AI Coin — Behind the Scenes</div>
+<button id="drawer-close" aria-label="Close">&#10005;</button>
+</div>
+<h2 id="drawer-title">Get in touch.</h2>
+<p id="drawer-sub">We read everything. We respond to the ones that matter.</p>
+<form name="manifesto-contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/contact-success">
+<input type="hidden" name="form-name" value="manifesto-contact">
+<div style="display:none"><input name="bot-field"></div>
+<div class="d-field-group">
+<span class="d-label">Reaching out about</span>
+<div class="d-pills">
+<div class="d-pill"><input type="radio" name="subject" id="dp1" value="Press / Media"><label for="dp1">Press / Media</label></div>
+<div class="d-pill"><input type="radio" name="subject" id="dp2" value="Job Offer"><label for="dp2">Job Offer</label></div>
+<div class="d-pill"><input type="radio" name="subject" id="dp3" value="Join the Team"><label for="dp3">Join the Team</label></div>
+<div class="d-pill"><input type="radio" name="subject" id="dp4" value="Music Licensing"><label for="dp4">Music Licensing</label></div>
+<div class="d-pill"><input type="radio" name="subject" id="dp5" value="Booking / Speak / Lecture"><label for="dp5">Booking / Speak</label></div>
+<div class="d-pill"><input type="radio" name="subject" id="dp6" value="General" checked><label for="dp6">General</label></div>
+</div></div>
+<div class="d-row">
+<div class="d-field"><label for="dn">Name</label><input type="text" id="dn" name="name" placeholder="Your name" required></div>
+<div class="d-field"><label for="de">Email</label><input type="email" id="de" name="email" placeholder="you@domain.com" required></div>
+</div>
+<div class="d-field"><label for="do">Org <span class="d-opt">(optional)</span></label><input type="text" id="do" name="organization" placeholder="Company or collective"></div>
+<div class="d-field"><label for="dm">Message</label><textarea id="dm" name="message" placeholder="What is on your mind..." required></textarea></div>
+<div class="d-footer">
+<button type="submit" id="drawer-submit">Send It</button>
+<a href="https://orcid.org/0009-0001-6475-5109" target="_blank" class="d-orcid">0009-0001-6475-5109</a>
+</div></form></div></div>
+
+<script>
+(function(){
+var dr=document.getElementById('contact-drawer');
+var ov=document.getElementById('contact-overlay');
+var cb=document.getElementById('drawer-close');
+var ti=document.getElementById('drawer-title');
+var tg=document.querySelector('.nav-contact-toggle');
+var dd=document.querySelector('.nav-dropdown-menu');
+var map={'Press / Media':'Press & Media.','Job Offer':'Let us talk work.','Join the Team':'Pull up a chair.','Music Licensing':'License the music.','Booking / Speak / Lecture':'Book a talk.','General':'Get in touch.'};
+function open_(s){
+  ti.textContent=map[s]||'Get in touch.';
+  document.querySelectorAll('#contact-drawer input[type=radio]').forEach(function(r){r.checked=(r.value===s);});
+  ov.style.display='block';
+  requestAnimationFrame(function(){ov.classList.add('open');dr.classList.add('open');});
+  document.body.style.overflow='hidden';
+  dr.setAttribute('aria-hidden','false');
+  if(dd)dd.classList.remove('open');
+}
+function close_(){
+  ov.classList.remove('open');dr.classList.remove('open');
+  document.body.style.overflow='';
+  dr.setAttribute('aria-hidden','true');
+  setTimeout(function(){ov.style.display='none';},400);
+}
+if(tg&&dd){
+  tg.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();dd.classList.toggle('open');});
+}
+document.addEventListener('click',function(e){
+  if(dd&&!e.target.closest('.nav-dropdown'))dd.classList.remove('open');
+  var t=e.target.closest('.contact-trigger');
+  if(t){e.preventDefault();open_(t.getAttribute('data-subject')||'General');}
+});
+if(cb)cb.addEventListener('click',close_);
+if(ov)ov.addEventListener('click',close_);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')close_();});
+})();
+</script>
+

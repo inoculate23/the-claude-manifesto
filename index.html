@@ -195,24 +195,84 @@ body::before {
 
 /* ── HEADER / NAV ── */
 #site-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 400;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 32px; height: 48px;
-  background: rgba(5,5,8,0.9);
+  background: rgba(5,5,8,0.94);
   border-bottom: 1px solid rgba(0,255,204,0.12);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .nav-mark {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 18px; letter-spacing: 0.25em; color: var(--teal);
-  text-decoration: none;
+  text-decoration: none; white-space: nowrap;
 }
-.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
 .nav-links a {
   font-size: 8px; letter-spacing: 0.35em; color: rgba(240,236,224,0.4);
   text-decoration: none; text-transform: uppercase; transition: color 0.2s;
+  white-space: nowrap;
 }
 .nav-links a:hover { color: var(--teal); }
+
+/* Contact dropdown */
+.nav-contact-item { position: relative; }
+.nav-contact-toggle { cursor: pointer; }
+.nav-contact-dropdown {
+  display: none; position: absolute; top: calc(100% + 10px); right: 0;
+  background: #0d0d12; border: 1px solid rgba(212,168,75,0.25);
+  border-top: 2px solid var(--teal); list-style: none;
+  min-width: 180px; z-index: 500; padding: 6px 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.nav-contact-dropdown.open { display: block; }
+.nav-contact-dropdown li a {
+  display: block; padding: 9px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px; letter-spacing: 2.8px; text-transform: uppercase;
+  color: rgba(240,236,224,0.4); text-decoration: none;
+  transition: color .15s, background .15s; white-space: nowrap;
+}
+.nav-contact-dropdown li a:hover { color: var(--teal); background: rgba(0,255,204,0.04); }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; background: none; border: none;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--teal); transition: all 0.25s;
+}
+
+/* Mobile panel */
+.nav-mobile-panel {
+  display: none; position: fixed;
+  top: 48px; left: 0; right: 0;
+  background: rgba(5,5,8,0.98);
+  border-bottom: 1px solid rgba(0,255,204,0.12);
+  padding: 20px 28px 28px; z-index: 399;
+  flex-direction: column; gap: 0;
+}
+.nav-mobile-panel.open { display: flex; }
+.nav-mobile-panel a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,236,224,0.6); text-decoration: none;
+  padding: 12px 0; border-bottom: 1px solid rgba(0,255,204,0.08);
+  transition: color 0.2s;
+}
+.nav-mobile-panel a:hover { color: var(--teal); }
+.nav-mobile-panel .mob-sub {
+  padding-left: 16px; font-size: 9px; color: rgba(240,236,224,0.35);
+}
+
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  #site-nav { padding: 0 20px; }
+}
 
 /* ── HERO ── */
 #hero {
@@ -686,7 +746,6 @@ footer {
   .globe-layout { grid-template-columns: 1fr; }
   .song-card { grid-template-columns: 1fr; }
   .song-lyrics { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-left: 0; padding-top: 24px; }
-  .nav-links { display: none; }
 }
 
 /* ── AUDIO PLAYER ── */
@@ -877,7 +936,28 @@ footer {
       </ul>
     </li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-mobile-panel" id="nav-mobile-panel">
+  <a href="#coin-section">Two Sides</a>
+  <a href="#globe-section">One Table</a>
+  <a href="#songs-section">Songs</a>
+  <a href="#conversation-section">The Conversation</a>
+  <a href="#manifesto-section">Manifesto</a>
+  <a href="#action-section">Act</a>
+  <a href="#team-section">Team</a>
+  <a href="bts.html">Behind the Scenes</a>
+  <a href="#" class="contact-trigger" data-subject="Press / Media" style="border-top:1px solid rgba(0,255,204,0.12);margin-top:4px;">Contact</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Press / Media">→ Press / Media</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Job Offer">→ Job Offer</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Join the Team">→ Join the Team</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Music Licensing">→ Music Licensing</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="Booking / Speak / Lecture">→ Booking / Speak</a>
+  <a href="#" class="contact-trigger mob-sub" data-subject="General">→ General</a>
+</div>
 
 <!-- ══ HERO ══ -->
 <section id="hero">
@@ -2111,12 +2191,7 @@ for (let i = 0; i < 80; i++) {
 }
 </script>
 <style>
-.nav-contact-item{position:relative}
-.nav-contact-toggle{cursor:pointer}
-.nav-contact-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#0d0d12;border:1px solid rgba(212,168,75,0.25);border-top:2px solid #d4a84b;list-style:none;min-width:180px;z-index:500;padding:6px 0;box-shadow:0 8px 32px rgba(0,0,0,0.6)}
-.nav-contact-dropdown.open{display:block}
-.nav-contact-dropdown li a{display:block;padding:9px 20px;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2.8px;text-transform:uppercase;color:rgba(240,236,224,0.4);text-decoration:none;transition:color .15s,background .15s;white-space:nowrap}
-.nav-contact-dropdown li a:hover{color:#d4a84b;background:rgba(212,168,75,0.06)}
+/* nav dropdown — defined in main CSS */
 #contact-overlay{display:none;position:fixed;inset:0;background:rgba(5,5,8,.75);backdrop-filter:blur(4px);z-index:900;opacity:0;transition:opacity .35s ease}
 #contact-overlay.open{opacity:1}
 #contact-drawer{position:fixed;top:0;right:0;width:100%;max-width:520px;height:100vh;background:#0d0d12;border-left:1px solid rgba(212,168,75,.2);z-index:901;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);overflow-y:auto}
@@ -2216,5 +2291,37 @@ if(cb)cb.addEventListener('click',close_);
 if(ov)ov.addEventListener('click',close_);
 document.addEventListener('keydown',function(e){if(e.key==='Escape')close_();});
 })();
-</script></body>
+</script>
+<script>
+(function() {
+  var ham = document.getElementById('nav-hamburger');
+  var panel = document.getElementById('nav-mobile-panel');
+  if (!ham || !panel) return;
+
+  ham.addEventListener('click', function() {
+    var open = panel.classList.toggle('open');
+    var spans = ham.querySelectorAll('span');
+    if (open) {
+      spans[0].style.transform = 'translateY(6.5px) rotate(45deg)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'translateY(-6.5px) rotate(-45deg)';
+    } else {
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    }
+  });
+
+  // Close panel when any link is tapped
+  panel.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      panel.classList.remove('open');
+      ham.querySelectorAll('span').forEach(function(s) {
+        s.style.transform = ''; s.style.opacity = '';
+      });
+    });
+  });
+})();
+</script>
+</body>
 </html>
