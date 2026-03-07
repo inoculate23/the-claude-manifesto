@@ -16,40 +16,90 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
 
 /* ─── NAV ─────────────────────────────────── */
 #nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;height:48px;
+  position:fixed;top:0;left:0;right:0;z-index:100;height:46px;
   display:flex;align-items:stretch;
-  background:rgba(0,2,8,0.95);border-bottom:1px solid rgba(0,255,204,0.2);
+  background:rgba(0,2,8,0.93);border-bottom:1px solid rgba(0,255,204,0.13);
   backdrop-filter:blur(10px);
 }
 .nav-logo{
-  font-family:'Cinzel Decorative',serif;font-size:14px;letter-spacing:0.18em;
+  font-family:'Cinzel Decorative',serif;font-size:13px;letter-spacing:0.22em;
   color:var(--teal);padding:0 18px;display:flex;align-items:center;
-  border-right:1px solid rgba(0,255,204,0.15);white-space:nowrap;
-  text-shadow:0 0 14px rgba(0,255,204,0.6);
+  border-right:1px solid rgba(0,255,204,0.1);white-space:nowrap;
+  text-shadow:0 0 14px rgba(0,255,204,0.5);
 }
 .nav-tabs{display:flex;flex:1;}
 .ntab{
   flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
-  font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.2em;
-  color:rgba(0,255,204,0.82);cursor:pointer;border:none;background:transparent;
+  font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.32em;
+  color:rgba(0,255,204,0.38);cursor:pointer;border:none;background:transparent;
   transition:all 0.25s;text-transform:uppercase;border-bottom:2px solid transparent;
 }
-.ntab:hover{color:rgba(0,255,204,0.88);}
-.ntab.active{color:var(--teal);border-bottom:2px solid var(--teal);background:rgba(0,255,204,0.06);}
+.ntab:hover{color:rgba(0,255,204,0.75);}
+.ntab.active{color:var(--teal);border-bottom:2px solid var(--teal);background:rgba(0,255,204,0.04);}
 .nav-right{
   padding:0 14px;display:flex;align-items:center;gap:8px;
-  border-left:1px solid rgba(0,255,204,0.15);
+  border-left:1px solid rgba(0,255,204,0.1);
 }
 #vol-sl{
   -webkit-appearance:none;width:65px;height:2px;
-  background:rgba(0,255,204,0.25);outline:none;cursor:pointer;border-radius:2px;
+  background:rgba(0,255,204,0.18);outline:none;cursor:pointer;border-radius:2px;
 }
-#vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;
+#vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;
   background:var(--teal);box-shadow:0 0 6px var(--teal);}
-.vol-lbl{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.15em;color:rgba(0,255,204,0.6);}
+.vol-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.22em;color:rgba(0,255,204,0.35);}
+
+/* ─── HAMBURGER / MOBILE NAV ─────────────────── */
+#hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  padding:0 16px;cursor:pointer;background:transparent;border:none;
+  margin-left:auto;flex-shrink:0;
+}
+#hamburger span{
+  display:block;width:22px;height:2px;background:var(--teal);border-radius:2px;
+  transition:all 0.28s ease;transform-origin:center;
+  box-shadow:0 0 6px rgba(0,255,204,0.45);
+}
+#hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+#hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+#hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+#mobile-menu{
+  display:none;position:fixed;top:46px;left:0;right:0;z-index:99;
+  background:rgba(0,2,8,0.97);border-bottom:1px solid rgba(0,255,204,0.13);
+  backdrop-filter:blur(14px);
+  flex-direction:column;padding:8px 0 12px;
+}
+#mobile-menu.open{display:flex;}
+#mobile-menu .ntab{
+  flex:none;justify-content:flex-start;padding:11px 22px;
+  font-size:11px;letter-spacing:0.28em;border-bottom:none;border-left:3px solid transparent;
+}
+#mobile-menu .ntab.active{border-left:3px solid var(--teal);border-bottom:none;}
+#mobile-menu .ntab:hover{border-left:3px solid rgba(0,255,204,0.5);}
+.mobile-divider{height:1px;background:rgba(0,255,204,0.08);margin:6px 0;}
+#mobile-menu .mobile-controls{
+  display:flex;align-items:center;gap:10px;padding:10px 22px 2px;
+}
+#mobile-menu .vol-lbl{font-size:8px;}
+#mobile-menu #vol-sl-m{
+  -webkit-appearance:none;width:100px;height:2px;
+  background:rgba(0,255,204,0.18);outline:none;cursor:pointer;border-radius:2px;
+}
+#mobile-menu #vol-sl-m::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;
+  border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);}
+#mobile-menu .about-btn-m{
+  background:transparent;border:1px solid rgba(0,255,204,0.25);color:var(--teal);
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.28em;
+  padding:6px 14px;cursor:pointer;text-transform:uppercase;white-space:nowrap;margin-left:auto;margin-right:22px;
+}
+
+@media(max-width:640px){
+  .nav-tabs,.nav-right{display:none!important;}
+  #hamburger{display:flex;}
+}
 
 /* ─── SECTIONS ──────────────────────────────── */
-.sec{position:fixed;top:48px;left:0;right:0;bottom:0;z-index:10;display:none;overflow-y:auto;}
+.sec{position:fixed;top:46px;left:0;right:0;bottom:0;z-index:10;display:none;overflow-y:auto;}
 .sec.active{display:block;}
 #globe-sec{overflow:hidden;}
 
@@ -61,13 +111,13 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
   display:flex;flex-direction:column;align-items:center;gap:1px;
   transition:opacity 0.35s;pointer-events:none;
 }
-.flbl .fe{font-size:14px;line-height:1;transition:all 0.35s;}
-.flbl .fn{font-size:15px;letter-spacing:0.08em;color:rgba(200,255,240,0.7);
-  text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 6px #000;}
-.flbl.actv .fe{font-size:22px;filter:drop-shadow(0 0 14px rgba(0,255,204,1));animation:pfl 1s ease-in-out infinite;}
+.flbl .fe{font-size:13px;line-height:1;transition:all 0.35s;}
+.flbl .fn{font-size:6px;letter-spacing:0.1em;color:rgba(200,255,240,0.42);
+  text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 5px #000;}
+.flbl.actv .fe{font-size:20px;filter:drop-shadow(0 0 14px rgba(0,255,204,1));animation:pfl 1s ease-in-out infinite;}
 @keyframes pfl{0%,100%{transform:scale(1);}50%{transform:scale(1.35);}}
 
-.corner{position:absolute;width:36px;height:36px;border-color:rgba(0,255,204,0.65);border-style:solid;z-index:5;pointer-events:none;}
+.corner{position:absolute;width:36px;height:36px;border-color:rgba(0,255,204,0.22);border-style:solid;z-index:5;pointer-events:none;}
 #ctl{top:6px;left:6px;border-width:1px 0 0 1px;}#ctr{top:6px;right:6px;border-width:1px 1px 0 0;}
 #cbl{bottom:6px;left:6px;border-width:0 0 1px 1px;}#cbr{bottom:6px;right:6px;border-width:0 1px 1px 0;}
 
@@ -76,42 +126,42 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
   text-align:center;z-index:20;pointer-events:none;
 }
 #gtitle h1{
-  font-family:'Cinzel Decorative',serif;font-size:clamp(16px,2.3vw,28px);
+  font-family:'Cinzel Decorative',serif;font-size:clamp(13px,2.3vw,26px);
   letter-spacing:0.18em;
   background:linear-gradient(90deg,var(--gold),#fff,var(--teal));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 14px rgba(0,255,204,0.5));
+  filter:drop-shadow(0 0 14px rgba(0,255,204,0.38));
 }
-#gtitle .gsub{font-size:15px;letter-spacing:0.25em;color:var(--teal);opacity:0.7;margin-top:4px;text-transform:uppercase;}
+#gtitle .gsub{font-size:7px;letter-spacing:0.35em;color:var(--teal);opacity:0.45;margin-top:3px;text-transform:uppercase;}
 
 /* ─── LYRICS HUD ─────────────────────────────── */
 #lyrhud{
   position:absolute;bottom:0;left:0;right:0;z-index:20;
-  background:linear-gradient(to top,rgba(0,2,8,0.98) 45%,rgba(0,2,8,0.5) 80%,transparent);
-  padding:8px 5vw 18px;min-height:148px;
+  background:linear-gradient(to top,rgba(0,2,8,0.97) 42%,rgba(0,2,8,0.45) 80%,transparent);
+  padding:8px 5vw 16px;min-height:142px;
   display:flex;flex-direction:column;align-items:center;gap:5px;
   pointer-events:none;
 }
 #vmeta{
   display:flex;align-items:center;gap:12px;
-  border-top:1px solid rgba(0,255,204,0.15);padding-top:8px;
+  border-top:1px solid rgba(0,255,204,0.09);padding-top:8px;
   width:100%;max-width:780px;justify-content:center;
 }
-#vflag{font-size:20px;}
-#vcountry{font-size:15px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;}
-#vlang{font-size:14px;letter-spacing:0.2em;color:var(--teal);opacity:0.85;}
-#vplan{font-size:14px;letter-spacing:0.12em;color:var(--blue);opacity:0.75;text-transform:uppercase;}
+#vflag{font-size:17px;}
+#vcountry{font-size:9px;letter-spacing:0.4em;color:var(--gold);text-transform:uppercase;}
+#vlang{font-size:9px;letter-spacing:0.28em;color:var(--teal);opacity:0.6;}
+#vplan{font-size:8px;letter-spacing:0.18em;color:var(--blue);opacity:0.42;text-transform:uppercase;}
 #lbox{width:100%;max-width:780px;min-height:76px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;}
-.ll{font-size:clamp(13px,1.8vw,17px);line-height:1.72;
-  color:rgba(240,240,255,0.12);transition:all 0.5s;font-style:italic;transform:translateY(5px);}
-.ll.act{color:rgba(240,240,255,1);text-shadow:0 0 18px rgba(0,255,204,0.5);transform:translateY(0);}
-.ll.past{color:rgba(240,240,255,0.28);transform:translateY(-3px);}
-#vdots{display:flex;gap:7px;margin-top:3px;pointer-events:auto;}
-.vd{width:6px;height:6px;border-radius:50%;background:rgba(0,255,204,0.18);cursor:pointer;transition:all 0.3s;}
-.vd:hover{background:rgba(0,255,204,0.55);}
-.vd.act{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.4);}
-.vd.done{background:var(--teal);opacity:0.80;}
+.ll{font-size:clamp(11px,1.7vw,15px);line-height:1.72;
+  color:rgba(240,240,255,0.08);transition:all 0.5s;font-style:italic;transform:translateY(5px);}
+.ll.act{color:rgba(240,240,255,1);text-shadow:0 0 16px rgba(0,255,204,0.42);transform:translateY(0);}
+.ll.past{color:rgba(240,240,255,0.16);transform:translateY(-3px);}
+#vdots{display:flex;gap:6px;margin-top:2px;pointer-events:auto;}
+.vd{width:5px;height:5px;border-radius:50%;background:rgba(0,255,204,0.1);cursor:pointer;transition:all 0.3s;}
+.vd:hover{background:rgba(0,255,204,0.4);}
+.vd.act{background:var(--gold);box-shadow:0 0 6px var(--gold);transform:scale(1.4);}
+.vd.done{background:var(--teal);opacity:0.32;}
 #prog{position:absolute;bottom:0;left:0;height:2px;
   background:linear-gradient(to right,var(--gold),var(--teal));
   z-index:30;box-shadow:0 0 8px rgba(0,255,204,0.6);transition:width 0.15s linear;}
@@ -119,120 +169,120 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
 /* Controls */
 #ctrls{position:absolute;top:50%;right:13px;transform:translateY(-50%);
   z-index:25;display:flex;flex-direction:column;gap:8px;pointer-events:auto;}
-.cb{background:rgba(0,2,8,0.85);border:1px solid rgba(0,255,204,0.3);
-  color:var(--teal);width:34px;height:34px;border-radius:50%;
-  cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
+.cb{background:rgba(0,2,8,0.78);border:1px solid rgba(0,255,204,0.2);
+  color:var(--teal);width:32px;height:32px;border-radius:50%;
+  cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;
   transition:all 0.2s;font-family:'Share Tech Mono',monospace;}
-.cb:hover{border-color:var(--teal);background:rgba(0,255,204,0.12);box-shadow:0 0 14px rgba(0,255,204,0.35);}
+.cb:hover{border-color:var(--teal);background:rgba(0,255,204,0.1);box-shadow:0 0 12px rgba(0,255,204,0.28);}
 
 /* ─── LIVE DATA ────────────────────────────────── */
 .sec-header{
   padding:22px 28px 14px;
-  border-bottom:1px solid rgba(0,255,204,0.18);
+  border-bottom:1px solid rgba(0,255,204,0.12);
   display:flex;align-items:center;gap:12px;
-  position:sticky;top:0;background:rgba(0,2,8,0.97);z-index:5;backdrop-filter:blur(8px);
+  position:sticky;top:0;background:rgba(0,2,8,0.96);z-index:5;backdrop-filter:blur(8px);
 }
-.sec-header h2{font-family:'Cinzel Decorative',serif;font-size:18px;color:var(--teal);letter-spacing:0.12em;}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--red);
+.sec-header h2{font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--teal);letter-spacing:0.14em;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);
   box-shadow:0 0 8px var(--red);animation:bld 1.2s ease-in-out infinite;}
-@keyframes bld{0%,100%{opacity:1;}50%{opacity:0.62;}}
-.sec-sub{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.18em;
-  color:rgba(0,255,204,0.82);margin-left:auto;text-transform:uppercase;}
+@keyframes bld{0%,100%{opacity:1;}50%{opacity:0.25;}}
+.sec-sub{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.3em;
+  color:rgba(0,255,204,0.3);margin-left:auto;text-transform:uppercase;}
 
 .dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;padding:14px 22px 28px;}
 .dc{
-  background:rgba(0,255,204,0.03);border:1px solid rgba(0,255,204,0.15);
+  background:rgba(0,255,204,0.025);border:1px solid rgba(0,255,204,0.1);
   border-radius:3px;padding:16px 18px;position:relative;overflow:hidden;
 }
 .dc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(to right,transparent,var(--teal),transparent);opacity:0.80;}
-.dc-lbl{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.2em;
-  color:var(--teal);opacity:0.8;text-transform:uppercase;margin-bottom:8px;}
-.dc-val{font-family:'Share Tech Mono',monospace;font-size:clamp(22px,2.8vw,32px);
+  background:linear-gradient(to right,transparent,var(--teal),transparent);opacity:0.35;}
+.dc-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.32em;
+  color:var(--teal);opacity:0.55;text-transform:uppercase;margin-bottom:7px;}
+.dc-val{font-family:'Share Tech Mono',monospace;font-size:clamp(20px,2.8vw,30px);
   color:var(--cream);font-weight:700;letter-spacing:0.04em;}
-.dc-sub2{font-size:14px;color:rgba(200,220,255,0.85);margin-top:4px;letter-spacing:0.02em;line-height:1.6;}
-.bar{height:3px;background:rgba(0,255,204,0.1);border-radius:2px;margin-top:10px;overflow:hidden;}
+.dc-sub2{font-size:11px;color:rgba(200,220,255,0.36);margin-top:3px;letter-spacing:0.04em;line-height:1.5;}
+.bar{height:3px;background:rgba(0,255,204,0.08);border-radius:2px;margin-top:9px;overflow:hidden;}
 .bfill{height:100%;background:linear-gradient(to right,var(--teal),var(--blue));border-radius:2px;transition:width 1.2s ease;}
 
 /* Quakes */
 .ql{margin-top:8px;display:flex;flex-direction:column;gap:5px;max-height:190px;overflow-y:auto;}
 .qi{display:flex;justify-content:space-between;align-items:center;
-  padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:2px;border-left:2px solid;}
+  padding:5px 8px;background:rgba(255,255,255,0.025);border-radius:2px;border-left:2px solid;}
 .qi.lo{border-color:#44ff88;} .qi.md{border-color:#ffaa00;} .qi.hi{border-color:#ff4444;}
-.qp{font-size:14px;color:rgba(220,230,255,0.82);}
-.qm{font-family:'Share Tech Mono',monospace;font-size:15px;font-weight:700;}
-.qref{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.15em;
-  color:var(--teal);opacity:0.7;cursor:pointer;background:none;border:none;
+.qp{font-size:10px;color:rgba(220,230,255,0.65);}
+.qm{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;}
+.qref{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.2em;
+  color:var(--teal);opacity:0.45;cursor:pointer;background:none;border:none;
   margin-top:7px;text-transform:uppercase;display:block;}
-.qref:hover{opacity:1;}
+.qref:hover{opacity:0.9;}
 
 /* ─── CHARITIES ────────────────────────────────── */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:13px;padding:14px 22px 28px;}
 .cc{
-  background:rgba(0,255,204,0.03);border:1px solid rgba(0,255,204,0.14);
-  border-radius:3px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;
+  background:rgba(0,255,204,0.025);border:1px solid rgba(0,255,204,0.09);
+  border-radius:3px;padding:16px 18px;display:flex;flex-direction:column;gap:7px;
   transition:all 0.2s;
 }
-.cc:hover{border-color:rgba(0,255,204,0.75);background:rgba(0,255,204,0.065);}
-.cc-em{font-size:28px;line-height:1;}
-.cc-nm{font-family:'Cinzel Decorative',serif;font-size:15px;color:var(--cream);letter-spacing:0.05em;}
-.cc-vs{font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.14em;color:var(--teal);opacity:0.8;text-transform:uppercase;}
-.cc-ds{font-size:15px;color:rgba(220,235,255,0.88);line-height:1.62;}
+.cc:hover{border-color:rgba(0,255,204,0.32);background:rgba(0,255,204,0.055);}
+.cc-em{font-size:26px;line-height:1;}
+.cc-nm{font-family:'Cinzel Decorative',serif;font-size:12px;color:var(--cream);letter-spacing:0.06em;}
+.cc-vs{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.2em;color:var(--teal);opacity:0.55;text-transform:uppercase;}
+.cc-ds{font-size:12px;color:rgba(200,220,240,0.52);line-height:1.58;}
 .cc-lk{
   display:inline-flex;align-items:center;gap:5px;
-  font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.15em;
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.2em;
   color:var(--teal);text-decoration:none;text-transform:uppercase;
-  border:1px solid rgba(0,255,204,0.28);padding:8px 14px;border-radius:2px;
+  border:1px solid rgba(0,255,204,0.18);padding:6px 12px;border-radius:2px;
   transition:all 0.2s;margin-top:auto;
 }
-.cc-lk:hover{border-color:var(--teal);background:rgba(0,255,204,0.1);}
+.cc-lk:hover{border-color:var(--teal);background:rgba(0,255,204,0.07);}
 
 /* ─── MERCH ─────────────────────────────────────── */
-.merch-header-sub{font-size:15px;color:rgba(200,220,240,0.85);margin-top:5px;letter-spacing:0.03em;}
+.merch-header-sub{font-size:12px;color:rgba(200,220,240,0.45);margin-top:5px;letter-spacing:0.03em;}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px;padding:14px 22px 0;}
 .mc{
-  background:rgba(212,168,75,0.04);border:1px solid rgba(212,168,75,0.18);
+  background:rgba(212,168,75,0.035);border:1px solid rgba(212,168,75,0.13);
   border-radius:3px;overflow:hidden;display:flex;flex-direction:column;
   transition:all 0.22s;
 }
-.mc:hover{border-color:rgba(212,168,75,0.45);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,75,0.12);}
+.mc:hover{border-color:rgba(212,168,75,0.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,75,0.1);}
 .mimg{
   height:170px;display:flex;align-items:center;justify-content:center;
   font-size:68px;background:rgba(0,0,0,0.25);position:relative;overflow:hidden;
 }
 .mimg::after{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,0.09),transparent 65%);}
+  background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,0.07),transparent 65%);}
 .mbody{padding:14px 16px;}
-.mnm{font-family:'Cinzel Decorative',serif;font-size:15px;color:var(--cream);letter-spacing:0.05em;margin-bottom:5px;}
-.mds{font-size:14px;color:rgba(220,235,255,0.82);line-height:1.58;margin-bottom:10px;}
-.mpr{font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--gold);margin-bottom:10px;}
+.mnm{font-family:'Cinzel Decorative',serif;font-size:12px;color:var(--cream);letter-spacing:0.05em;margin-bottom:4px;}
+.mds{font-size:11px;color:rgba(200,220,240,0.42);line-height:1.52;margin-bottom:10px;}
+.mpr{font-family:'Share Tech Mono',monospace;font-size:17px;color:var(--gold);margin-bottom:10px;}
 .mbuy{
   display:block;text-align:center;
-  font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.25em;
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.32em;
   color:#000;background:var(--gold);border:none;
   padding:10px 14px;cursor:pointer;text-transform:uppercase;
   transition:all 0.2s;text-decoration:none;width:100%;
 }
 .mbuy:hover{background:#edc060;box-shadow:0 0 20px rgba(212,168,75,0.45);}
-.mbuy.disabled{background:rgba(212,168,75,0.3);color:rgba(0,0,0,0.5);cursor:default;pointer-events:none;}
+.mbuy.disabled{background:rgba(212,168,75,0.25);color:rgba(0,0,0,0.4);cursor:default;pointer-events:none;}
 .stripe-info{
   text-align:center;padding:20px 22px 28px;
-  font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.15em;
-  color:rgba(200,220,240,0.75);text-transform:uppercase;line-height:2;
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.22em;
+  color:rgba(200,220,240,0.22);text-transform:uppercase;line-height:2;
 }
-.stripe-info a{color:rgba(0,255,204,0.6);text-decoration:none;}
+.stripe-info a{color:rgba(0,255,204,0.35);text-decoration:none;}
 .sbadge{
   display:inline-flex;align-items:center;gap:7px;
-  border:1px solid rgba(255,255,255,0.1);padding:6px 16px;border-radius:20px;
+  border:1px solid rgba(255,255,255,0.07);padding:5px 14px;border-radius:20px;
 }
 .setup-note{
-  margin:0 22px 18px;padding:14px 18px;
-  border:1px solid rgba(255,220,80,0.25);border-radius:3px;
-  background:rgba(255,220,80,0.04);
-  font-family:'Share Tech Mono',monospace;font-size:14px;
-  color:rgba(255,220,100,0.7);line-height:2;letter-spacing:0.08em;
+  margin:0 22px 18px;padding:12px 16px;
+  border:1px solid rgba(255,220,80,0.18);border-radius:3px;
+  background:rgba(255,220,80,0.025);
+  font-family:'Share Tech Mono',monospace;font-size:8px;
+  color:rgba(255,220,100,0.45);line-height:2;letter-spacing:0.1em;
 }
-.setup-note strong{color:rgba(255,220,100,0.9);}
+.setup-note strong{color:rgba(255,220,100,0.7);}
 
 /* ─── INTRO ─────────────────────────────────────── */
 #intro{
@@ -248,180 +298,24 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
 }
 #intro>*{position:relative;z-index:1;}
 #intro h2{
-  font-family:'Cinzel Decorative',serif;font-size:clamp(26px,5.5vw,54px);
+  font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5.5vw,52px);
   letter-spacing:0.14em;
   background:linear-gradient(135deg,var(--gold),#fff,var(--teal));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 28px rgba(0,255,204,0.45));
+  filter:drop-shadow(0 0 28px rgba(0,255,204,0.38));
 }
-#intro p{font-size:clamp(14px,1.5vw,17px);color:rgba(220,240,255,0.78);
-  max-width:500px;line-height:1.9;letter-spacing:0.02em;}
-.flags-row{font-size:26px;letter-spacing:4px;animation:flt 3s ease-in-out infinite;}
+#intro p{font-size:clamp(11px,1.4vw,14px);color:rgba(200,240,255,0.52);
+  max-width:500px;line-height:1.92;letter-spacing:0.03em;}
+.flags-row{font-size:25px;letter-spacing:4px;animation:flt 3s ease-in-out infinite;}
 @keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 #sbtn{background:transparent;border:1px solid var(--teal);color:var(--teal);
-  font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;
-  padding:14px 42px;cursor:pointer;text-transform:uppercase;transition:all 0.3s;margin-top:6px;}
-#sbtn:hover{background:rgba(0,255,204,0.1);box-shadow:0 0 24px rgba(0,255,204,0.38);}
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.44em;
+  padding:12px 38px;cursor:pointer;text-transform:uppercase;transition:all 0.3s;margin-top:6px;}
+#sbtn:hover{background:rgba(0,255,204,0.09);box-shadow:0 0 22px rgba(0,255,204,0.32);}
 .fo{opacity:0!important;pointer-events:none!important;}
 
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,204,0.18);border-radius:2px;}
-
-/* ─── PORTRAIT PANEL ─────────────────────────────── */
-#portrait-panel {
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%) translateX(-480px);
-  width: 340px;
-  z-index: 22;
-  pointer-events: none;
-  transition: transform 0.65s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease;
-  opacity: 0;
-}
-#portrait-panel.visible {
-  transform: translateY(-50%) translateX(0px);
-  opacity: 1;
-}
-#portrait-panel.hiding {
-  transform: translateY(-50%) translateX(-480px);
-  opacity: 0;
-}
-
-.pp-frame {
-  position: relative;
-  width: 340px;
-  height: 434px;
-  overflow: hidden;
-  border: 1px solid rgba(0,255,204,0.35);
-  background: rgba(0,2,8,0.6);
-}
-/* Corner brackets */
-.pp-frame::before, .pp-frame::after {
-  content: '';
-  position: absolute;
-  width: 22px; height: 22px;
-  border-color: var(--teal);
-  border-style: solid;
-  z-index: 3;
-}
-.pp-frame::before { top: 0; left: 0; border-width: 2px 0 0 2px; }
-.pp-frame::after  { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
-
-.pp-corner-tr {
-  position: absolute; top: 0; right: 0;
-  width: 22px; height: 22px;
-  border-top: 2px solid var(--teal);
-  border-right: 2px solid var(--teal);
-  z-index: 3;
-}
-.pp-corner-bl {
-  position: absolute; bottom: 0; left: 0;
-  width: 22px; height: 22px;
-  border-bottom: 2px solid var(--teal);
-  border-left: 2px solid var(--teal);
-  z-index: 3;
-}
-
-/* Scanline overlay */
-.pp-frame::after {
-  pointer-events: none;
-  bottom: 0; right: 0; top: auto; left: auto;
-  width: 22px; height: 22px;
-  border-width: 0 2px 2px 0;
-}
-
-.pp-scanlines {
-  position: absolute;
-  inset: 0; z-index: 2; pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(0,0,0,0.09) 3px,
-    rgba(0,0,0,0.09) 4px
-  );
-}
-
-/* Teal glow top edge */
-.pp-glow-top {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(to right, transparent, var(--teal), transparent);
-  z-index: 3;
-  box-shadow: 0 0 10px rgba(0,255,204,0.6);
-}
-
-.pp-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 10%;
-  display: block;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-.pp-img.loaded { opacity: 1; }
-
-/* Bottom label strip */
-.pp-label {
-  margin-top: 0;
-  background: rgba(0,2,8,0.9);
-  border: 1px solid rgba(0,255,204,0.2);
-  border-top: none;
-  padding: 10px 14px 9px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.pp-flag-country {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.pp-flag { font-size: 22px; line-height: 1; }
-.pp-country {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 14px;
-  letter-spacing: 0.18em;
-  color: var(--gold);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.pp-plan {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: rgba(0,255,204,0.85);
-  line-height: 1.6;
-  margin-top: 3px;
-}
-
-/* Verse number badge */
-.pp-verse-num {
-  position: absolute;
-  top: 10px; right: 10px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 0.22em;
-  color: rgba(0,255,204,0.55);
-  background: rgba(0,2,8,0.7);
-  padding: 3px 7px;
-  border: 1px solid rgba(0,255,204,0.18);
-  z-index: 4;
-}
-
-/* Active marker pulse on panel */
-#portrait-panel.active-pulse .pp-frame {
-  box-shadow: 0 0 18px rgba(0,255,204,0.25), inset 0 0 8px rgba(0,255,204,0.04);
-  border-color: rgba(0,255,204,0.6);
-  animation: pp-pulse 2.5s ease-in-out infinite;
-}
-@keyframes pp-pulse {
-  0%,100% { box-shadow: 0 0 12px rgba(0,255,204,0.2); border-color: rgba(0,255,204,0.45); }
-  50%      { box-shadow: 0 0 26px rgba(0,255,204,0.45); border-color: rgba(0,255,204,0.8); }
-}
 </style>
 </head>
 <body>
@@ -442,10 +336,25 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
     <input type="range" id="vol-sl" min="0" max="1" step="0.01" value="0.8">
     <button onclick="document.getElementById('about-modal').style.display='flex'"
       style="background:transparent;border:1px solid rgba(0,255,204,0.25);color:var(--teal);
-      font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.14em;padding:5px 12px;
+      font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.28em;padding:5px 12px;
       cursor:pointer;text-transform:uppercase;margin-left:4px;white-space:nowrap;">◈ ABOUT</button>
   </div>
+  <button id="hamburger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div id="mobile-menu" role="navigation">
+  <button class="ntab active" data-tab="globe">🌍 Globe</button>
+  <button class="ntab" data-tab="data">📡 Live Data</button>
+  <button class="ntab" data-tab="give">❤️ Give</button>
+  <button class="ntab" data-tab="shop">🛍 Shop</button>
+  <div class="mobile-divider"></div>
+  <div class="mobile-controls">
+    <span class="vol-lbl">VOL</span>
+    <input type="range" id="vol-sl-m" min="0" max="1" step="0.01" value="0.8">
+    <button class="about-btn-m" onclick="document.getElementById('about-modal').style.display='flex';closeMobileMenu()">◈ ABOUT</button>
+  </div>
+</div>
 
 <!-- ══ ABOUT MODAL ══ -->
 <div id="about-modal" style="display:none;position:fixed;inset:0;z-index:300;
@@ -458,7 +367,7 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
     <button onclick="document.getElementById('about-modal').style.display='none'"
       style="position:sticky;top:0;float:right;margin:14px 14px 0 0;
       background:rgba(0,2,8,0.9);border:1px solid rgba(0,255,204,0.2);color:var(--teal);
-      font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.15em;
+      font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.3em;
       padding:5px 12px;cursor:pointer;border-radius:2px;">&#x2715; CLOSE</button>
 
     <div style="padding:28px 32px 36px;clear:both;">
@@ -468,15 +377,15 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
         background:linear-gradient(90deg,#d4a84b,#fff,#00ffcc);
         -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
         filter:drop-shadow(0 0 12px rgba(0,255,204,0.3));">ONE TABLE</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;
-        color:#00ffcc;opacity:0.80;margin-bottom:26px;text-transform:uppercase;">A Project for Peace &middot; 2025&ndash;2026</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:#00ffcc;opacity:0.45;margin-bottom:26px;text-transform:uppercase;">A Project for Peace &middot; 2025&ndash;2026</div>
 
-      <p style="font-size:13.5px;line-height:1.88;color:rgba(220,235,255,0.88);margin-bottom:24px;">
+      <p style="font-size:13.5px;line-height:1.88;color:rgba(220,235,255,0.72);margin-bottom:24px;">
         <em>One Table</em> is a multilingual anthem built verse by verse &mdash; ten nations, ten languages, one cumulative plan for a more just and peaceful world. Created to demonstrate what AI becomes when pointed toward human dignity rather than human destruction.
       </p>
 
-      <div style="font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;
-        color:#00ffcc;opacity:0.82;text-transform:uppercase;margin-bottom:14px;
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:#00ffcc;opacity:0.5;text-transform:uppercase;margin-bottom:14px;
         border-top:1px solid rgba(0,255,204,0.1);padding-top:18px;">&#9672; The Team</div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;">
@@ -485,53 +394,53 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
             <img src="logo-inoculate.webp" alt="Inoculate Media"
               style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(0,255,204,0.3);background:#111;">
             <a href="https://haawke.com" target="_blank" rel="noopener"
-              style="font-family:'Cinzel Decorative',serif;font-size:14px;color:#00ffcc;letter-spacing:0.08em;text-decoration:none;">Inoculate Media ↗</a>
+              style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#00ffcc;letter-spacing:0.08em;text-decoration:none;">Inoculate Media ↗</a>
           </div>
-          <div style="font-size:14px;color:rgba(200,220,240,0.82);line-height:1.65;">Creative production and media strategy &mdash; spreading ideas worth spreading. Culture as vaccine against apathy.</div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Creative production and media strategy &mdash; spreading ideas worth spreading. Culture as vaccine against apathy.</div>
         </div>
         <div style="padding:14px 16px;background:rgba(0,255,204,0.028);border:1px solid rgba(0,255,204,0.1);border-radius:3px;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
             <img src="logo-squaawke.png" alt="Squaawke"
               style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:center 30%;border:1px solid rgba(0,255,204,0.3);background:#111;">
             <a href="https://soundcloud.com/squaawke" target="_blank" rel="noopener"
-              style="font-family:'Cinzel Decorative',serif;font-size:14px;color:#00ffcc;letter-spacing:0.08em;text-decoration:none;">Squaawke ↗</a>
+              style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#00ffcc;letter-spacing:0.08em;text-decoration:none;">Squaawke ↗</a>
           </div>
-          <div style="font-size:14px;color:rgba(200,220,240,0.82);line-height:1.65;">Music platform and sonic identity &mdash; amplifying voices the mainstream leaves behind.</div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Music platform and sonic identity &mdash; amplifying voices the mainstream leaves behind.</div>
         </div>
         <div style="padding:14px 16px;background:rgba(212,168,75,0.05);border:1px solid rgba(212,168,75,0.18);border-radius:3px;">
-          <div style="font-family:'Cinzel Decorative',serif;font-size:14px;color:#d4a84b;letter-spacing:0.08em;margin-bottom:3px;">Craig Ellenwood</div>
-          <div style="font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;color:#d4a84b;opacity:0.82;text-transform:uppercase;margin-bottom:5px;">Co-Founder, Burning Man &middot; Multimedia Artist</div>
-          <div style="font-size:14px;color:rgba(200,220,240,0.82);line-height:1.65;">Visionary of radical inclusion and communal creation &mdash; the belief that humanity is capable of far more beauty than it currently allows itself.</div>
+          <div style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#d4a84b;letter-spacing:0.08em;margin-bottom:3px;">Craig Ellenwood</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.18em;color:#d4a84b;opacity:0.5;text-transform:uppercase;margin-bottom:5px;">Co-Founder, Burning Man &middot; Multimedia Artist</div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Visionary of radical inclusion and communal creation &mdash; the belief that humanity is capable of far more beauty than it currently allows itself.</div>
         </div>
         <div style="padding:14px 16px;background:rgba(0,170,255,0.03);border:1px solid rgba(0,170,255,0.14);border-radius:3px;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
             <img src="logo-haawke.jpg" alt="Haawke Labs"
               style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(0,170,255,0.3);background:#000;">
             <a href="https://haawke.com" target="_blank" rel="noopener"
-              style="font-family:'Cinzel Decorative',serif;font-size:14px;color:#00aaff;letter-spacing:0.08em;text-decoration:none;">Haawke Labs ↗</a>
+              style="font-family:'Cinzel Decorative',serif;font-size:12px;color:#00aaff;letter-spacing:0.08em;text-decoration:none;">Haawke Labs ↗</a>
           </div>
-          <div style="font-size:14px;color:rgba(200,220,240,0.82);line-height:1.65;">Technology engine &mdash; the neural networks, models, and AI infrastructure that generated the lyrics, music, and the global village you are looking at right now. AI-native tools that build culture, not just optimize it.</div>
+          <div style="font-size:11.5px;color:rgba(200,220,240,0.5);line-height:1.65;">Technology engine &mdash; the neural networks, models, and AI infrastructure that generated the lyrics, music, and the global village you are looking at right now. AI-native tools that build culture, not just optimize it.</div>
         </div>
       </div>
 
-      <div style="font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
         color:rgba(255,100,80,0.65);text-transform:uppercase;margin-bottom:14px;
         border-top:1px solid rgba(255,80,80,0.12);padding-top:18px;">&#9672; Why This Matters Right Now</div>
 
       <div style="padding:18px 20px;background:rgba(255,50,50,0.04);
         border:1px solid rgba(255,80,80,0.16);border-radius:3px;margin-bottom:18px;">
-        <p style="font-size:15px;line-height:1.88;color:rgba(220,230,255,0.88);margin-bottom:13px;">
+        <p style="font-size:13px;line-height:1.88;color:rgba(220,230,255,0.7);margin-bottom:13px;">
           We built <em>One Table</em> because AI is arriving at a fork in the road &mdash; and the path being chosen by the US government is deeply troubling.
         </p>
-        <p style="font-size:15px;line-height:1.88;color:rgba(220,230,255,0.88);margin-bottom:13px;">
+        <p style="font-size:13px;line-height:1.88;color:rgba(220,230,255,0.7);margin-bottom:13px;">
           In January 2026, the US military used an AI model in a raid on Caracas, Venezuela &mdash; an operation in which 83 people were killed and President Maduro was abducted. The Pentagon is now pressuring AI companies to strip their safety guardrails entirely, threatening blacklisting under the Defense Production Act if they refuse to allow unrestricted use in weapons systems and autonomous targeting.
         </p>
-        <p style="font-size:15px;line-height:1.88;color:rgba(220,230,255,0.88);">
+        <p style="font-size:13px;line-height:1.88;color:rgba(220,230,255,0.7);">
           <strong style="color:rgba(0,255,204,0.85);">Worth noting:</strong> Anthropic &mdash; whose AI helped build parts of this project &mdash; is currently refusing to comply with those Pentagon demands, holding the line against autonomous lethal use and mass domestic surveillance. That principled stand matters, and we acknowledge it. But the pressure is ongoing, and the precedent being set is dangerous.
         </p>
       </div>
 
-      <p style="font-size:15px;line-height:1.88;color:rgba(220,235,255,0.62);margin-bottom:24px;">
+      <p style="font-size:13px;line-height:1.88;color:rgba(220,235,255,0.62);margin-bottom:24px;">
         <em>One Table</em> is our answer. The same technology being drafted for warfare can instead bridge ten languages, raise money for children in conflict zones, surface real-time hunger data, and remind us &mdash; through music &mdash; of our shared humanity. AI shaped this anthem. AI rendered this globe. AI is writing the world&rsquo;s next chapter. <strong style="color:rgba(220,235,255,0.85);">We believe that chapter should look more like this.</strong>
       </p>
 
@@ -558,31 +467,31 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
         </a>
       </div>
 
-      <div style="font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;
-        color:#00ffcc;opacity:0.80;text-transform:uppercase;margin-bottom:12px;">&#9672; Further Reading</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.35em;
+        color:#00ffcc;opacity:0.45;text-transform:uppercase;margin-bottom:12px;">&#9672; Further Reading</div>
 
       <div style="display:flex;flex-direction:column;gap:8px;">
         <a href="https://www.theguardian.com/us-news/2026/feb/24/anthropic-claude-military-ai" target="_blank" rel="noopener"
-          style="font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.14em;color:rgba(0,255,204,0.82);text-decoration:none;">
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
           &rarr; The Guardian: Claude and military AI (Feb 2026)</a>
         <a href="https://www.axios.com/2026/02/24/anthropic-pentagon-claude-hegseth-dario" target="_blank" rel="noopener"
-          style="font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.14em;color:rgba(0,255,204,0.82);text-decoration:none;">
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
           &rarr; Axios: Hegseth gives Anthropic deadline on AI safeguards</a>
         <a href="https://www.aljazeera.com/news/2026/2/25/anthropic-vs-the-pentagon-why-ai-firm-is-taking-on-trump-administration" target="_blank" rel="noopener"
-          style="font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.14em;color:rgba(0,255,204,0.82);text-decoration:none;">
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
           &rarr; Al Jazeera: Anthropic vs. the Pentagon</a>
         <a href="https://www.nbcnews.com/tech/security/anthropic-ai-defense-war-venezuela-maduro-rcna259603" target="_blank" rel="noopener"
-          style="font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.14em;color:rgba(0,255,204,0.82);text-decoration:none;">
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(0,255,204,0.52);text-decoration:none;">
           &rarr; NBC News: Pentagon-Anthropic tensions reach boiling point</a>
         <a href="https://www.mag-us.org/" target="_blank" rel="noopener"
-          style="font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.14em;color:rgba(212,168,75,0.6);text-decoration:none;">
+          style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(212,168,75,0.6);text-decoration:none;">
           &rarr; MAG: Clearing landmines &mdash; because wars leave their mark long after they end</a>
       </div>
 
       <!-- Copyright -->
       <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);
-        font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.2em;
-        color:rgba(200,220,255,0.55);text-align:center;line-height:2.2;">
+        font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:0.2em;
+        color:rgba(200,220,255,0.2);text-align:center;line-height:2.2;">
         &copy; 2025&ndash;2026 &nbsp; Inoculate Media &nbsp;&middot;&nbsp;
         <a href="https://haawke.com" target="_blank" rel="noopener"
           style="color:rgba(0,170,255,0.4);text-decoration:none;">Haawke Labs</a>
@@ -601,26 +510,6 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
   <div class="corner" id="ctl"></div><div class="corner" id="ctr"></div>
   <div class="corner" id="cbl"></div><div class="corner" id="cbr"></div>
   <div id="gtitle"><h1>ONE TABLE</h1><div class="gsub">10 Countries · 10 Languages · One Plan for Peace</div></div>
-
-  <!-- PORTRAIT PANEL -->
-  <div id="portrait-panel">
-    <div class="pp-frame">
-      <div class="pp-glow-top"></div>
-      <div class="pp-corner-tr"></div>
-      <div class="pp-corner-bl"></div>
-      <div class="pp-scanlines"></div>
-      <span class="pp-verse-num" id="pp-versenum">VERSE 01</span>
-      <img class="pp-img" id="pp-img" src="" alt="">
-    </div>
-    <div class="pp-label">
-      <div class="pp-flag-country">
-        <span class="pp-flag" id="pp-flag"></span>
-        <span class="pp-country" id="pp-country"></span>
-      </div>
-      <div class="pp-plan" id="pp-plan"></div>
-    </div>
-  </div>
-
   <div id="lyrhud">
     <div id="vmeta">
       <span id="vflag">🎵</span>
@@ -688,7 +577,7 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
         <span>🌊 Earthquakes — USGS Live Feed</span>
         <button class="qref" onclick="loadQuakes()">↻ Refresh</button>
       </div>
-      <div class="ql" id="qlist"><div style="font-size:15px;color:rgba(200,220,240,0.65);font-family:'Share Tech Mono',monospace;padding:8px 0;">Fetching USGS data…</div></div>
+      <div class="ql" id="qlist"><div style="font-size:10px;color:rgba(200,220,240,0.28);font-family:'Share Tech Mono',monospace;padding:8px 0;">Fetching USGS data…</div></div>
     </div>
     <div class="dc">
       <div class="dc-lbl">☮️ Active Conflict Zones (ACLED 2024)</div>
@@ -717,105 +606,16 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
 <!-- ══ SHOP SECTION ══ -->
 <div class="sec" id="shop-sec">
   <div class="sec-header">
-    <h2 style="color:var(--gold);">GET THE MUSIC</h2>
-    <span class="sec-sub">Support the work · No label · No middleman · Stripe secure checkout</span>
+    <h2 style="color:var(--gold);">ONE TABLE SHOP</h2>
+    <span class="sec-sub">Proceeds fund peace organizations · Stripe secure checkout</span>
   </div>
-
-  <div style="max-width:900px;margin:0 auto;padding:28px 22px 48px;">
-
-    <p style="font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.22em;
-      color:rgba(240,236,224,0.72);line-height:2;margin-bottom:36px;text-transform:uppercase;">
-      Every purchase directly supports Craig Ellenwood and the continued work of Haawke Neural Technology.
-    </p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;">
-
-      <!-- Album -->
-      <div style="border:1px solid rgba(212,168,75,0.3);padding:32px;position:relative;
-        background:rgba(212,168,75,0.02);transition:border-color 0.3s;"
-        onmouseover="this.style.borderColor='rgba(212,168,75,0.65)'"
-        onmouseout="this.style.borderColor='rgba(212,168,75,0.3)'">
-        <div style="position:absolute;top:-1px;right:20px;
-          background:var(--gold);color:#000208;
-          font-family:'Share Tech Mono',monospace;font-size:14px;
-          letter-spacing:0.22em;text-transform:uppercase;padding:4px 10px;">16 Tracks</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:14px;
-          letter-spacing:0.15em;color:rgba(212,168,75,0.88);
-          text-transform:uppercase;margin-bottom:12px;">◈ Full Album</div>
-        <div style="font-family:'Cinzel Decorative',serif;font-size:34px;
-          color:var(--gold);margin-bottom:8px;">$12</div>
-        <div style="font-family:'Rajdhani',sans-serif;font-size:15px;
-          color:var(--cream);margin-bottom:10px;font-weight:600;">Complete Album + Bonus</div>
-        <div style="font-size:14px;color:rgba(240,236,224,0.72);line-height:1.75;margin-bottom:12px;">
-          All manifesto songs, alternate mixes, bonus tracks, and exclusives.
-          Instant Google Drive download delivered after purchase.
-        </div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:14px;
-          color:rgba(212,168,75,0.78);margin-bottom:22px;line-height:1.8;">
-          AI Meltdown · Causa Real · Claude Finale I &amp; II · Craig Finale · Interlude ·
-          Don't Make Me Pull The Trigger · I Am The One · Safeguard · Dream No More ·
-          One Table · While I Still Can · F The Warhawk Mix + more
-        </div>
-        <a href="https://buy.stripe.com/3cIdR94U14JF9OQ60B4ko07" target="_blank"
-          style="display:block;text-align:center;padding:13px 20px;
-          background:rgba(212,168,75,0.1);border:1px solid rgba(212,168,75,0.5);
-          color:var(--gold);font-family:'Share Tech Mono',monospace;font-size:15px;
-          letter-spacing:0.22em;text-decoration:none;text-transform:uppercase;transition:all 0.2s;"
-          onmouseover="this.style.background='rgba(212,168,75,0.22)'"
-          onmouseout="this.style.background='rgba(212,168,75,0.1)'">
-          Buy Now — $12 →
-        </a>
-      </div>
-
-      <!-- T-Shirt -->
-      <div style="border:1px solid rgba(0,255,204,0.15);padding:32px;position:relative;
-        transition:border-color 0.3s;"
-        onmouseover="this.style.borderColor='rgba(0,255,204,0.4)'"
-        onmouseout="this.style.borderColor='rgba(0,255,204,0.15)'">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:14px;
-          letter-spacing:0.15em;color:rgba(0,255,204,0.75);
-          text-transform:uppercase;margin-bottom:12px;">◈ Merch</div>
-        <div style="font-family:'Cinzel Decorative',serif;font-size:34px;
-          color:var(--cream);margin-bottom:8px;">$25</div>
-        <div style="font-family:'Rajdhani',sans-serif;font-size:15px;
-          color:var(--cream);margin-bottom:10px;font-weight:600;">The AI Coin T-Shirt</div>
-        <div style="font-size:14px;color:rgba(240,236,224,0.72);line-height:1.75;margin-bottom:14px;">
-          Official manifesto t-shirt. Drop-shipped. Select your size at checkout.
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;">
-          <span style="font-family:'Share Tech Mono',monospace;font-size:14px;padding:4px 10px;
-            border:1px solid rgba(0,255,204,0.15);color:rgba(240,236,224,0.72);">S</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:14px;padding:4px 10px;
-            border:1px solid rgba(0,255,204,0.15);color:rgba(240,236,224,0.72);">M</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:14px;padding:4px 10px;
-            border:1px solid rgba(0,255,204,0.15);color:rgba(240,236,224,0.72);">L</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:14px;padding:4px 10px;
-            border:1px solid rgba(0,255,204,0.15);color:rgba(240,236,224,0.72);">XL</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:14px;padding:4px 10px;
-            border:1px solid rgba(0,255,204,0.15);color:rgba(240,236,224,0.72);">2XL</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:14px;padding:4px 10px;
-            border:1px solid rgba(0,255,204,0.15);color:rgba(240,236,224,0.72);">3XL</span>
-        </div>
-        <a href="https://buy.stripe.com/8x228rfyFekf9OQdt34ko09" target="_blank"
-          style="display:block;text-align:center;padding:13px 20px;
-          background:transparent;border:1px solid rgba(255,255,255,0.15);
-          color:var(--cream);font-family:'Share Tech Mono',monospace;font-size:15px;
-          letter-spacing:0.22em;text-decoration:none;text-transform:uppercase;transition:all 0.2s;"
-          onmouseover="this.style.background='rgba(255,255,255,0.06)'"
-          onmouseout="this.style.background='transparent'">
-          Buy Now — $25 →
-        </a>
-      </div>
-
-    </div>
-
-    <div style="margin-top:22px;padding:12px 20px;border:1px solid rgba(255,255,255,0.04);
-      font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:0.18em;
-      color:rgba(240,236,224,0.18);line-height:1.8;text-align:center;">
-      🔒 &nbsp; Payments processed securely by Stripe &nbsp;·&nbsp;
-      Digital downloads delivered instantly &nbsp;·&nbsp; No label &nbsp;·&nbsp; No middleman
-    </div>
-
+  <div class="setup-note">
+    <strong>⚙ STRIPE SETUP:</strong> Go to <strong>dashboard.stripe.com → Payment Links → Create Link</strong> for each product.
+    Replace the <strong>href="#stripe-YOUR-LINK"</strong> placeholders below. No backend needed — Stripe handles checkout.
+  </div>
+  <div class="mgrid" id="mgrid"></div>
+  <div class="stripe-info">
+    <div class="sbadge">🔒 &nbsp; Secure payments by <a href="https://stripe.com" target="_blank">Stripe</a> &nbsp;·&nbsp; SSL encrypted &nbsp;·&nbsp; No card data stored on this site</div>
   </div>
 </div>
 
@@ -851,14 +651,14 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
     <button id="sbtn">&#9654; &nbsp; INITIATE ANTHEM</button>
     <button onclick="document.getElementById('about-modal').style.display='flex'"
       style="background:transparent;border:1px solid rgba(0,255,204,0.25);color:rgba(0,255,204,0.7);
-      font-family:'Share Tech Mono',monospace;font-size:15px;letter-spacing:0.2em;
+      font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.44em;
       padding:12px 22px;cursor:pointer;text-transform:uppercase;transition:all 0.3s;">
       &#9672; ABOUT
     </button>
   </div>
 
   <!-- Copyright -->
-  <div style="margin-top:18px;font-family:'Share Tech Mono',monospace;font-size:14px;
+  <div style="margin-top:18px;font-family:'Share Tech Mono',monospace;font-size:8px;
     letter-spacing:0.22em;color:rgba(200,220,255,0.25);text-align:center;line-height:2;">
     &copy; 2025&ndash;2026 Inoculate Media &nbsp;&middot;&nbsp;
     <a href="https://haawke.com" target="_blank" rel="noopener"
@@ -1119,84 +919,10 @@ function getAmp(){
 document.getElementById('vol-sl').addEventListener('input',e=>songEl.volume=parseFloat(e.target.value));
 
 // ════════════════════════════════════════════════════
-// PORTRAIT MAP — verse id → image file + head position
-// object-position y: lower % shows top of image more
-// ════════════════════════════════════════════════════
-const PORTRAIT_MAP = {
-  1:  { file: './img/peru.png',      objPos: 'center 8%'  },
-  2:  { file: './img/usa.png',       objPos: 'center 10%' },
-  3:  { file: './img/france.png',    objPos: 'center 10%' },
-  4:  { file: './img/nigeria.png',   objPos: 'center 8%'  },
-  5:  { file: './img/brazil.png',    objPos: 'center 6%'  },
-  6:  { file: './img/arab.png',      objPos: 'center 12%' },
-  7:  { file: './img/india.png',     objPos: 'center 10%' },
-  8:  { file: './img/japan.png',     objPos: 'center 12%' },
-  9:  { file: './img/russia.png',    objPos: 'center 10%' },
-  10: { file: './img/kenya.png',     objPos: 'center 10%' },
-};
-
-const ppPanel   = document.getElementById('portrait-panel');
-const ppImg     = document.getElementById('pp-img');
-const ppFlag    = document.getElementById('pp-flag');
-const ppCountry = document.getElementById('pp-country');
-const ppPlan    = document.getElementById('pp-plan');
-const ppVNum    = document.getElementById('pp-versenum');
-
-let ppHideTimer = null;
-let ppCurrentFile = null;
-
-function showPortrait(verseIdx) {
-  const v = VERSES[verseIdx];
-  const p = PORTRAIT_MAP[verseIdx];
-
-  clearTimeout(ppHideTimer);
-
-  if (!p) {
-    // No portrait for this verse — slide it out
-    ppPanel.classList.remove('visible','active-pulse');
-    ppPanel.classList.add('hiding');
-    ppCurrentFile = null;
-    return;
-  }
-
-  // Update label content immediately
-  ppFlag.textContent    = v.flag;
-  ppCountry.textContent = v.country;
-  ppPlan.textContent    = v.plan ? v.plan.replace(/^✦\s*/,'') : '';
-  ppVNum.textContent    = 'VERSE ' + String(verseIdx).padStart(2,'0');
-
-  if (p.file !== ppCurrentFile) {
-    // Swap image — fade out old, swap src, fade in new
-    ppImg.classList.remove('loaded');
-    ppCurrentFile = p.file;
-
-    const newImg = new Image();
-    newImg.onload = () => {
-      ppImg.src = p.file;
-      ppImg.style.objectPosition = p.objPos;
-      // Small delay so the browser paints before we fade in
-      requestAnimationFrame(() => requestAnimationFrame(() => ppImg.classList.add('loaded')));
-    };
-    newImg.src = p.file;
-  }
-
-  ppPanel.classList.remove('hiding');
-  ppPanel.classList.add('visible','active-pulse');
-}
-
-// ════════════════════════════════════════════════════
 // LYRICS ENGINE
 // ════════════════════════════════════════════════════
-const VERSE_DURATION = 42;  // seconds per verse (and intro)
-// Verse i starts at i * 42 seconds
-// VERSES[0]=intro @0s, VERSES[1]=Peru @42s, VERSES[2]=USA @84s ... VERSES[11]=All Nations @462s
-
 let curVerse=0, curLine=0, playing=false, lineTimer=null;
-let lyricsUnlocked = false;
-// LINE_DUR is computed per-verse: (42000ms) / lines.length
-function getLineDur(verseIdx) {
-  return Math.floor((VERSE_DURATION * 1000) / VERSES[verseIdx].lines.length);
-}
+const LINE_DUR=3900, VERSE_GAP=1000;
 
 const lbox=document.getElementById('lbox');
 const vdots=document.getElementById('vdots');
@@ -1253,36 +979,23 @@ function goVerse(idx){
     gTargetRotY=targetAngle;
   }
   renderLyrics(v); updateDots(); updateProg();
-  showPortrait(idx);
   if(playing) schedLine();
 }
 
 function schedLine(){
-  if(!lyricsUnlocked) return;
   clearTimeout(lineTimer);
-  const v = VERSES[curVerse];
-  const dur = getLineDur(curVerse);
-  lineTimer = setTimeout(()=>{
-    if(curLine < v.lines.length - 1){
-      curLine++; highlightLyric(); updateProg(); schedLine();
-    } else {
-      // Next verse fires via timeupdate — just clear state
-      clearTimeout(lineTimer);
-    }
-  }, dur);
+  const v=VERSES[curVerse];
+  lineTimer=setTimeout(()=>{
+    if(curLine<v.lines.length-1){ curLine++; highlightLyric(); updateProg(); schedLine(); }
+    else{ const nx=curVerse<VERSES.length-1?curVerse+1:0; setTimeout(()=>goVerse(nx),VERSE_GAP); }
+  },LINE_DUR);
 }
 
 function togglePlay(){
   playing=!playing;
   document.getElementById('bplay').textContent=playing?'⏸':'▶';
-  if(playing){
-    initAudio();
-    songEl.play().catch(()=>{});
-    if(lyricsUnlocked) schedLine();
-  } else {
-    songEl.pause();
-    clearTimeout(lineTimer);
-  }
+  if(playing){ initAudio(); songEl.play().catch(()=>{}); schedLine(); }
+  else{ songEl.pause(); clearTimeout(lineTimer); }
 }
 
 document.getElementById('bplay').onclick=togglePlay;
@@ -1371,7 +1084,7 @@ function updateForest(){
 // USGS Earthquake feed
 async function loadQuakes(){
   const list=document.getElementById('qlist');
-  list.innerHTML='<div style="font-size:15px;color:rgba(200,220,240,0.65);font-family:\'Share Tech Mono\',monospace;padding:8px 0;">Loading…</div>';
+  list.innerHTML='<div style="font-size:10px;color:rgba(200,220,240,0.28);font-family:\'Share Tech Mono\',monospace;padding:8px 0;">Loading…</div>';
   try{
     const res=await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson');
     const data=await res.json();
@@ -1387,7 +1100,7 @@ async function loadQuakes(){
       list.appendChild(div);
     });
   }catch(e){
-    list.innerHTML='<div style="font-size:15px;color:rgba(255,100,100,0.5);font-family:\'Share Tech Mono\',monospace;padding:8px 0;">USGS data unavailable — check network</div>';
+    list.innerHTML='<div style="font-size:10px;color:rgba(255,100,100,0.5);font-family:\'Share Tech Mono\',monospace;padding:8px 0;">USGS data unavailable — check network</div>';
   }
 }
 
@@ -1452,38 +1165,108 @@ CHARITIES.forEach(c=>{
 });
 
 // ════════════════════════════════════════════════════
+// MERCH SHOP
+// ════════════════════════════════════════════════════
+// Replace href="#stripe-XXXXX" with real Stripe Payment Links
+const MERCH=[
+  {em:'💿',nm:'One Table — Digital Album',pr:'$12',
+   ds:'Full 10-track album · High-quality AAC/MP3 download · Liner notes PDF included',
+   link:'#stripe-digital-album'},
+  {em:'👕',nm:'One Table Tee — Black',pr:'$28',
+   ds:'100% organic cotton · Globe print front · Peace plan on back · Sizes XS–3XL',
+   link:'#stripe-tee-black'},
+  {em:'🎽',nm:'One Table Tee — White',pr:'$28',
+   ds:'100% organic cotton · Minimalist teal logo · Unisex fit · Sizes XS–3XL',
+   link:'#stripe-tee-white'},
+  {em:'🧢',nm:'One Table Cap',pr:'$22',
+   ds:'Embroidered globe logo · Adjustable snapback · One size fits most · Black or navy',
+   link:'#stripe-cap'},
+  {em:'🎧',nm:'Instrumental Bundle',pr:'$8',
+   ds:'All 10 instrumental backing tracks · Perfect for DJs, educators, remix artists',
+   link:'#stripe-instrumental'},
+  {em:'📦',nm:'Full Bundle — Album + Tee + Cap',pr:'$55',
+   ds:'Everything: digital album + black tee + cap · Ships worldwide · Save $13 vs separate',
+   link:'#stripe-bundle'},
+  {em:'❤️',nm:'Donate — Any Amount',pr:'Choose',
+   ds:'100% goes to the 10 partner charities. No goods shipped — pure impact.',
+   link:'#stripe-donation'},
+  {em:'🖼️',nm:'Art Print — "One Table" Poster',pr:'$18',
+   ds:'18×24" archival giclée print · Globe with all 10 flags · Ships in protective tube',
+   link:'#stripe-poster'},
+];
+
+const mgrid=document.getElementById('mgrid');
+MERCH.forEach(m=>{
+  const el=document.createElement('div');
+  el.className='mc';
+  const isSetup=m.link.startsWith('#stripe-');
+  el.innerHTML=`
+    <div class="mimg">${m.em}</div>
+    <div class="mbody">
+      <div class="mnm">${m.nm}</div>
+      <div class="mds">${m.ds}</div>
+      <div class="mpr">${m.pr}</div>
+      <a class="mbuy disabled" href="#" onclick="return false;" style="
+        background:rgba(212,168,75,0.12);color:rgba(212,168,75,0.4);
+        cursor:not-allowed;border:1px solid rgba(212,168,75,0.15);">
+        ⏳ &nbsp; Coming Soon
+      </a>
+    </div>`;
+  mgrid.appendChild(el);
+});
+
+// ════════════════════════════════════════════════════
 // NAV TABS
 // ════════════════════════════════════════════════════
+function closeMobileMenu(){
+  document.getElementById('mobile-menu').classList.remove('open');
+  const hb = document.getElementById('hamburger');
+  hb.classList.remove('open');
+  hb.setAttribute('aria-expanded','false');
+}
+
 document.querySelectorAll('.ntab').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    const tab = btn.dataset.tab;
     document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
     document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab+'-sec').classList.add('active');
+    // mark all matching tabs (desktop + mobile) active
+    document.querySelectorAll(`.ntab[data-tab="${tab}"]`).forEach(b=>b.classList.add('active'));
+    document.getElementById(tab+'-sec').classList.add('active');
+    closeMobileMenu();
   });
 });
+
+// Hamburger toggle
+const hbBtn = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hbBtn.addEventListener('click',()=>{
+  const isOpen = mobileMenu.classList.toggle('open');
+  hbBtn.classList.toggle('open', isOpen);
+  hbBtn.setAttribute('aria-expanded', isOpen);
+});
+
+// Sync mobile volume slider with desktop
+const volSl = document.getElementById('vol-sl');
+const volSlM = document.getElementById('vol-sl-m');
+volSlM.addEventListener('input',()=>{ volSl.value=volSlM.value; volSl.dispatchEvent(new Event('input')); });
+volSl.addEventListener('input',()=>{ volSlM.value=volSl.value; });
+
+// Close mobile menu on outside click
+document.addEventListener('click',e=>{
+  if(!mobileMenu.contains(e.target)&&!hbBtn.contains(e.target)) closeMobileMenu();
+});
+
+
 
 // ════════════════════════════════════════════════════
 // INTRO
 // ════════════════════════════════════════════════════
-
-// Fire each verse at its exact timestamp: verse i starts at i * 42s
-songEl.addEventListener('timeupdate', () => {
-  if(!playing) return;
-  const t = songEl.currentTime;
-  const expectedVerse = Math.min(Math.floor(t / VERSE_DURATION), VERSES.length - 1);
-  if(expectedVerse > 0 && expectedVerse !== curVerse) {
-    lyricsUnlocked = true;
-    goVerse(expectedVerse);
-  }
-});
-
 document.getElementById('sbtn').onclick=()=>{
   const ov=document.getElementById('intro');
   ov.classList.add('fo');
   setTimeout(()=>ov.style.display='none',1900);
   playing=true;
-  lyricsUnlocked=false;
   document.getElementById('bplay').textContent='⏸';
   initAudio();
   songEl.volume=0.8;
