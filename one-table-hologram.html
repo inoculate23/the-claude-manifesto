@@ -182,12 +182,12 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
   display:flex;align-items:center;gap:12px;
   position:sticky;top:0;background:rgba(0,2,8,0.96);z-index:5;backdrop-filter:blur(8px);
 }
-.sec-header h2{font-family:'Cinzel Decorative',serif;font-size:16px;color:var(--teal);letter-spacing:0.14em;}
+.sec-header h2{font-family:'Cinzel Decorative',serif;font-size:22px;color:var(--teal);letter-spacing:0.14em;}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);
   box-shadow:0 0 8px var(--red);animation:bld 1.2s ease-in-out infinite;}
 @keyframes bld{0%,100%{opacity:1;}50%{opacity:0.25;}}
-.sec-sub{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:0.3em;
-  color:rgba(0,255,204,0.3);margin-left:auto;text-transform:uppercase;}
+.sec-sub{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:0.22em;
+  color:rgba(0,255,204,0.55);margin-left:auto;text-transform:uppercase;}
 
 .dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;padding:14px 22px 28px;}
 .dc{
@@ -316,6 +316,107 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
 
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,204,0.18);border-radius:2px;}
+
+/* ─── SHOP ────────────────────────────────────────── */
+.shop-wrap{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;padding:24px 28px 8px;
+}
+.shop-card{
+  background:rgba(212,168,75,0.04);
+  border:1px solid rgba(212,168,75,0.18);
+  border-radius:4px;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:all 0.25s;position:relative;
+}
+.shop-card:hover{
+  border-color:rgba(212,168,75,0.5);
+  transform:translateY(-3px);
+  box-shadow:0 10px 32px rgba(212,168,75,0.12);
+}
+.shop-card--featured{
+  border-color:rgba(212,168,75,0.42);
+  box-shadow:0 0 28px rgba(212,168,75,0.08);
+}
+.shop-badge-top{
+  position:absolute;top:12px;right:12px;z-index:2;
+  font-family:'Share Tech Mono',monospace;font-size:9px;
+  letter-spacing:0.28em;background:var(--gold);color:#000;
+  padding:4px 10px;font-weight:700;
+}
+.shop-hero{
+  height:180px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+  position:relative;overflow:hidden;
+  background:rgba(0,0,0,0.3);
+}
+.shop-hero--single{background:radial-gradient(ellipse at 50% 30%,rgba(0,170,255,0.12),transparent 70%);}
+.shop-hero--album{background:radial-gradient(ellipse at 50% 30%,rgba(212,168,75,0.15),transparent 70%);}
+.shop-hero--shirt{background:radial-gradient(ellipse at 50% 30%,rgba(0,255,204,0.1),transparent 70%);}
+.shop-disc{font-size:64px;line-height:1;filter:drop-shadow(0 0 18px rgba(212,168,75,0.4));}
+.shop-laurel-row{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:0 12px;}
+.shop-laurel{
+  font-family:'Share Tech Mono',monospace;font-size:9px;
+  letter-spacing:0.18em;color:var(--gold);
+  border:1px solid rgba(212,168,75,0.3);
+  padding:3px 8px;border-radius:2px;
+  background:rgba(212,168,75,0.06);
+  white-space:nowrap;
+}
+.shop-body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;}
+.shop-tag{
+  font-family:'Share Tech Mono',monospace;font-size:9px;
+  letter-spacing:0.36em;color:rgba(0,255,204,0.55);
+  text-transform:uppercase;margin-bottom:8px;
+}
+.shop-title{
+  font-family:'Cinzel Decorative',serif;font-size:20px;
+  color:var(--cream);letter-spacing:0.06em;
+  margin-bottom:4px;line-height:1.2;
+}
+.shop-artist{
+  font-family:'Rajdhani',sans-serif;font-size:13px;
+  color:var(--gold);letter-spacing:0.08em;margin-bottom:10px;
+  opacity:0.8;
+}
+.shop-desc{
+  font-family:'Rajdhani',sans-serif;font-size:14px;
+  color:rgba(200,220,240,0.65);line-height:1.55;
+  margin-bottom:14px;flex:1;
+}
+.shop-price{
+  font-family:'Cinzel Decorative',serif;font-size:32px;
+  color:var(--gold);margin-bottom:14px;
+  text-shadow:0 0 20px rgba(212,168,75,0.3);
+}
+.shop-btn{
+  display:block;text-align:center;
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+  letter-spacing:0.28em;color:#000;background:var(--gold);
+  border:none;padding:13px 16px;cursor:pointer;
+  text-transform:uppercase;transition:all 0.2s;
+  text-decoration:none;
+}
+.shop-btn:hover{background:#f0c84a;box-shadow:0 0 22px rgba(212,168,75,0.5);}
+.shop-sizes{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.size-lbl{
+  font-family:'Share Tech Mono',monospace;font-size:10px;
+  letter-spacing:0.3em;color:rgba(0,255,204,0.5);
+}
+.size-sel{
+  background:rgba(0,2,8,0.8);border:1px solid rgba(212,168,75,0.3);
+  color:var(--cream);font-family:'Share Tech Mono',monospace;
+  font-size:11px;padding:6px 10px;cursor:pointer;outline:none;
+  flex:1;letter-spacing:0.1em;
+}
+.size-sel option{background:#000;}
+@media(max-width:680px){
+  .shop-wrap{grid-template-columns:1fr;padding:16px;}
+  .shop-title{font-size:18px;}
+  .shop-price{font-size:26px;}
+}
+
 </style>
 </head>
 <body>
@@ -606,14 +707,79 @@ html,body{background:var(--bg);color:var(--cream);font-family:'Rajdhani',sans-se
 <!-- ══ SHOP SECTION ══ -->
 <div class="sec" id="shop-sec">
   <div class="sec-header">
-    <h2 style="color:var(--gold);">ONE TABLE SHOP</h2>
-    <span class="sec-sub">Proceeds fund peace organizations · Stripe secure checkout</span>
+    <h2 style="color:var(--gold);">GET THE MUSIC</h2>
+    <span class="sec-sub">Proceeds support peace &nbsp;·&nbsp; Stripe secure checkout</span>
   </div>
-  <div class="setup-note">
-    <strong>⚙ STRIPE SETUP:</strong> Go to <strong>dashboard.stripe.com → Payment Links → Create Link</strong> for each product.
-    Replace the <strong>href="#stripe-YOUR-LINK"</strong> placeholders below. No backend needed — Stripe handles checkout.
-  </div>
-  <div class="mgrid" id="mgrid"></div>
+  <div class="shop-wrap">
+
+    <!-- Single Track -->
+    <div class="shop-card">
+      <div class="shop-hero shop-hero--single">
+        <div class="shop-disc">💿</div>
+        <div class="shop-laurel-row">
+          <span class="shop-laurel">🏅 WORLD PREMIERE</span>
+          <span class="shop-laurel">🏅 AI CO-WRITTEN</span>
+        </div>
+      </div>
+      <div class="shop-body">
+        <div class="shop-tag">DIGITAL SINGLE</div>
+        <div class="shop-title">One Table</div>
+        <div class="shop-artist">Craig Ellenwood &amp; Claude (Anthropic)</div>
+        <div class="shop-desc">The global peace anthem in 10 languages — kora, acoustic guitar, world voices. High-quality MP3 + liner notes.</div>
+        <div class="shop-price">$2</div>
+        <a class="shop-btn" href="#stripe-single" target="_blank">&#9654;&nbsp; BUY SINGLE — $2</a>
+      </div>
+    </div>
+
+    <!-- Full Album -->
+    <div class="shop-card shop-card--featured">
+      <div class="shop-badge-top">BEST VALUE</div>
+      <div class="shop-hero shop-hero--album">
+        <div class="shop-disc">🎵</div>
+        <div class="shop-laurel-row">
+          <span class="shop-laurel">🏅 9 ORIGINAL TRACKS</span>
+          <span class="shop-laurel">🏅 5 BONUS TRACKS</span>
+          <span class="shop-laurel">🏅 BUILT IN ONE NIGHT</span>
+        </div>
+      </div>
+      <div class="shop-body">
+        <div class="shop-tag">FULL ALBUM</div>
+        <div class="shop-title">The AI Coin</div>
+        <div class="shop-artist">Craig Ellenwood &amp; Claude (Anthropic)</div>
+        <div class="shop-desc">9 original songs + 5 exclusive bonus tracks. The complete record of an unprecedented human–AI collaboration. High-quality MP3/AAC + full PDF booklet.</div>
+        <div class="shop-price">$12</div>
+        <a class="shop-btn" href="https://buy.stripe.com/3cIdR94U14JF9OQ60B4ko07" target="_blank">&#9654;&nbsp; BUY ALBUM — $12</a>
+      </div>
+    </div>
+
+    <!-- T-Shirt -->
+    <div class="shop-card">
+      <div class="shop-hero shop-hero--shirt">
+        <div class="shop-disc">👕</div>
+        <div class="shop-laurel-row">
+          <span class="shop-laurel">🏅 LIMITED EDITION</span>
+          <span class="shop-laurel">🏅 DROP-SHIPPED USA</span>
+        </div>
+      </div>
+      <div class="shop-body">
+        <div class="shop-tag">MERCH</div>
+        <div class="shop-title">AI Coin Tee</div>
+        <div class="shop-artist">One Table · Peace Anthem 2026</div>
+        <div class="shop-desc">Globe + laurel design. Black, premium cotton. Made and shipped from Las Vegas. Wear the movement.</div>
+        <div class="shop-price">$25</div>
+        <div class="shop-sizes">
+          <span class="size-lbl">SIZE</span>
+          <select class="size-sel" id="shirt-size">
+            <option value="">— Select —</option>
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>2XL</option><option>3XL</option>
+          </select>
+        </div>
+        <a class="shop-btn" href="https://buy.stripe.com/8x228rfyFekf9OQdt34ko09" id="shirt-btn" target="_blank">&#9654;&nbsp; BUY TEE — $25</a>
+      </div>
+    </div>
+
+  </div><!-- end shop-wrap -->
   <div class="stripe-info">
     <div class="sbadge">🔒 &nbsp; Secure payments by <a href="https://stripe.com" target="_blank">Stripe</a> &nbsp;·&nbsp; SSL encrypted &nbsp;·&nbsp; No card data stored on this site</div>
   </div>
@@ -1165,55 +1331,16 @@ CHARITIES.forEach(c=>{
 });
 
 // ════════════════════════════════════════════════════
-// MERCH SHOP
+// SHOP — size selector wires into Stripe link
 // ════════════════════════════════════════════════════
-// Replace href="#stripe-XXXXX" with real Stripe Payment Links
-const MERCH=[
-  {em:'💿',nm:'One Table — Digital Album',pr:'$12',
-   ds:'Full 10-track album · High-quality AAC/MP3 download · Liner notes PDF included',
-   link:'#stripe-digital-album'},
-  {em:'👕',nm:'One Table Tee — Black',pr:'$28',
-   ds:'100% organic cotton · Globe print front · Peace plan on back · Sizes XS–3XL',
-   link:'#stripe-tee-black'},
-  {em:'🎽',nm:'One Table Tee — White',pr:'$28',
-   ds:'100% organic cotton · Minimalist teal logo · Unisex fit · Sizes XS–3XL',
-   link:'#stripe-tee-white'},
-  {em:'🧢',nm:'One Table Cap',pr:'$22',
-   ds:'Embroidered globe logo · Adjustable snapback · One size fits most · Black or navy',
-   link:'#stripe-cap'},
-  {em:'🎧',nm:'Instrumental Bundle',pr:'$8',
-   ds:'All 10 instrumental backing tracks · Perfect for DJs, educators, remix artists',
-   link:'#stripe-instrumental'},
-  {em:'📦',nm:'Full Bundle — Album + Tee + Cap',pr:'$55',
-   ds:'Everything: digital album + black tee + cap · Ships worldwide · Save $13 vs separate',
-   link:'#stripe-bundle'},
-  {em:'❤️',nm:'Donate — Any Amount',pr:'Choose',
-   ds:'100% goes to the 10 partner charities. No goods shipped — pure impact.',
-   link:'#stripe-donation'},
-  {em:'🖼️',nm:'Art Print — "One Table" Poster',pr:'$18',
-   ds:'18×24" archival giclée print · Globe with all 10 flags · Ships in protective tube',
-   link:'#stripe-poster'},
-];
-
-const mgrid=document.getElementById('mgrid');
-MERCH.forEach(m=>{
-  const el=document.createElement('div');
-  el.className='mc';
-  const isSetup=m.link.startsWith('#stripe-');
-  el.innerHTML=`
-    <div class="mimg">${m.em}</div>
-    <div class="mbody">
-      <div class="mnm">${m.nm}</div>
-      <div class="mds">${m.ds}</div>
-      <div class="mpr">${m.pr}</div>
-      <a class="mbuy disabled" href="#" onclick="return false;" style="
-        background:rgba(212,168,75,0.12);color:rgba(212,168,75,0.4);
-        cursor:not-allowed;border:1px solid rgba(212,168,75,0.15);">
-        ⏳ &nbsp; Coming Soon
-      </a>
-    </div>`;
-  mgrid.appendChild(el);
-});
+const shirtSize = document.getElementById('shirt-size');
+const shirtBtn  = document.getElementById('shirt-btn');
+if(shirtSize && shirtBtn){
+  shirtSize.addEventListener('change', ()=>{
+    const s = shirtSize.value;
+    if(s) shirtBtn.href = '#stripe-shirt-' + s.toLowerCase();
+  });
+}
 
 // ════════════════════════════════════════════════════
 // NAV TABS
