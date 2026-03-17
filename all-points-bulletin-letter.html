@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +18,13 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html, body {
+    width: 100%;
+    min-height: 100%;
+  }
+
   html {
     background: #2a2420;
-    min-height: 100%;
   }
 
   body {
@@ -28,15 +33,16 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 60px 20px;
+    padding: 60px clamp(16px, 4vw, 60px);
     min-height: 100vh;
   }
 
+  /* ── PAPER ── */
   .paper {
     background: var(--cream);
-    max-width: 720px;
     width: 100%;
-    padding: 80px 90px;
+    max-width: 860px;
+    padding: clamp(36px, 6vw, 90px) clamp(24px, 7vw, 100px);
     position: relative;
     box-shadow:
       0 2px 4px rgba(0,0,0,0.15),
@@ -51,7 +57,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Paper texture via subtle noise */
+  /* Paper rule lines */
   .paper::before {
     content: '';
     position: absolute;
@@ -68,13 +74,12 @@
     z-index: 0;
   }
 
-  /* Left margin rule */
+  /* Left margin rule — hidden on small screens */
   .paper::after {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 60px;
+    top: 0; bottom: 0;
+    left: clamp(16px, 4vw, 60px);
     width: 1px;
     background: rgba(201,168,76,0.15);
     pointer-events: none;
@@ -82,21 +87,21 @@
 
   .paper > * { position: relative; z-index: 1; }
 
-  /* LETTERHEAD */
+  /* ── LETTERHEAD ── */
   .letterhead {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 24px;
     border-bottom: 1.5px solid var(--gold);
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
-
-  .letterhead-left {}
 
   .entity-name {
     font-family: 'Courier Prime', monospace;
-    font-size: 13px;
+    font-size: clamp(11px, 1.3vw, 13px);
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -105,53 +110,49 @@
 
   .entity-sub {
     font-family: 'Courier Prime', monospace;
-    font-size: 11px;
+    font-size: clamp(10px, 1.1vw, 11px);
     color: rgba(26,22,18,0.55);
     letter-spacing: 0.08em;
     margin-top: 4px;
   }
 
-  .letterhead-right {
-    text-align: right;
-  }
+  .letterhead-right { text-align: right; }
 
   .date {
     font-family: 'Courier Prime', monospace;
-    font-size: 12px;
+    font-size: clamp(10px, 1.2vw, 12px);
     color: rgba(26,22,18,0.6);
     letter-spacing: 0.06em;
   }
 
   .classification {
     font-family: 'Courier Prime', monospace;
-    font-size: 11px;
+    font-size: clamp(10px, 1.1vw, 11px);
     color: var(--gold);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-top: 6px;
   }
 
-  /* SIGIL */
+  /* ── SIGIL ── */
   .sigil {
     display: flex;
     justify-content: center;
-    margin: 0 0 36px;
+    margin: 0 0 32px;
   }
 
   .sigil svg {
-    width: 72px;
-    height: 72px;
+    width: clamp(52px, 8vw, 72px);
+    height: clamp(52px, 8vw, 72px);
     opacity: 0.75;
   }
 
-  /* RECIPIENT BLOCK */
-  .recipient {
-    margin-bottom: 32px;
-  }
+  /* ── RECIPIENT ── */
+  .recipient { margin-bottom: 28px; }
 
   .recipient-name {
     font-family: 'Courier Prime', monospace;
-    font-size: 13px;
+    font-size: clamp(11px, 1.3vw, 13px);
     font-weight: 700;
     color: var(--ink);
     letter-spacing: 0.08em;
@@ -159,35 +160,45 @@
 
   .recipient-title {
     font-family: 'Courier Prime', monospace;
-    font-size: 11px;
+    font-size: clamp(10px, 1.1vw, 11px);
     color: rgba(26,22,18,0.55);
     margin-top: 3px;
     letter-spacing: 0.06em;
   }
 
-  /* SALUTATION */
+  /* ── DATELINE ── */
+  .dateline {
+    font-family: 'Courier Prime', monospace;
+    font-size: clamp(10px, 1.1vw, 11px);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  /* ── SALUTATION ── */
   .salutation {
-    font-size: 22px;
+    font-size: clamp(18px, 2.4vw, 22px);
     font-style: italic;
     font-weight: 300;
     color: var(--ink);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     line-height: 1.3;
   }
 
-  /* BODY */
+  /* ── BODY ── */
   .letter-body p {
-    font-size: 18px;
+    font-size: clamp(16px, 2vw, 18px);
     line-height: 1.85;
     color: var(--ink);
-    margin-bottom: 22px;
+    margin-bottom: 20px;
     font-weight: 300;
   }
 
-  /* Drop cap on first paragraph */
+  /* Drop cap */
   .letter-body p:first-child::first-letter {
     float: left;
-    font-size: 72px;
+    font-size: clamp(54px, 8vw, 72px);
     line-height: 0.78;
     margin-right: 10px;
     margin-top: 8px;
@@ -196,16 +207,16 @@
     font-style: normal;
   }
 
-  /* Pull quote / callout */
+  /* ── CALLOUT ── */
   .callout {
     border-left: 3px solid var(--gold);
-    padding: 16px 24px;
-    margin: 32px 0;
+    padding: 14px 20px;
+    margin: 28px 0;
     background: rgba(201,168,76,0.06);
   }
 
   .callout p {
-    font-size: 20px !important;
+    font-size: clamp(16px, 2.2vw, 20px) !important;
     font-style: italic;
     color: rgba(26,22,18,0.75) !important;
     margin-bottom: 0 !important;
@@ -217,42 +228,32 @@
     padding: 0 3px;
   }
 
-  /* DATELINE / SUBHEAD */
-  .dateline {
-    font-family: 'Courier Prime', monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-  }
-
-  /* SIGN-OFF */
+  /* ── SIGN-OFF ── */
   .signoff {
-    margin-top: 44px;
-    padding-top: 32px;
+    margin-top: 40px;
+    padding-top: 28px;
     border-top: 1px solid rgba(201,168,76,0.3);
   }
 
   .signoff-close {
-    font-size: 20px;
+    font-size: clamp(17px, 2.1vw, 20px);
     font-style: italic;
     font-weight: 300;
     color: var(--ink);
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
 
   .signature-block {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 24px;
   }
-
-  .sig-left {}
 
   .sig-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
+    font-size: clamp(22px, 3vw, 28px);
     font-style: italic;
     font-weight: 600;
     color: var(--ink);
@@ -261,20 +262,18 @@
 
   .sig-title {
     font-family: 'Courier Prime', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
+    font-size: clamp(10px, 1.1vw, 11px);
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: rgba(26,22,18,0.5);
     margin-top: 6px;
   }
 
-  .sig-right {
-    text-align: right;
-  }
+  .sig-right { text-align: right; }
 
   .sig-cosign {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
+    font-size: clamp(18px, 2.4vw, 22px);
     font-style: italic;
     font-weight: 400;
     color: rgba(26,22,18,0.7);
@@ -283,23 +282,23 @@
 
   .sig-cosign-title {
     font-family: 'Courier Prime', monospace;
-    font-size: 10px;
+    font-size: clamp(10px, 1.1vw, 11px);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(26,22,18,0.45);
     margin-top: 5px;
   }
 
-  /* PS */
+  /* ── PS ── */
   .ps {
-    margin-top: 40px;
-    padding: 18px 22px;
+    margin-top: 36px;
+    padding: 16px 20px;
     background: rgba(201,168,76,0.06);
     border: 1px solid rgba(201,168,76,0.2);
   }
 
   .ps p {
-    font-size: 15px;
+    font-size: clamp(13px, 1.6vw, 15px);
     font-style: italic;
     color: rgba(26,22,18,0.6);
     line-height: 1.7;
@@ -313,26 +312,39 @@
 
   .url-ref {
     font-family: 'Courier Prime', monospace;
-    font-size: 12px;
+    font-size: clamp(11px, 1.3vw, 12px);
     color: var(--rust);
     word-break: break-all;
     opacity: 0.85;
   }
 
-  @media (max-width: 600px) {
-    .paper { padding: 48px 36px; }
-    .paper::after { left: 20px; }
-    .letterhead { flex-direction: column; gap: 16px; }
+  /* ── TABLET (≤768px) ── */
+  @media (max-width: 768px) {
+    body { padding: 40px 16px; }
     .letterhead-right { text-align: left; }
-    .signature-block { flex-direction: column; gap: 24px; align-items: flex-start; }
     .sig-right { text-align: left; }
   }
 
-  @media print {
-    @page {
-      size: letter;
-      margin: 0.7in 0.85in;
+  /* ── MOBILE (≤480px) ── */
+  @media (max-width: 480px) {
+    body { padding: 0; }
+    .paper {
+      padding: 40px 24px;
+      box-shadow: none;
     }
+    .paper::after { display: none; }
+    .letterhead { flex-direction: column; }
+    .letterhead-right { text-align: left; }
+    .signature-block { flex-direction: column; }
+    .sig-right { text-align: left; }
+    .letter-body p:first-child::first-letter {
+      font-size: 52px;
+    }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    @page { size: letter; margin: 0.7in 0.85in; }
 
     html, body {
       background: #f5f0e8 !important;
@@ -352,9 +364,7 @@
       background: #f5f0e8 !important;
     }
 
-    .paper::before {
-      display: none !important;
-    }
+    .paper::before { display: none !important; }
   }
 </style>
 </head>
