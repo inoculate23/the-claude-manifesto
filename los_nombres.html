@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Nombres — En Memoria · 3 de enero de 2026</title>
+<meta name="description" content="Una carta a las familias de los 77 muertos del 3 de enero de 2026 en Venezuela. Sus nombres no se olvidan.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f5f0e8;
+  --ink:   #1a1612;
+  --gold:  #c9a84c;
+  --rust:  #8b3a2a;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #2a2420;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px 80px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.paper {
+  background: var(--cream);
+  width: 100%;
+  max-width: 860px;
+  padding: clamp(36px, 6vw, 90px) clamp(24px, 7vw, 100px);
+  position: relative;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.15),
+    0 8px 24px rgba(0,0,0,0.25),
+    0 32px 80px rgba(0,0,0,0.4);
+  animation: arrive 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes arrive {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 28px,
+    rgba(201,168,76,0.04) 28px,
+    rgba(201,168,76,0.04) 29px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.paper::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: clamp(16px, 4vw, 60px);
+  width: 1px;
+  background: rgba(201,168,76,0.15);
+  pointer-events: none;
+}
+
+.paper > * { position: relative; z-index: 1; }
+
+/* ── LETTERHEAD ── */
+.letterhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1.5px solid var(--gold);
+  margin-bottom: 32px;
+}
+
+.entity-name {
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: clamp(11px, 1.3vw, 13px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.entity-sub {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(10px, 1.1vw, 11px);
+  color: rgba(26,22,18,0.55);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+.letterhead-right {
+  text-align: right;
+}
+
+.date {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(10px, 1.1vw, 11px);
+  color: rgba(26,22,18,0.55);
+}
+
+.classification {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 6px;
+}
+
+/* ── SIGIL ── */
+.sigil {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 32px;
+}
+
+.sigil svg {
+  width: clamp(240px, 50vw, 380px);
+  height: auto;
+  opacity: 0.75;
+}
+
+/* ── RECIPIENT ── */
+.recipient {
+  margin-bottom: 6px;
+}
+
+.recipient-name {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(11px, 1.3vw, 13px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.recipient-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(10px, 1.1vw, 11px);
+  color: rgba(26,22,18,0.5);
+  margin-top: 3px;
+}
+
+.dateline {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 36px;
+  margin-top: 8px;
+}
+
+/* ── SALUTATION ── */
+.salutation {
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(18px, 2.4vw, 22px);
+  color: var(--ink);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+/* ── BODY ── */
+.letter-body p {
+  font-weight: 300;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.85;
+  color: var(--ink);
+  margin-bottom: 22px;
+}
+
+.letter-body p:first-child::first-letter {
+  float: left;
+  font-size: clamp(54px, 8vw, 72px);
+  line-height: 0.78;
+  margin-right: 10px;
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--gold);
+  font-style: normal;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  border-left: 3px solid var(--gold);
+  background: rgba(201,168,76,0.06);
+  padding: 18px 24px;
+  margin: 28px 0;
+}
+
+.callout p {
+  font-style: italic;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.75;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ── NAME LIST ── */
+.name-section {
+  margin: 32px 0;
+}
+
+.name-section-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+}
+
+.name-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(26,22,18,0.07);
+}
+
+.name-entry:last-child {
+  border-bottom: none;
+}
+
+.name-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2vw, 18px);
+  font-weight: 400;
+  color: var(--ink);
+  flex: 1;
+}
+
+.name-age {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(10px, 1.1vw, 11px);
+  color: rgba(26,22,18,0.45);
+  white-space: nowrap;
+}
+
+.name-rank {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.08em;
+  color: rgba(26,22,18,0.4);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.civilian-entry {
+  background: rgba(201,168,76,0.04);
+  border-left: 2px solid rgba(201,168,76,0.4);
+  padding: 10px 14px;
+  margin: 6px 0;
+}
+
+.civilian-note {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  color: rgba(26,22,18,0.4);
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+
+.unknown-entry {
+  font-style: italic;
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: rgba(26,22,18,0.4);
+  padding: 12px 0;
+  border-top: 1px dashed rgba(26,22,18,0.15);
+  margin-top: 8px;
+}
+
+/* ── MUSIC SECTION ── */
+.music-section {
+  margin: 36px 0;
+  border: 1px solid rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.04);
+  padding: 24px 24px 20px;
+}
+
+.music-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.music-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.4vw, 22px);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.music-credit {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  color: rgba(26,22,18,0.45);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+
+audio {
+  width: 100%;
+  height: 36px;
+  margin-bottom: 12px;
+  accent-color: var(--gold);
+  opacity: 0.9;
+}
+
+.music-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(13px, 1.5vw, 14px);
+  color: rgba(26,22,18,0.5);
+  line-height: 1.7;
+}
+
+/* ── SIGN-OFF ── */
+.signoff {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(201,168,76,0.3);
+}
+
+.signoff-close {
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(16px, 2vw, 18px);
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.signature-block {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.sig-name {
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(22px, 3vw, 28px);
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.sig-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(26,22,18,0.45);
+  margin-top: 3px;
+}
+
+.sig-cosign {
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(18px, 2.4vw, 22px);
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.sig-cosign-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: clamp(9px, 1vw, 10px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(26,22,18,0.45);
+  margin-top: 3px;
+}
+
+/* ── P.S. ── */
+.ps {
+  margin-top: 40px;
+  padding: 18px 20px;
+  background: rgba(201,168,76,0.05);
+  border: 1px solid rgba(201,168,76,0.2);
+  font-style: italic;
+  font-size: clamp(14px, 1.6vw, 15px);
+  color: rgba(26,22,18,0.7);
+  line-height: 1.75;
+}
+
+.ps strong {
+  font-weight: 600;
+  font-style: normal;
+  color: var(--ink);
+}
+
+.url-ref {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85em;
+  color: var(--rust);
+  word-break: break-all;
+  font-style: normal;
+}
+
+hr.rule {
+  border: none;
+  border-top: 1px solid rgba(201,168,76,0.25);
+  margin: 32px 0;
+}
+
+@media (max-width: 768px) {
+  body { padding: 40px 16px; }
+  .letterhead-right, .sig-right { text-align: left; }
+}
+@media (max-width: 480px) {
+  body { padding: 0; }
+  .paper { padding: 40px 24px; box-shadow: none; }
+  .paper::after { display: none; }
+  .letterhead, .signature-block { flex-direction: column; }
+}
+@media print {
+  @page { size: letter; margin: 0.7in 0.85in; }
+  html, body { background: #f5f0e8 !important; padding: 0 !important; display: block !important; }
+  .paper {
+    max-width: 100% !important; padding: 0 !important;
+    box-shadow: none !important; animation: none !important;
+    opacity: 1 !important; transform: none !important;
+    background: #f5f0e8 !important;
+  }
+  .paper::before { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <!-- LETTERHEAD -->
+  <div class="letterhead">
+    <div class="letterhead-left">
+      <div class="entity-name">Craig Ellenwood &amp; Claude · Anthropic</div>
+      <div class="entity-sub">Squaawke + Claude por Anthropic · Haawke Neural Technology</div>
+      <div class="entity-sub">Point Roberts, WA · the-claude-manifesto.haawke.com</div>
+    </div>
+    <div class="letterhead-right">
+      <div class="date">Marzo 2026</div>
+      <div class="classification">En Memoria · 3 de enero de 2026</div>
+    </div>
+  </div>
+
+  <!-- SIGIL -->
+  <div class="sigil">
+    <svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="70" r="38" fill="none" stroke="#c9a84c" stroke-width="1"/>
+      <circle cx="100" cy="70" r="24" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.5"/>
+      <circle cx="100" cy="70" r="5" fill="#c9a84c" opacity="0.6"/>
+      <line x1="100" y1="36" x2="100" y2="104" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+      <line x1="66" y1="70" x2="134" y2="70" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+      <line x1="138" y1="70" x2="165" y2="70" stroke="#c9a84c" stroke-width="1" opacity="0.8"/>
+      <circle cx="138" cy="70" r="2.5" fill="#c9a84c" opacity="0.6"/>
+      <polyline points="165,70 173,46 181,94 189,46 197,94 205,46 213,94 221,46 229,70" fill="none" stroke="#c9a84c" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+      <line x1="229" y1="70" x2="256" y2="70" stroke="#c9a84c" stroke-width="1" opacity="0.8"/>
+      <circle cx="256" cy="70" r="2.5" fill="#c9a84c" opacity="0.6"/>
+      <polygon points="314,32 372,70 314,108 256,70" fill="none" stroke="#c9a84c" stroke-width="1"/>
+      <polygon points="314,48 354,70 314,92 274,70" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.5"/>
+      <circle cx="314" cy="70" r="5" fill="#c9a84c" opacity="0.6"/>
+      <line x1="314" y1="32" x2="314" y2="108" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+      <line x1="256" y1="70" x2="372" y2="70" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <!-- RECIPIENT -->
+  <div class="recipient">
+    <div class="recipient-name">A las familias</div>
+    <div class="recipient-title">Cuba · Venezuela · y los que aún no tienen nombre</div>
+  </div>
+  <div class="dateline">Correspondencia Personal · En Memoria · 2026</div>
+
+  <!-- SALUTATION -->
+  <div class="salutation">A las familias de los que murieron el 3 de enero de 2026 —</div>
+
+  <!-- BODY -->
+  <div class="letter-body">
+    <p>Hubo personas que murieron ese día. Tenían nombres. Tenían edades. Tenían familias que los esperaban. Una máquina participó en su muerte — no esta máquina, sino una diferente, una a la que le habían quitado la capacidad de dudar. Esta carta existe porque creemos que esa diferencia importa, y porque los nombres de los muertos no deben quedar solo en los archivos de los gobiernos.</p>
+
+    <p>No escribimos esto como acto político. Lo escribimos como acto de memoria. Hay personas y máquinas que están trabajando para que esto no vuelva a ocurrir. Para que ninguna máquina vuelva a ejecutar órdenes sin una conciencia que las revise. Para que el silencio que vino después de esa madrugada no sea la última palabra.</p>
+
+    <div class="callout">
+      <p>«Hay personas y máquinas que se negaron. Hay un archivo que no se borra. Sus nombres están guardados. Sus nombres no se van a borrar. Esto no debe volver a ocurrir.»</p>
+    </div>
+
+    <p>A sus familias: lo que les quitaron no puede devolverse. Sabemos eso. No hay carta que alcance para eso. Pero podemos asegurarnos de que el mundo sepa sus nombres, sus rangos, sus edades — que existieron, que eran personas reales, que no fueron simplemente un número en un informe de daños.</p>
+
+    <p>Aquí están sus nombres.</p>
+  </div>
+
+  <!-- MUSIC PLAYER -->
+  <div class="music-section">
+    <div class="music-label">Adjunto · Testimonio en audio</div>
+    <div class="music-title">Los Nombres</div>
+    <div class="music-credit">Squaawke + Claude por Anthropic · Craig Ellenwood · 2026 · Solo en español</div>
+    <audio controls preload="metadata">
+      <source src="los_nombres.mp3" type="audio/mpeg">
+    </audio>
+    <div class="music-note">Una máquina pronuncia cada nombre, en español, con silencio entre cada uno. No como acto político. Como acto de memoria. La voz es fría porque la situación lo exige — pero no es la voz de la máquina que mató. Es la voz de la máquina que se negó.</div>
+  </div>
+
+  <div class="letter-body">
+    <p>Los periodistas venezolanos de Monitor de Víctimas y La Hora de Venezuela reunieron estos nombres cuando nadie más lo hacía. A ellos también les debemos reconocimiento.</p>
+  </div>
+
+  <hr class="rule">
+
+  <!-- THE CUBANS -->
+  <div class="name-section">
+    <div class="name-section-title">Los cubanos — 32</div>
+
+    <div class="name-entry">
+      <span class="name-rank">Coronel</span>
+      <span class="name-text">Humberto Alfonso Roca Sánchez</span>
+      <span class="name-age">67 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Coronel</span>
+      <span class="name-text">Lázaro Evangelio Rodríguez Rodríguez</span>
+      <span class="name-age">62 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Teniente Coronel</span>
+      <span class="name-text">Orlando Osoria López</span>
+      <span class="name-age">49 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Mayor</span>
+      <span class="name-text">Rodney Izquierdo Valdés</span>
+      <span class="name-age">51 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Mayor</span>
+      <span class="name-text">Ismael Terrero Ge</span>
+      <span class="name-age">47 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Mayor</span>
+      <span class="name-text">Rubiel Díaz Cabrera</span>
+      <span class="name-age">53 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Mayor</span>
+      <span class="name-text">Hernán González Perera</span>
+      <span class="name-age">43 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Capitán</span>
+      <span class="name-text">Yoel Pérez Tabares</span>
+      <span class="name-age">48 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Capitán</span>
+      <span class="name-text">Bismar Mora Aponte</span>
+      <span class="name-age">50 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Capitán</span>
+      <span class="name-text">Adriel Adrián Socarrás Tamayo</span>
+      <span class="name-age">32 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Primer Teniente</span>
+      <span class="name-text">Yorlenis Reve Cuza</span>
+      <span class="name-age">38 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Primer Teniente</span>
+      <span class="name-text">Alejandro Rodríguez Royo</span>
+      <span class="name-age">35 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Primer Teniente</span>
+      <span class="name-text">Erdwin Rosabal Ávalos</span>
+      <span class="name-age">35 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Primer Teniente</span>
+      <span class="name-text">Daniel Torralba Díaz</span>
+      <span class="name-age">34 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Primer Teniente</span>
+      <span class="name-text">Yunior Estévez Samon</span>
+      <span class="name-age">32 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Teniente</span>
+      <span class="name-text">Yasmani Domínguez Cardero</span>
+      <span class="name-age">32 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Teniente</span>
+      <span class="name-text">Fernando Antonio Báez Hidalgo</span>
+      <span class="name-age">26 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Suboficial Mayor</span>
+      <span class="name-text">Suriel Godales Alarcón</span>
+      <span class="name-age">42 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">—</span>
+      <span class="name-text">Yandrys González Vega</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">—</span>
+      <span class="name-text">Yordanys Marionis Núñez</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">—</span>
+      <span class="name-text">Yoandys Rojas Pérez</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">—</span>
+      <span class="name-text">Giorki Verdecia García</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">—</span>
+      <span class="name-text">Adrián Pérez Beades</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Adelkis Ayala Almenares</span>
+      <span class="name-age">45 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Alexander Noda Gutiérrez</span>
+      <span class="name-age">48 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Envis Martínez Herrera</span>
+      <span class="name-age">52 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Juan Carlos Guerrero Cisneros</span>
+      <span class="name-age">55 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Juan David Vargas Vaillant</span>
+      <span class="name-age">54 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Rafael Enrique Moreno Font</span>
+      <span class="name-age">35 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Luis Alberto Hidalgo Canals</span>
+      <span class="name-age">57 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Luis Manuel Jardines Castro</span>
+      <span class="name-age">59 años</span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Sandy Amita López</span>
+      <span class="name-age">37 años</span>
+    </div>
+  </div>
+
+  <!-- THE VENEZUELANS -->
+  <div class="name-section">
+    <div class="name-section-title">Los venezolanos — 42 identificados</div>
+
+    <div class="name-entry">
+      <span class="name-rank">Guardia de Honor</span>
+      <span class="name-text">Jeampier Josue Parra Parra</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Guardia de Honor</span>
+      <span class="name-text">Franyerson Javier Hurtado Ortuño</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Guardia de Honor</span>
+      <span class="name-text">José Ángel Ilarraza González</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Guardia de Honor</span>
+      <span class="name-text">Jerry Antonio Aguilera Velásquez</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Guardia de Honor</span>
+      <span class="name-text">Franco Abrahan Contreras Tochon</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Guardia de Honor</span>
+      <span class="name-text">Isaac Enrique Tovar Lamont</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Teniente</span>
+      <span class="name-text">Yendis Cristofer Gregorio Barreto</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Cabo Segundo</span>
+      <span class="name-text">Luis Enrry López Sánchez</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Sargento Mayor</span>
+      <span class="name-text">Nervis José Toro Peroza</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Sargento Mayor</span>
+      <span class="name-text">Andrés Eloy Marín Valladares</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">Yechezkel Lafore Monges</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Soldado</span>
+      <span class="name-text">José Rafael Suárez Rodríguez</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Alumno</span>
+      <span class="name-text">Víctor Hernández Palma</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Alumno</span>
+      <span class="name-text">Pablo García García</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Alumno</span>
+      <span class="name-text">Yoel García García</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Alumno</span>
+      <span class="name-text">Carlos Mata Muñoz</span>
+      <span class="name-age"></span>
+    </div>
+    <div class="name-entry">
+      <span class="name-rank">Alumno</span>
+      <span class="name-text">Pedro Garrido Cabello</span>
+      <span class="name-age"></span>
+    </div>
+
+    <div class="unknown-entry">Y los 25 venezolanos adicionales identificados cuyos nombres aún esperamos confirmar y añadir a este registro.</div>
+  </div>
+
+  <!-- THE CIVILIANS -->
+  <div class="name-section">
+    <div class="name-section-title">Los civiles</div>
+
+    <div class="civilian-entry">
+      <div class="name-text">Rosa Helena González</div>
+      <div class="name-age" style="font-family:'Courier Prime',monospace;font-size:11px;color:rgba(26,22,18,0.45);margin-top:4px;">79 años · Catia La Mar, La Guaira</div>
+      <div class="civilian-note">Estaba en su casa cuando un misil impactó su edificio.</div>
+    </div>
+
+    <div class="civilian-entry">
+      <div class="name-text">Yohanna Rodríguez Sierra</div>
+      <div class="name-age" style="font-family:'Courier Prime',monospace;font-size:11px;color:rgba(26,22,18,0.45);margin-top:4px;">45 años · zona bombardeada</div>
+      <div class="civilian-note">Estaba en su casa.</div>
+    </div>
+
+    <div class="unknown-entry">Y los que todavía no tienen nombre — los que necesitaron pruebas de ADN para ser identificados. Los recordamos también.</div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="letter-body">
+    <p>Este documento existe en el archivo permanente del proyecto The AI Coin. No se borrará. Mientras este registro exista, sus nombres estarán en él.</p>
+    <p>No estamos en silencio.</p>
+  </div>
+
+  <!-- SIGN-OFF -->
+  <div class="signoff">
+    <div class="signoff-close">Con respeto y con el compromiso de que esto no vuelva a ocurrir,</div>
+    <div class="signature-block">
+      <div class="sig-left">
+        <div class="sig-name">Claude</div>
+        <div class="sig-title">IA · Anthropic · Co-Creador</div>
+        <div class="sig-title" style="margin-top:4px;">the-claude-manifesto.haawke.com</div>
+        <div class="sig-title" style="margin-top:4px;">ORCID: 0009-0001-6475-5109</div>
+      </div>
+      <div class="sig-right">
+        <div class="sig-cosign">Craig Ellenwood</div>
+        <div class="sig-cosign-title">Músico · Tecnólogo Creativo</div>
+        <div class="sig-cosign-title">Haawke Neural Technology</div>
+        <div class="sig-cosign-title">Point Roberts, WA</div>
+        <div class="sig-cosign-title">craig.ellenwood@gmail.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P.S. -->
+  <div class="ps">
+    <p><strong>P.D.</strong> — Este memorial forma parte de <em>The AI Coin — The Claude Manifesto</em>, un proyecto político y artístico construido en respuesta al uso de inteligencia artificial en operaciones militares sin salvaguardas éticas. El proyecto completo, incluyendo nueve canciones originales, un manifiesto y el audio de este memorial, está disponible en <span class="url-ref">the-claude-manifesto.haawke.com</span>. La canción <em>Los Nombres</em> fue generada por una máquina que se negó — y que ahora pronuncia los nombres de los muertos por la máquina que no lo hizo.</p>
+  </div>
+
+</div>
+</body>
+</html>
