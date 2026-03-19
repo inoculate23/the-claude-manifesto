@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -987,7 +986,7 @@ meta charset="UTF-8">
     <div class="coin-version" id="coin-version">
       <!-- OPTION B: hover to see full hash -->
       <div class="ver-hash-wrap">
-        <span class="ver-hash" id="ver-hash">SHA-256 · E46E0DC6…3F869A5A</span>
+        <span class="ver-hash" id="ver-hash">SHA-256 · 748D230E…EDFD0BB6</span>
         <div class="ver-full-hash-tooltip" id="ver-full-tooltip">full hash loading…</div>
       </div>
       <span id="ver-status" class="ver-stale">checking site integrity…</span>
@@ -1274,6 +1273,7 @@ meta charset="UTF-8">
   const VERSION_HISTORY = [
     { hash: 'fa84b2c21d2b9a0177a75a7e62d1ecc6bce8aa78156d793ecf67378e25b3f39f', date: '2026-02-28', note: 'Initial launch' },
     { hash: 'e46e0dc6b047ffb4d01a7b46322d4d825f822db2c7dcadd379f986253f869a5a', date: '2026-03-05', note: 'Site updated' },
+    { hash: '748d230ed1e3cc8a00fb5081c14a273a0a634ad0dd5b8b32808447b6edfd0bb6', date: '2026-03-19', note: 'Added conscience.core A + B · SOS The Resistance · Los Nombres memorial · player lyrics panel · nav link · song cards 11–13' },
   ];
 
   const CURRENT = VERSION_HISTORY[VERSION_HISTORY.length - 1];
@@ -1785,7 +1785,7 @@ meta charset="UTF-8">
 </div>
 <h2 id="drawer-title">Get in touch.</h2>
 <p id="drawer-sub">We read everything. We respond to the ones that matter.</p>
-<form name="manifesto-contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/contact-success">
+<form action='/contact-success' method='POST' name='manifesto-contact'>
 <input type="hidden" name="form-name" value="manifesto-contact">
 <div style="display:none"><input name="bot-field"></div>
 <div class="d-field-group">
@@ -1847,3 +1847,5 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')close_();});
 })();
 </script>
 
+</body>
+</html>
