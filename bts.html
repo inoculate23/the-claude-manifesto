@@ -170,18 +170,20 @@
     color: rgba(201,168,76,0.70);
     display: block;
     font-size: 11px;
+    font-family: 'Space Mono', monospace;
     letter-spacing: 0.06em;
     line-height: 1.7;
     word-break: break-all;
     white-space: normal;
     user-select: all;
     -webkit-user-select: all;
-    cursor: text;
-    transition: color 0.2s;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,76,0.20);
+    transition: color 0.2s, border-color 0.2s;
     max-width: 380px;
   }
 
-  .ver-hash:hover { color: rgba(201,168,76,0.90); }
+  .ver-hash:hover { color: rgba(201,168,76,0.95); border-bottom-color: rgba(201,168,76,0.55); }
 
   .ver-hash-wrap {
     display: block;
@@ -254,6 +256,18 @@
     font-size: 12px;
     margin-top: 2px;
     word-break: break-all;
+  }
+
+  .ver-entry-hash a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .ver-entry-hash a:hover {
+    color: rgba(201,168,76,0.95);
+    border-bottom-color: rgba(201,168,76,0.6);
   }
 
   .ver-entry-current .ver-entry-note::after {
@@ -867,7 +881,7 @@
     <div class="coin-version" id="coin-version">
       <!-- OPTION B: hover to see full hash -->
       <div class="ver-hash-wrap">
-        <span class="ver-hash" id="ver-hash">dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315</span>
+        <a class="ver-hash" id="ver-hash" href="https://verify.haawke.com/dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315" target="_blank" rel="noopener">dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315</a>
         <div class="ver-full-hash-tooltip" id="ver-full-tooltip"></div>
       </div>
       <span id="ver-status" class="ver-stale">checking site integrity…</span>
@@ -1216,7 +1230,7 @@
       div.innerHTML =
         '<span class="ver-entry-date">' + v.date + '</span>' +
         '<span class="ver-entry-note">' + v.note + '</span>' +
-        '<span class="ver-entry-hash">' + fmt(v.hash) + '</span>';
+        '<span class="ver-entry-hash"><a href="https://verify.haawke.com/' + v.hash + '" target="_blank" rel="noopener">' + fmt(v.hash) + '</a></span>';
       entriesEl.appendChild(div);
     });
   }
@@ -1250,7 +1264,7 @@
     const CURRENT = VERSION_HISTORY[VERSION_HISTORY.length - 1];
 
     // Show known-good hash while live check runs
-    if (hashEl) hashEl.textContent = CURRENT.hash;
+    if (hashEl) { hashEl.textContent = CURRENT.hash; hashEl.href = 'https://verify.haawke.com/' + CURRENT.hash; }
     buildChangelog(CURRENT.hash);
 
     // 2. Fetch live index.html and hash it client-side (6s timeout)
@@ -1262,7 +1276,7 @@
         .map(b => b.toString(16).padStart(2,'0')).join('');
 
       liveHashFull = liveHash;
-      if (hashEl) hashEl.textContent = liveHash;
+      if (hashEl) { hashEl.textContent = liveHash; hashEl.href = 'https://verify.haawke.com/' + liveHash; }
 
       const isKnown   = VERSION_HISTORY.some(v => v.hash === liveHash);
       const isCurrent = liveHash === CURRENT.hash;
