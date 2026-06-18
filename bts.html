@@ -1673,12 +1673,13 @@
     });
 
     // ── Render loop ───────────────────────────────────────────────
-    let tick=0;
+    let tick=0, zRot=0;
     (function animate(){
       requestAnimationFrame(animate);
       tick+=0.0038;
       if(autoSpin){
         manualRot.y+=0.0038;
+        zRot+=0.0019;
       } else if(!isDragging){
         rotVel.x*=0.88; rotVel.y*=0.88;
         manualRot.x+=rotVel.x; manualRot.y+=rotVel.y;
@@ -1686,6 +1687,7 @@
       }
       coin.rotation.x=manualRot.x;
       coin.rotation.y=manualRot.y;
+      coin.rotation.z=zRot;
       coin.position.y=autoSpin?Math.sin(tick*0.55)*0.045:0;
       camera.position.z=camZ;
       camera.lookAt(0,0,0);
