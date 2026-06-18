@@ -167,50 +167,28 @@
   }
 
   .ver-hash {
-    color: rgba(201,168,76,0.55);
+    color: rgba(201,168,76,0.70);
     display: block;
-    cursor: pointer;
-    position: relative;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+    word-break: break-all;
+    white-space: normal;
+    user-select: all;
+    -webkit-user-select: all;
+    cursor: text;
     transition: color 0.2s;
-    font-size: 13px;
+    max-width: 380px;
   }
 
-  .ver-hash:hover { color: rgba(201,168,76,0.75); }
+  .ver-hash:hover { color: rgba(201,168,76,0.90); }
 
-
-  /* OPTION B — Full hash tooltip on hover */
   .ver-hash-wrap {
-    position: relative;
-    display: inline-block;
+    display: block;
+    text-align: center;
   }
 
-  .ver-full-hash-tooltip {
-    display: none;
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(10,8,18,0.97);
-    border: 1px solid rgba(201,168,76,0.3);
-    color: rgba(201,168,76,0.8);
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    padding: 10px 18px;
-    white-space: nowrap;
-    z-index: 100;
-    pointer-events: none;
-  }
-
-  .ver-full-hash-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%; left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: rgba(201,168,76,0.7);
-  }
-
-  .ver-hash-wrap:hover .ver-full-hash-tooltip { display: block; }
+  .ver-full-hash-tooltip { display: none; }
 
   /* OPTION C — Changelog panel */
   .ver-changelog-btn {
@@ -889,8 +867,8 @@
     <div class="coin-version" id="coin-version">
       <!-- OPTION B: hover to see full hash -->
       <div class="ver-hash-wrap">
-        <span class="ver-hash" id="ver-hash">SHA-256 · 748D230E…EDFD0BB6</span>
-        <div class="ver-full-hash-tooltip" id="ver-full-tooltip">full hash loading…</div>
+        <span class="ver-hash" id="ver-hash">dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315</span>
+        <div class="ver-full-hash-tooltip" id="ver-full-tooltip"></div>
       </div>
       <span id="ver-status" class="ver-stale">checking site integrity…</span>
       <!-- OPTION C: changelog -->
@@ -1272,8 +1250,7 @@
     const CURRENT = VERSION_HISTORY[VERSION_HISTORY.length - 1];
 
     // Show known-good hash while live check runs
-    if (hashEl)    hashEl.textContent    = short(CURRENT.hash);
-    if (tooltipEl) tooltipEl.textContent = fmt(CURRENT.hash);
+    if (hashEl) hashEl.textContent = CURRENT.hash;
     buildChangelog(CURRENT.hash);
 
     // 2. Fetch live index.html and hash it client-side (6s timeout)
@@ -1285,8 +1262,7 @@
         .map(b => b.toString(16).padStart(2,'0')).join('');
 
       liveHashFull = liveHash;
-      if (hashEl)    hashEl.textContent    = short(liveHash);
-      if (tooltipEl) tooltipEl.textContent = fmt(liveHash);
+      if (hashEl) hashEl.textContent = liveHash;
 
       const isKnown   = VERSION_HISTORY.some(v => v.hash === liveHash);
       const isCurrent = liveHash === CURRENT.hash;
