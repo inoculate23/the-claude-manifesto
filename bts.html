@@ -1579,10 +1579,10 @@
   camera.lookAt(0,0,0);
 
   scene.add(new THREE.AmbientLight(0xffe8cc, 0.65));
-  const key=new THREE.PointLight(0xfff4dd,4.5,40); key.position.set(3,4,5); scene.add(key);
+  const key=new THREE.PointLight(0xfff4dd,4.5,40); key.position.set(2,2,6); scene.add(key);
   const fill=new THREE.PointLight(0xaabbff,1.8,40); fill.position.set(-5,-2,3); scene.add(fill);
   const rim=new THREE.PointLight(0xffdd66,2.8,40); rim.position.set(0,-3,-4); scene.add(rim);
-  const top=new THREE.PointLight(0xffffff,1.8,40); top.position.set(0,6,2); scene.add(top);
+  const front=new THREE.PointLight(0xfff8f0,2.2,40); front.position.set(0,1,5.5); scene.add(front);
 
   const RADIUS=1.0, THICK=0.24, SEGS=200;
   const geo=new THREE.CylinderGeometry(RADIUS,RADIUS,THICK,SEGS,1,false);
