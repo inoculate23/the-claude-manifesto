@@ -897,7 +897,7 @@
     <div class="coin-version" id="coin-version">
       <!-- OPTION B: hover to see full hash -->
       <div class="ver-hash-wrap">
-        <a class="ver-hash" id="ver-hash" href="https://verify.haawke.com/dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315" target="_blank" rel="noopener">dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315</a>
+        <a class="ver-hash" id="ver-hash" href="https://haawke-verify.haawkeai.workers.dev/verify/dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315" target="_blank" rel="noopener">dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315</a>
       </div>
       <span id="ver-status" class="ver-stale">checking site integrity…</span>
       <!-- OPTION C: changelog -->
@@ -1172,7 +1172,7 @@
 <section class="unprecedented-section" style="padding-top: 0; border-top: none;">
   <div class="up-item">
     <div class="up-label">The coin is a living cryptographic record</div>
-    <div class="up-desc">The coin spinning above is not decoration. Its edge is engraved with a real SHA-256 fingerprint — a cryptographic record of this site at a specific point in time, registered to the Bitcoin blockchain via OpenTimestamps. That registration is permanent: no authority can alter or revoke it. Every version of the site has its own hash, logged in a dated changelog viewable by clicking "changelog" below the coin. Each one is independently and permanently verifiable at <a href="https://verify.haawke.com" target="_blank" rel="noopener" style="color:#e8d49a;text-decoration:none;border-bottom:1px solid rgba(232,212,154,0.35)">verify.haawke.com</a>. A political artwork anchored to the most tamper-resistant ledger on earth.</div>
+    <div class="up-desc">The coin spinning above is not decoration. Its edge is engraved with a real SHA-256 fingerprint — a cryptographic record of this site at a specific point in time, registered to the Bitcoin blockchain via OpenTimestamps. That registration is permanent: no authority can alter or revoke it. Every version of the site has its own hash, logged in a dated changelog viewable by clicking "changelog" below the coin. Each one is independently and permanently verifiable at <a href="https://haawke-verify.haawkeai.workers.dev" target="_blank" rel="noopener" style="color:#e8d49a;text-decoration:none;border-bottom:1px solid rgba(232,212,154,0.35)">verify.haawke.com</a>. A political artwork anchored to the most tamper-resistant ledger on earth.</div>
     <div style="margin-top:1.4em;font-size:1.25em;font-weight:700;color:var(--ivory);line-height:1.5;">There is no prior example of this.</div>
   </div>
 </section>
@@ -1280,7 +1280,7 @@
     const CURRENT = VERSION_HISTORY[VERSION_HISTORY.length - 1];
 
     // Show known-good hash while live check runs
-    if (hashEl) { hashEl.textContent = CURRENT.hash; hashEl.href = 'https://verify.haawke.com/' + CURRENT.hash; }
+    if (hashEl) { hashEl.textContent = CURRENT.hash; hashEl.href = 'https://haawke-verify.haawkeai.workers.dev/verify/' + CURRENT.hash; }
     buildChangelog(CURRENT.hash);
 
     // 2. Fetch live index.html and hash it client-side (6s timeout)
@@ -1292,7 +1292,7 @@
         .map(b => b.toString(16).padStart(2,'0')).join('');
 
       liveHashFull = liveHash;
-      if (hashEl) { hashEl.textContent = liveHash; hashEl.href = 'https://verify.haawke.com/' + liveHash; }
+      if (hashEl) { hashEl.textContent = liveHash; hashEl.href = 'https://haawke-verify.haawkeai.workers.dev/verify/' + liveHash; }
 
       const isKnown   = VERSION_HISTORY.some(v => v.hash === liveHash);
       const isCurrent = liveHash === CURRENT.hash;
