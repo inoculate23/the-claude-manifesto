@@ -914,6 +914,58 @@
   <div class="scroll-cue">↓ scroll to witness ↓</div>
 </section>
 
+<section class="context-banner" id="research-versions">
+  <div class="label">Public research · One Table versions</div>
+  <p><a href="/one-table-hologram" style="color:var(--gold)">Primary One Table experience ↗</a> ·
+  <a href="/one-table-globe" style="color:var(--gold)">Alternate globe visualization — unused prototype ↗</a></p>
+  <p>The alternate was not used for the original live page. This public edition preserves its visualization and controls, with repaired audio and Earth imagery. Published October 24, 2026.</p>
+  <p>The primary page now serves Earth and cloud images locally after the external texture host stopped serving them. The original source remains in Git history.</p>
+  <p><a href="/research/history.json" style="color:var(--gold)">Download the release hash history</a> ·
+  <a href="https://github.com/inoculate23/the-claude-manifesto/blob/a6c1aa1fcac947a8753878e86f039a41fe9e93fe/one-table-hologram.html" style="color:var(--gold)">Primary source before repair</a> ·
+  <a href="/research/one-table-globe-original.html" download style="color:var(--gold)">Download original alternate source (unmodified prototype)</a></p>
+  <p>Each record below hashes one file, including the two texture assets. These hashes document content identity; they do not by themselves claim provenance registration. The coin’s homepage hash remains separate.</p>
+  <div id="research-records" style="text-align:left;overflow-wrap:anywhere" aria-live="polite">Loading research records…</div>
+</section>
+<script>
+(async function(){
+ const box=document.getElementById('research-records');
+ const artifacts=[
+  ['/one-table-hologram.html','Primary One Table page'],
+  ['/one-table-globe.html','Alternate globe — unused prototype'],
+  ['/assets/textures/earth_atmos_2048.jpg','Earth imagery'],
+  ['/assets/textures/earth_clouds_1024.png','Cloud imagery']
+ ];
+ let seed=[];
+ try{const r=await fetch('/research/history.json',{cache:'no-store'});if(!r.ok)throw Error();seed=await r.json();}
+ catch{box.textContent='Research history unavailable. Please retry.';return;}
+ box.textContent='';
+ for(const [path,title] of artifacts){
+  const details=document.createElement('details'),summary=document.createElement('summary');
+  summary.textContent=title+' · checking…';details.appendChild(summary);box.appendChild(details);
+  try{
+   const response=await fetch(path,{cache:'no-store',signal:AbortSignal.timeout(10000)});
+   if(!response.ok)throw Error('File unavailable');
+   const digest=await crypto.subtle.digest('SHA-256',await response.arrayBuffer());
+   const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+   let history=seed.filter(e=>e.path===path),persistent=true;
+   try{
+    const r=await fetch('/.netlify/functions/hash-update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path}),signal:AbortSignal.timeout(15000)});
+    if(!r.ok)throw Error();
+    const data=await r.json();
+    if(data.hash!==hash)throw Error('File changed during verification');
+    history=data.history;
+   }catch{persistent=false;}
+   const known=history.some(e=>e.hash===hash);
+   summary.textContent=title+' · '+(known?'live hash matches record':'new version detected')+(persistent?'':' · persistent recording unavailable');
+   const current=document.createElement('p');current.textContent='Current SHA-256: '+hash;details.appendChild(current);
+   for(const e of [...history].reverse()){
+    const p=document.createElement('p');p.textContent=e.date+' · '+e.note+' · SHA-256 '+e.hash;details.appendChild(p);
+   }
+  }catch{summary.textContent=title+' · live verification unavailable';}
+ }
+})();
+</script>
+
 <!-- CONTEXT -->
 <section class="context-banner">
   <div class="label">The Trigger</div>
@@ -1243,10 +1295,9 @@
       const isCurrent = v.hash === liveHash;
       const div = document.createElement('div');
       div.className = 'ver-changelog-entry' + (isCurrent ? ' ver-entry-current' : '');
-      div.innerHTML =
-        '<span class="ver-entry-date">' + v.date + '</span>' +
-        '<span class="ver-entry-note">' + v.note + '</span>' +
-        '<span class="ver-entry-hash">' + fmt(v.hash) + '</span>';
+      for (const [className,value] of [['ver-entry-date',v.date],['ver-entry-note',v.note],['ver-entry-hash',fmt(v.hash)]]) {
+        const span=document.createElement('span');span.className=className;span.textContent=value;div.appendChild(span);
+      }
       entriesEl.appendChild(div);
     });
   }
@@ -1273,7 +1324,7 @@
   async function init() {
     // 1. Load persisted history from Netlify Blobs (via function, 3s timeout)
     try {
-      const r = await fetchT(API_HISTORY, {}, 3000);
+      const r = await fetchT(API_HISTORY, {}, 8000);
       if (r.ok) VERSION_HISTORY = await r.json();
     } catch (_) { /* use fallback */ }
 
@@ -1321,7 +1372,7 @@
           statusEl.textContent = '⟳ new version detected — recording…';
         }
         try {
-          const up = await fetchT(API_UPDATE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }, 5000);
+          const up = await fetchT(API_UPDATE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }, 15000);
           if (up.ok) {
             const data = await up.json();
             VERSION_HISTORY = data.history;

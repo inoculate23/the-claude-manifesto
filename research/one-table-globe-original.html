@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONE TABLE — Holographic Peace Anthem</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --teal: #00ffcc;
+  --blue: #00aaff;
+  --purple: #aa44ff;
+  --orange: #ff6600;
+  --gold: #d4a84b;
+  --bg: #000208;
+}
+body { background:var(--bg); overflow:hidden; font-family:'Share Tech Mono',monospace; }
+canvas { display:block; }
+
+/* ── HUD Frame ── */
+#ui { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:10; }
+
+.corner { position:fixed; width:44px; height:44px; border-color:#00ffcc44; border-style:solid; opacity:0.7; }
+#c-tl { top:10px; left:10px; border-width:1px 0 0 1px; }
+#c-tr { top:10px; right:10px; border-width:1px 1px 0 0; }
+#c-bl { bottom:10px; left:10px; border-width:0 0 1px 1px; }
+#c-br { bottom:10px; right:10px; border-width:0 1px 1px 0; }
+
+#title-hud {
+  position:fixed; top:18px; left:50%; transform:translateX(-50%);
+  text-align:center; pointer-events:none;
+}
+#title-hud h1 {
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(14px,2.8vw,30px);
+  letter-spacing:0.2em;
+  background:linear-gradient(90deg, var(--teal), #fff, var(--blue));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(0 0 16px rgba(0,255,204,0.5));
+}
+#title-hud .sub {
+  font-size:8px; letter-spacing:0.4em; color:var(--teal);
+  opacity:0.55; margin-top:3px; text-transform:uppercase;
+}
+
+/* ── Bottom Lyric Panel ── */
+#lyric-panel {
+  position:fixed; bottom:0; left:0; right:0;
+  background:linear-gradient(to top, rgba(0,2,8,0.97) 50%, rgba(0,2,8,0.5) 85%, transparent);
+  padding:12px 6vw 20px;
+  z-index:20; pointer-events:auto;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  min-height:155px;
+}
+
+#verse-hud {
+  display:flex; align-items:center; gap:14px;
+  border-top:1px solid rgba(0,255,204,0.15);
+  padding-top:10px; width:100%; max-width:860px;
+  justify-content:center;
+}
+#flag-display { font-size:20px; }
+#country-name { font-size:9px; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; }
+#lang-name { font-size:9px; letter-spacing:0.3em; color:var(--teal); opacity:0.6; }
+#plan-tag { font-size:8px; letter-spacing:0.22em; color:var(--blue); opacity:0.5; text-transform:uppercase; }
+
+#lyric-display {
+  width:100%; max-width:860px; min-height:85px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; text-align:center;
+}
+.lline {
+  font-size:clamp(11px,1.9vw,17px);
+  line-height:1.7; color:rgba(240,230,200,0.15);
+  transition:all 0.55s ease; font-style:italic;
+  text-shadow:none;
+  transform:translateY(4px);
+}
+.lline.active {
+  color:rgba(240,240,255,1);
+  text-shadow:0 0 20px rgba(0,255,204,0.5), 0 0 40px rgba(0,170,255,0.25);
+  transform:translateY(0);
+}
+.lline.past { color:rgba(240,230,200,0.18); transform:translateY(-3px); }
+
+/* Dots */
+#verse-dots { display:flex; gap:7px; margin-top:3px; }
+.vdot {
+  width:5px; height:5px; border-radius:50%;
+  background:rgba(0,255,204,0.13); cursor:pointer;
+  transition:all 0.3s; pointer-events:auto;
+}
+.vdot:hover { background:rgba(0,255,204,0.4); }
+.vdot.act { background:var(--gold); box-shadow:0 0 7px var(--gold); transform:scale(1.4); }
+.vdot.done { background:var(--teal); opacity:0.35; }
+
+/* Progress */
+#prog-bar {
+  position:fixed; bottom:0; left:0; height:2px;
+  background:linear-gradient(to right, var(--gold), var(--teal));
+  transition:width 0.15s linear; z-index:30;
+  box-shadow:0 0 8px rgba(0,255,204,0.7);
+}
+
+/* Controls */
+#controls {
+  position:fixed; top:50%; right:18px;
+  transform:translateY(-50%); z-index:25;
+  display:flex; flex-direction:column; gap:9px; pointer-events:auto;
+}
+.cbtn {
+  background:rgba(0,2,8,0.75); border:1px solid rgba(0,255,204,0.25);
+  color:var(--teal); width:34px; height:34px; border-radius:50%;
+  cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s; font-family:'Share Tech Mono',monospace;
+}
+.cbtn:hover { border-color:var(--teal); background:rgba(0,255,204,0.1); box-shadow:0 0 12px rgba(0,255,204,0.3); }
+
+/* Volume */
+#vol-wrap {
+  position:fixed; left:18px; top:50%;
+  transform:translateY(-50%); z-index:25;
+  display:flex; flex-direction:column; align-items:center; gap:6px; pointer-events:auto;
+}
+#vol-label { font-size:7px; letter-spacing:0.2em; color:var(--teal); opacity:0.5; writing-mode:vertical-rl; text-transform:uppercase; }
+#vol-slider {
+  -webkit-appearance:none; width:3px; height:100px;
+  background:rgba(0,255,204,0.15); outline:none; cursor:pointer;
+  writing-mode:vertical-lr; direction:rtl;
+  border-radius:2px;
+}
+#vol-slider::-webkit-slider-thumb { -webkit-appearance:none; width:10px; height:10px; border-radius:50%; background:var(--teal); box-shadow:0 0 6px var(--teal); }
+
+/* Status */
+#status-bar {
+  position:fixed; top:52px; left:50%; transform:translateX(-50%);
+  font-size:8px; letter-spacing:0.35em; color:rgba(0,255,204,0.45);
+  text-transform:uppercase; pointer-events:none; z-index:10;
+  animation:blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:0.4} 50%{opacity:0.85} }
+
+/* Intro overlay */
+#intro-overlay {
+  position:fixed; inset:0; z-index:50;
+  background:radial-gradient(ellipse at center, rgba(0,10,24,0.97) 0%, rgba(0,2,8,0.99) 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:18px; text-align:center; padding:40px;
+  transition:opacity 1.8s ease;
+}
+#intro-overlay h2 {
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(24px,6vw,60px); letter-spacing:0.15em;
+  background:linear-gradient(135deg, var(--gold), #fff, var(--teal));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(0,255,204,0.4));
+}
+#intro-overlay p {
+  font-size:clamp(10px,1.4vw,14px); color:rgba(200,240,255,0.6);
+  max-width:520px; line-height:1.9; letter-spacing:0.04em;
+}
+.flags-marquee {
+  font-size:28px; letter-spacing:5px;
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+#start-btn {
+  background:transparent; border:1px solid var(--teal);
+  color:var(--teal); font-family:'Share Tech Mono',monospace;
+  font-size:11px; letter-spacing:0.45em; padding:13px 40px;
+  cursor:pointer; text-transform:uppercase; transition:all 0.3s;
+  margin-top:8px; pointer-events:auto;
+}
+#start-btn:hover {
+  background:rgba(0,255,204,0.1);
+  box-shadow:0 0 24px rgba(0,255,204,0.35), inset 0 0 24px rgba(0,255,204,0.05);
+}
+.fadeout { opacity:0 !important; pointer-events:none !important; }
+
+/* Audio waveform canvas (overlay on panel area) */
+#waveform-hud {
+  position:fixed; right:80px; top:50%; transform:translateY(-50%);
+  width:60px; height:120px; opacity:0.4; pointer-events:none; z-index:5;
+}
+</style>
+</head>
+<body>
+
+<!-- Audio -->
+<audio id="song" src="1.aac" preload="auto" crossorigin="anonymous"></audio>
+
+<!-- 3D Canvas -->
+<div id="canvas-wrap" style="position:fixed;inset:0;z-index:1;"></div>
+
+<!-- HTML Labels for flags on globe -->
+<div id="flag-labels" style="position:fixed;inset:0;z-index:15;pointer-events:none;"></div>
+
+<!-- UI Frame -->
+<div id="ui">
+  <div class="corner" id="c-tl"></div>
+  <div class="corner" id="c-tr"></div>
+  <div class="corner" id="c-bl"></div>
+  <div class="corner" id="c-br"></div>
+</div>
+
+<div id="title-hud">
+  <h1>ONE TABLE</h1>
+  <div class="sub">A Global Peace Anthem · 10 Countries · 10 Languages</div>
+</div>
+<div id="status-bar">◈ DRAG TO ROTATE · SCROLL TO ZOOM ◈</div>
+
+<!-- Bottom lyrics panel -->
+<div id="lyric-panel">
+  <div id="verse-hud">
+    <span id="flag-display">🌍</span>
+    <span id="country-name">Intro</span>
+    <span id="lang-name"></span>
+    <span id="plan-tag"></span>
+  </div>
+  <div id="lyric-display"></div>
+  <div id="verse-dots"></div>
+</div>
+
+<div id="prog-bar" style="width:0%"></div>
+
+<!-- Controls -->
+<div id="controls">
+  <button class="cbtn" id="btn-prev">‹</button>
+  <button class="cbtn" id="btn-play">▶</button>
+  <button class="cbtn" id="btn-next">›</button>
+</div>
+
+<!-- Volume -->
+<div id="vol-wrap">
+  <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.8" orient="vertical">
+  <div id="vol-label">Vol</div>
+</div>
+
+<!-- Intro -->
+<div id="intro-overlay">
+  <div class="flags-marquee">🇵🇪 🇺🇸 🇫🇷 🇳🇬 🇧🇷 🌍 🇮🇳 🇯🇵 🇷🇺 🇰🇪</div>
+  <h2>ONE TABLE</h2>
+  <p>Ten nations. Ten languages. One cumulative plan for peace —<br>built verse by verse, from the ground up.</p>
+  <button id="start-btn">▶ &nbsp; INITIATE ANTHEM</button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+// SONG DATA
+// ════════════════════════════════════════════════════
+const VERSES = [
+  { id:0, country:'Intro', lang:'', flag:'🎵', lat:0, lon:0, plan:'',
+    lines:['[ Instrumental — kora & acoustic guitar ]','A table is being set…','Ten chairs. Ten voices.','One planet.'] },
+  { id:1, country:'Peru', lang:'Español', flag:'🇵🇪', lat:-9.19, lon:-75.01,
+    plan:'✦ LISTEN first · Equal seat for everyone',
+    lines:['Causa, escúchame — antes de alzar la voz','Primero hay que escuchar — eso nos une a los dos','No somos enemigos aunque hablemos distinto','El hambre duele igual — ese es nuestro instinto','Propongo una mesa — donde todos tengan silla','La paz no es un sueño — es un plan, es trabajo'] },
+  { id:2, country:'USA', lang:'English', flag:'🇺🇸', lat:37.09, lon:-95.71,
+    plan:'✦ ACCOUNTABILITY — own the damage, then heal',
+    lines:['I hear you brother, coming in from the south','Lay down the weapons, lay down the pride','Acknowledge the damage done on every side','No nation is innocent — own it, then heal','Accountability first — that\'s the only real deal'] },
+  { id:3, country:'France', lang:'Français', flag:'🇫🇷', lat:46.23, lon:2.21,
+    plan:'✦ DIGNITY + address colonial history',
+    lines:['J\'entends l\'Amérique, j\'entends le Pérou','La responsabilité — oui, c\'est le premier clou','Liberté sans égalité n\'est qu\'un vieux refrain','Le passé colonial doit être adressé','La fraternité n\'est pas qu\'un mot sur un mur'] },
+  { id:4, country:'Nigeria', lang:'Pidgin English', flag:'🇳🇬', lat:9.08, lon:8.68,
+    plan:'✦ Ubuntu — Share resources. I am because we are',
+    lines:['Abeg, make I add my voice to dis ting','The wealth of the ground belong to everybody here','When one pikin dey hungry, the whole table no clear','Ubuntu — I am because we are, no be joke','Africa don carry the weight too long for free'] },
+  { id:5, country:'Brazil', lang:'Português', flag:'🇧🇷', lat:-14.24, lon:-51.93,
+    plan:'✦ PEACE WITH NATURE — Earth is non-negotiable',
+    lines:['Ouço a África, ouço todos vocês','A natureza também precisa de uma vez','Sem a terra não há mesa, sem a mata não há ar','Amazônia não é de um país — é da gente','Paz entre povos mas também com o chão'] },
+  { id:6, country:'Arab World', lang:'العربية', flag:'🌍', lat:31.95, lon:35.93,
+    plan:'✦ PROTECT CHILDREN — humanitarian ceasefire first',
+    lines:['أسمع البرازيل، أسمع الجميع معي','السلام يبدأ بالأرض — أرضي وأرضك بيني','كلنا أبناء إبراهيم، كلنا من تراب','أقترح هدنة إنسانية — مش سياسية','حيث الطفل ينام بأمان، هذه الأولوية'] },
+  { id:7, country:'India', lang:'हिन्दी', flag:'🇮🇳', lat:20.59, lon:78.96,
+    plan:'✦ EDUCATION for all · Diversity is strength',
+    lines:['मैं सुनता हूँ — अरब की आवाज़, ब्राज़ील का दिल','अलग अलग भाषाएं — पर एक ही मंज़िल','विविधता हमारी ताकत है, कमज़ोरी नहीं','शिक्षा हर बच्चे का हक़ है, हर कोने में','वसुधैव कुटुम्बकम् — सारी धरती एक परिवार'] },
+  { id:8, country:'Japan', lang:'日本語', flag:'🇯🇵', lat:36.20, lon:138.25,
+    plan:'✦ PATIENCE + sustained dialogue over anger',
+    lines:['インドの言葉が心に響く','多様性の中に — 和がある、美しく咲く','平和は一日では来ない、長い道を歩もう','対話を続けること — それが一番の武器','一期一会 — この瞬間を大切に'] },
+  { id:9, country:'Russia', lang:'Русский', flag:'🇷🇺', lat:61.52, lon:105.32,
+    plan:'✦ PROTECT THE WEAK — bread & knowledge, not weapons',
+    lines:['Я слышу Японию — терпение, диалог','Добавлю: никто не должен быть одинок','Сильные нации должны защищать слабых','Не оружием — а хлебом, знаниями, словах','Мир строится не договорами — а доверием'] },
+  { id:10, country:'Kenya', lang:'Kiswahili', flag:'🇰🇪', lat:-0.02, lon:37.91,
+    plan:'✦ HARAMBEE — pull together. Words into action.',
+    lines:['Nasikia Russia, Japani, nchi zote','Amani si rahisi, lakini inawezekana','Maneno mazuri bila kazi ni upepo','Harambee — tuvuke pamoja mpakani','Meza moja — wanadamu wote, ndugu zangu'] },
+  { id:11, country:'All Nations', lang:'All Languages', flag:'🌐', lat:0, lon:0,
+    plan:'✦ ONE TABLE. We begin.',
+    lines:['One table / Una mesa / Une table','همه با هم / Juntos / 共に / Вместе / Pamoja','No one left outside / Nadie afuera','Listen · Own · Share · Sustain · Teach','Protect · Dialogue · Include · Act','🌍  One Table. We begin. 🌍'] },
+];
+
+// ════════════════════════════════════════════════════
+// THREE.JS SCENE
+// ════════════════════════════════════════════════════
+const wrap = document.getElementById('canvas-wrap');
+const W = window.innerWidth, H = window.innerHeight;
+
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(W, H);
+renderer.setClearColor(0x000208);
+wrap.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x000208, 0.032);
+
+const camera = new THREE.PerspectiveCamera(52, W/H, 0.1, 200);
+camera.position.set(0, 4, 13);
+camera.lookAt(0, 2.5, 0);
+
+// Lights
+scene.add(new THREE.AmbientLight(0x223355, 1.2));
+const sun = new THREE.DirectionalLight(0x9abfdd, 1.8);
+sun.position.set(5, 3, 5); scene.add(sun);
+const rim = new THREE.DirectionalLight(0x00ffcc, 0.4);
+rim.position.set(-4,-2,-3); scene.add(rim);
+
+// ── HologramGeometry ──────────────────────────────
+class HologramGeometry extends THREE.PlaneGeometry {
+  constructor(width, height, feetOffset, wSeg, hSeg) {
+    super(width, height, wSeg||1, hSeg||1);
+    this.isHologramGeometry = true;
+    let _fo = feetOffset || new THREE.Vector2();
+    const _w=width, _h=height;
+    Object.defineProperty(this,'feetOffset',{
+      set(v){
+        _fo=v;
+        const x=_w*-(_fo.x/2), y=(_h*0.5)-(_h*_fo.y);
+        this.userData=this.userData||{};
+        if(this.userData.ct) this.translate(-this.userData.ct.x,-this.userData.ct.y,0);
+        this.userData.ct={x,y}; this.translate(x,y,0);
+      },
+      get(){ return _fo; }
+    });
+    this.feetOffset=_fo;
+  }
+}
+
+class HologramMesh extends THREE.Mesh {
+  constructor(g,m){ super(g,m); }
+  rotateYToCamera(cam){
+    const mp=new THREE.Vector3(); this.getWorldPosition(mp);
+    const cp=new THREE.Vector3(); cam.getWorldPosition(cp);
+    this.rotation.set(0,Math.atan2(cp.x-mp.x,cp.z-mp.z),0);
+  }
+}
+
+// ── Hologram panel shader ─────────────────────────
+const holoVert = `varying vec2 vUv; varying vec3 vPos;
+void main(){ vUv=uv; vPos=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`;
+
+function makeHoloPanelFrag(type){
+return `
+uniform float uTime; uniform vec3 uColor; uniform float uIndex; uniform float uAmp;
+varying vec2 vUv; varying vec3 vPos;
+float rand(vec2 co){ return fract(sin(dot(co,vec2(12.9898,78.233)))*43758.5453); }
+float noise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
+  float a=rand(i),b=rand(i+vec2(1,0)),c=rand(i+vec2(0,1)),d=rand(i+vec2(1,1));
+  return mix(mix(a,b,f.x),mix(c,d,f.x),f.y); }
+void main(){
+  vec2 uv=vUv; float t=uTime;
+  float scanLine=pow(sin(uv.y*80.0-t*4.0)*0.5+0.5, 3.0);
+  float edgeX=smoothstep(0.0,0.05,uv.x)*smoothstep(1.0,0.95,uv.x);
+  float edgeY=smoothstep(0.0,0.05,uv.y)*smoothstep(1.0,0.95,uv.y);
+  float edge=edgeX*edgeY; float edgeGlow=(1.0-edge)*0.8;
+  float flicker=0.95+0.05*sin(t*17.3+uIndex);
+  float alpha=0.0; vec3 col=uColor;
+  ${ type===0 ? `
+    float bands=16.0; float band=floor(uv.x*bands);
+    float h=0.2+(0.4+0.3*uAmp)*noise(vec2(band*0.3,t*1.4+uIndex));
+    float bar=step(uv.y,h)*step(0.03,fract(uv.x*bands));
+    float glow=smoothstep(h+0.06,h,uv.y)*0.4;
+    alpha=bar*0.85+glow+edgeGlow*0.3;
+    col=mix(uColor,vec3(1.0,1.0,1.0),bar*0.15);
+  ` : type===1 ? `
+    vec2 centered=uv*2.0-1.0; float r=length(centered);
+    float angle=atan(centered.y,centered.x);
+    float sweep=mod(angle+t*1.5,6.2831);
+    float sweepLine=smoothstep(0.15,0.0,sweep)*smoothstep(0.0,0.05,r);
+    float circles=abs(sin(r*12.0-t*0.3))*smoothstep(1.0,0.8,r);
+    float crosshair=(step(abs(centered.x),0.012)+step(abs(centered.y),0.012))*smoothstep(1.0,0.8,r)*0.3;
+    float blip1=smoothstep(0.04,0.0,length(centered-vec2(0.4*cos(t*0.7),0.3*sin(t*0.5))));
+    float blip2=smoothstep(0.03,0.0,length(centered-vec2(-0.5*sin(t*0.4),-0.2*cos(t*0.9))));
+    alpha=(sweepLine*0.8+circles*0.15+crosshair+blip1+blip2)*edge;
+  ` : type===2 ? `
+    vec2 grid=fract(uv*vec2(12.0,16.0));
+    float gridLine=step(0.92,max(grid.x,grid.y))*0.25;
+    float ix=floor(uv.x*12.0),iy=floor(uv.y*16.0);
+    float cellVal=noise(vec2(ix*0.17+t*0.3,iy*0.13));
+    float lit=step(0.5+0.3*sin(t*0.8+ix*0.4+iy*0.3),cellVal);
+    float glyph=lit*smoothstep(0.1,0.15,min(grid.x,1.0-grid.x))*smoothstep(0.05,0.1,min(grid.y,1.0-grid.y));
+    alpha=(gridLine+glyph*0.7)*edge+edgeGlow*0.3;
+  ` : `
+    vec2 c=uv*2.0-1.0;
+    float orbit1=smoothstep(0.03,0.0,abs(length(c)-0.5))+smoothstep(0.02,0.0,abs(length(c)-0.35));
+    float orbit2=smoothstep(0.03,0.0,abs(length(mat2(cos(1.047),-sin(1.047),sin(1.047),cos(1.047))*c)-0.45));
+    float particle=smoothstep(0.04,0.0,length(c-vec2(0.5*cos(t*1.3),0.5*sin(t*1.3))));
+    float particle2=smoothstep(0.04,0.0,length(c-vec2(-0.35*cos(t*0.9+2.0),0.35*sin(t*0.9+2.0))));
+    float particle3=smoothstep(0.03,0.0,length(c-vec2(0.45*cos(-t*1.1+1.0),-0.45*sin(-t*1.1+1.0))));
+    float nucleus=smoothstep(0.08,0.04,length(c));
+    alpha=(orbit1*0.4+orbit2*0.25+particle+particle2+particle3+nucleus*0.6)*edge;
+  `}
+  float scan=0.85+0.15*scanLine;
+  alpha*=scan*flicker; alpha=clamp(alpha,0.0,1.0);
+  gl_FragColor=vec4(col*(0.8+alpha*0.5),alpha*0.9);
+}`;
+}
+
+// Build holo panels
+const panelData=[
+  {color:new THREE.Color(0x00ffcc),type:0,angle:0.0,  radius:5.5,h:2.5,w:3.2,hh:2.0,feetY:0.5},
+  {color:new THREE.Color(0x00aaff),type:1,angle:1.26, radius:5.5,h:2.5,w:2.8,hh:2.8,feetY:0.5},
+  {color:new THREE.Color(0xaa44ff),type:2,angle:2.51, radius:5.5,h:2.5,w:2.4,hh:3.2,feetY:0.5},
+  {color:new THREE.Color(0xff6600),type:3,angle:-1.26,radius:5.5,h:2.5,w:3.0,hh:2.6,feetY:0.5},
+  {color:new THREE.Color(0x00ffcc),type:2,angle:-2.51,radius:5.5,h:2.5,w:2.6,hh:2.2,feetY:0.5},
+];
+const holoMeshes=[];
+panelData.forEach((d,i)=>{
+  const geo=new HologramGeometry(d.w,d.hh,new THREE.Vector2(0,d.feetY));
+  const mat=new THREE.ShaderMaterial({
+    vertexShader:holoVert, fragmentShader:makeHoloPanelFrag(d.type),
+    uniforms:{ uTime:{value:0}, uColor:{value:d.color}, uIndex:{value:i*1.3}, uAmp:{value:0} },
+    transparent:true, side:THREE.DoubleSide, depthWrite:false,
+  });
+  const mesh=new HologramMesh(geo,mat);
+  mesh.position.set(Math.sin(d.angle)*d.radius, 0, Math.cos(d.angle)*d.radius);
+  scene.add(mesh); holoMeshes.push(mesh);
+});
+
+// ── Earth Globe (replaces icosphere) ─────────────
+function buildEarthTex(){
+  const c=document.createElement('canvas'); c.width=1024; c.height=512;
+  const ctx=c.getContext('2d');
+  // Ocean
+  const og=ctx.createLinearGradient(0,0,0,512);
+  og.addColorStop(0,'#061830'); og.addColorStop(0.5,'#082040'); og.addColorStop(1,'#040e1c');
+  ctx.fillStyle=og; ctx.fillRect(0,0,1024,512);
+  // Teal ocean shimmer
+  ctx.fillStyle='rgba(0,255,204,0.03)';
+  for(let i=0;i<20;i++){
+    const x=Math.random()*1024,y=Math.random()*512,r=Math.random()*60+20;
+    ctx.beginPath(); ctx.ellipse(x,y,r,r*0.25,Math.random()*Math.PI,0,Math.PI*2); ctx.fill();
+  }
+  // Continents
+  ctx.fillStyle='rgba(0,80,50,0.9)';
+  const shapes=[
+    [[238,78],[350,72],[378,110],[360,200],[318,250],[270,240],[232,195],[218,140]],
+    [[340,38],[395,32],[408,72],[375,90],[340,78]],
+    [[285,245],[338,240],[355,310],[340,385],[295,400],[268,340],[268,275]],
+    [[452,68],[528,60],[548,92],[538,145],[495,158],[462,138],[448,105]],
+    [[455,148],[538,142],[558,198],[548,300],[498,350],[450,330],[430,260],[438,188]],
+    [[538,148],[588,142],[605,182],[580,210],[545,195]],
+    [[535,52],[760,45],[800,95],[790,158],[700,185],[620,190],[558,168],[535,118]],
+    [[600,170],[650,168],[662,230],[630,282],[598,248],[590,195]],
+    [[680,175],[740,168],[758,210],[728,240],[690,232],[670,200]],
+    [[682,282],[752,275],[775,318],[750,348],[690,352],[665,318]],
+    [[758,110],[782,105],[790,138],[770,155],[752,140]],
+  ];
+  shapes.forEach(pts=>{
+    ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+    pts.forEach(p=>ctx.lineTo(p[0],p[1]));
+    ctx.closePath(); ctx.fill();
+  });
+  // Teal continent edges
+  ctx.strokeStyle='rgba(0,255,204,0.15)'; ctx.lineWidth=1;
+  shapes.forEach(pts=>{
+    ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+    pts.forEach(p=>ctx.lineTo(p[0],p[1]));
+    ctx.closePath(); ctx.stroke();
+  });
+  // Ice
+  ctx.fillStyle='rgba(180,240,255,0.55)';
+  ctx.fillRect(0,0,1024,26); ctx.fillRect(0,490,1024,22);
+  // Grid
+  ctx.strokeStyle='rgba(0,255,204,0.07)'; ctx.lineWidth=0.6;
+  for(let i=0;i<=12;i++){ctx.beginPath();ctx.moveTo(i*1024/12,0);ctx.lineTo(i*1024/12,512);ctx.stroke();}
+  for(let i=0;i<=6;i++){ctx.beginPath();ctx.moveTo(0,i*512/6);ctx.lineTo(1024,i*512/6);ctx.stroke();}
+  return new THREE.CanvasTexture(c);
+}
+
+const globeGroup = new THREE.Group();
+globeGroup.position.set(0,2.5,0);
+scene.add(globeGroup);
+
+const earthGeo = new THREE.SphereGeometry(1.5, 72, 72);
+const earthMat = new THREE.MeshPhongMaterial({
+  map: buildEarthTex(), shininess:14,
+  specular:new THREE.Color(0x003344),
+  emissive:new THREE.Color(0x001122), emissiveIntensity:0.3,
+});
+const earth = new THREE.Mesh(earthGeo, earthMat);
+globeGroup.add(earth);
+
+// Wireframe overlay (holographic)
+const wireGeo = new THREE.SphereGeometry(1.51,32,32);
+const wireMat = new THREE.MeshBasicMaterial({color:0x00ffcc,transparent:true,opacity:0.05,wireframe:true});
+const wire = new THREE.Mesh(wireGeo,wireMat);
+globeGroup.add(wire);
+
+// Atmosphere glow
+const atmGeo = new THREE.SphereGeometry(1.58,32,32);
+const atmMat = new THREE.MeshPhongMaterial({color:0x00aaff,transparent:true,opacity:0.06});
+globeGroup.add(new THREE.Mesh(atmGeo,atmMat));
+
+// Outer glow
+const outGeo = new THREE.SphereGeometry(1.65,32,32);
+const outMat = new THREE.MeshPhongMaterial({color:0x00ffcc,transparent:true,opacity:0.03,side:THREE.BackSide});
+globeGroup.add(new THREE.Mesh(outGeo,outMat));
+
+// Rotating rings around globe
+const ringColors=[0x00ffcc,0x00aaff,0xaa44ff];
+const rings=[];
+for(let i=0;i<3;i++){
+  const rGeo=new THREE.TorusGeometry(1.9+i*0.22,0.011,8,80);
+  const rMat=new THREE.MeshBasicMaterial({color:ringColors[i],transparent:true,opacity:0.45});
+  const ring=new THREE.Mesh(rGeo,rMat);
+  ring.userData.axis=new THREE.Vector3(Math.sin(i*1.2),Math.cos(i*0.7),Math.sin(i*2.1)).normalize();
+  ring.userData.speed=(i+1)*0.25;
+  globeGroup.add(ring); rings.push(ring);
+}
+
+// ── Country dot markers on globe ─────────────────
+function latLon2V3(lat,lon,r=1.52){
+  const phi=(90-lat)*Math.PI/180, theta=(lon+180)*Math.PI/180;
+  return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));
+}
+const dotMeshes=[];
+VERSES.filter(v=>v.id>0&&v.id<11).forEach(v=>{
+  const geo=new THREE.SphereGeometry(0.035,12,12);
+  const mat=new THREE.MeshBasicMaterial({color:0xd4a84b});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.position.copy(latLon2V3(v.lat,v.lon));
+  earth.add(mesh);
+  dotMeshes.push({mesh,verse:v});
+});
+
+// ── HTML Flag labels ──────────────────────────────
+const flagLayer=document.getElementById('flag-labels');
+const labelEls=[];
+VERSES.filter(v=>v.id>0&&v.id<11).forEach(v=>{
+  const el=document.createElement('div');
+  el.style.cssText=`position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;transition:opacity 0.3s;`;
+  el.innerHTML=`<span style="font-size:15px;line-height:1;">${v.flag}</span>
+    <span style="font-size:6px;letter-spacing:0.12em;color:rgba(200,240,255,0.5);text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 4px #000;">${v.country}</span>`;
+  flagLayer.appendChild(el);
+  labelEls.push({el,verse:v});
+});
+
+function updateFlagLabels(){
+  const rect=renderer.domElement.getBoundingClientRect();
+  labelEls.forEach(({el,verse})=>{
+    const localPos=latLon2V3(verse.lat,verse.lon,1.55);
+    const worldPos=localPos.clone().applyMatrix4(earth.matrixWorld).applyMatrix4(globeGroup.matrixWorld);
+    const proj=worldPos.clone().project(camera);
+    const toCam=worldPos.clone().sub(camera.position).normalize();
+    const hidden=toCam.dot(worldPos.clone().normalize())>0.15||proj.z>1;
+    el.style.opacity=hidden?'0':'1';
+    el.style.left=((proj.x*0.5+0.5)*rect.width+rect.left)+'px';
+    el.style.top=((-proj.y*0.5+0.5)*rect.height+rect.top)+'px';
+    // Active country: pulsing
+    const isAct=verse.id===curVerse;
+    el.firstElementChild.style.fontSize=isAct?'22px':'15px';
+    el.firstElementChild.style.filter=isAct?'drop-shadow(0 0 10px rgba(0,255,204,0.9))':'none';
+    el.firstElementChild.style.transition='all 0.3s';
+  });
+}
+
+// ── Grid floor ────────────────────────────────────
+const gridFloor=new THREE.Mesh(
+  new THREE.PlaneGeometry(60,60,60,60),
+  new THREE.ShaderMaterial({
+    vertexShader:`varying vec2 vUv;varying vec3 vPos;
+      void main(){vUv=uv;vPos=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+    fragmentShader:`varying vec2 vUv;varying vec3 vPos;uniform float uTime;
+      void main(){
+        vec2 g=fract(vUv*25.0);
+        float line=step(0.96,max(g.x,g.y));
+        float dist=length(vPos.xz);
+        float fade=smoothstep(24.0,4.0,dist);
+        float pulse=0.5+0.5*sin(dist*0.5-uTime*1.5);
+        vec3 col=mix(vec3(0.0,0.3,0.5),vec3(0.0,1.0,0.8),pulse*0.3);
+        gl_FragColor=vec4(col,line*fade*(0.18+0.08*pulse));
+      }`,
+    uniforms:{uTime:{value:0}},transparent:true,depthWrite:false,
+  })
+);
+gridFloor.rotation.x=-Math.PI/2; gridFloor.position.y=-0.01;
+scene.add(gridFloor);
+
+// ── Particles ────────────────────────────────────
+const NPART=700,pGeo=new THREE.BufferGeometry();
+const pPos=new Float32Array(NPART*3),pOff=new Float32Array(NPART);
+for(let i=0;i<NPART;i++){
+  const a=Math.random()*Math.PI*2,r=2+Math.random()*10;
+  pPos[i*3]=Math.sin(a)*r;pPos[i*3+1]=Math.random()*9;pPos[i*3+2]=Math.cos(a)*r;
+  pOff[i]=Math.random()*Math.PI*2;
+}
+pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+pGeo.setAttribute('aOffset',new THREE.BufferAttribute(pOff,1));
+const pMat=new THREE.ShaderMaterial({
+  vertexShader:`attribute float aOffset;uniform float uTime;
+    void main(){vec3 p=position;p.y=mod(p.y+uTime*0.35+aOffset,9.0);
+      vec4 mv=modelViewMatrix*vec4(p,1.0);gl_PointSize=2.5*(1.0/-mv.z);gl_Position=projectionMatrix*mv;}`,
+  fragmentShader:`void main(){float d=length(gl_PointCoord-0.5)*2.0;
+    float a=smoothstep(1.0,0.2,d);gl_FragColor=vec4(0.0,1.0,0.8,a*0.5);}`,
+  uniforms:{uTime:{value:0}},transparent:true,depthWrite:false,
+});
+scene.add(new THREE.Points(pGeo,pMat));
+
+// ── Platform ──────────────────────────────────────
+const plat=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.4,0.15,48),
+  new THREE.MeshBasicMaterial({color:0x001825,transparent:true,opacity:0.85}));
+plat.position.y=-0.07; scene.add(plat);
+const platRing=new THREE.Mesh(new THREE.TorusGeometry(2.3,0.03,8,64),
+  new THREE.MeshBasicMaterial({color:0x00ffcc,transparent:true,opacity:0.6}));
+platRing.rotation.x=-Math.PI/2; platRing.position.y=0.0; scene.add(platRing);
+
+// ── Pillar beams ──────────────────────────────────
+for(let i=0;i<6;i++){
+  const a=(i/6)*Math.PI*2;
+  const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,9,8),
+    new THREE.MeshBasicMaterial({color:0x00ffcc,transparent:true,opacity:0.1}));
+  beam.position.set(Math.sin(a)*2.1,4.5,Math.cos(a)*2.1);
+  scene.add(beam);
+}
+
+// ════════════════════════════════════════════════════
+// AUDIO
+// ════════════════════════════════════════════════════
+const songEl=document.getElementById('song');
+let audioCtx=null,analyser=null,dataArr=null;
+let audioAmp=0;
+
+function initAudio(){
+  if(audioCtx) return;
+  try{
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const src=audioCtx.createMediaElementSource(songEl);
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=64;
+    dataArr=new Uint8Array(analyser.frequencyBinCount);
+    src.connect(analyser); analyser.connect(audioCtx.destination);
+  } catch(e){ console.warn('Audio ctx error',e); }
+}
+
+function getAudioAmp(){
+  if(!analyser) return 0;
+  analyser.getByteFrequencyData(dataArr);
+  let sum=0; for(let d of dataArr) sum+=d;
+  return sum/(dataArr.length*255);
+}
+
+document.getElementById('vol-slider').addEventListener('input',e=>{
+  songEl.volume=parseFloat(e.target.value);
+});
+
+// ════════════════════════════════════════════════════
+// LYRIC STATE
+// ════════════════════════════════════════════════════
+let curVerse=0,curLine=0,playing=false,lineTimer=null;
+const LINE_DUR=3900, VERSE_GAP=1000;
+
+const lyricBox=document.getElementById('lyric-display');
+const flagDisp=document.getElementById('flag-display');
+const countryEl=document.getElementById('country-name');
+const langEl=document.getElementById('lang-name');
+const planEl=document.getElementById('plan-tag');
+const dotsEl=document.getElementById('verse-dots');
+const progBar=document.getElementById('prog-bar');
+
+// Build dots
+VERSES.slice(1).forEach((v,i)=>{
+  const d=document.createElement('div');
+  d.className='vdot'; d.title=v.country;
+  d.onclick=()=>goToVerse(i+1);
+  dotsEl.appendChild(d);
+});
+
+function renderLyrics(v){
+  lyricBox.innerHTML='';
+  v.lines.forEach((line,i)=>{
+    const el=document.createElement('div');
+    el.className='lline'+(i===curLine?' active':'');
+    el.textContent=line; lyricBox.appendChild(el);
+  });
+}
+
+function updateHighlight(){
+  lyricBox.querySelectorAll('.lline').forEach((el,i)=>{
+    el.classList.remove('active','past');
+    if(i===curLine) el.classList.add('active');
+    else if(i<curLine) el.classList.add('past');
+  });
+}
+
+function updateDots(){
+  dotsEl.querySelectorAll('.vdot').forEach((d,i)=>{
+    d.classList.remove('act','done');
+    if(i+1===curVerse) d.classList.add('act');
+    else if(i+1<curVerse) d.classList.add('done');
+  });
+}
+
+function updateProg(){
+  const v=VERSES[curVerse];
+  const pct=((curVerse+curLine/Math.max(1,v.lines.length-1))/VERSES.length)*100;
+  progBar.style.width=pct+'%';
+}
+
+// Globe rotation targets
+let targetRotY=0, globeRotY=0;
+
+function goToVerse(idx){
+  clearTimeout(lineTimer);
+  curVerse=idx; curLine=0;
+  const v=VERSES[idx];
+  flagDisp.textContent=v.flag;
+  countryEl.textContent=v.country;
+  langEl.textContent=v.lang;
+  planEl.textContent=v.plan;
+  // Rotate Earth to face country
+  if(v.id>0&&v.id<11){
+    targetRotY=(-v.lon-90)*Math.PI/180;
+  }
+  renderLyrics(v);
+  updateDots();
+  updateProg();
+  if(playing) schedLine();
+}
+
+function schedLine(){
+  clearTimeout(lineTimer);
+  const v=VERSES[curVerse];
+  if(!v) return;
+  lineTimer=setTimeout(()=>{
+    if(curLine<v.lines.length-1){
+      curLine++; updateHighlight(); updateProg(); schedLine();
+    } else {
+      const next=curVerse<VERSES.length-1?curVerse+1:0;
+      setTimeout(()=>goToVerse(next),VERSE_GAP);
+    }
+  },LINE_DUR);
+}
+
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('btn-play').textContent=playing?'⏸':'▶';
+  if(playing){
+    initAudio();
+    songEl.play().catch(()=>{});
+    schedLine();
+  } else {
+    songEl.pause(); clearTimeout(lineTimer);
+  }
+}
+
+document.getElementById('btn-play').onclick=togglePlay;
+document.getElementById('btn-next').onclick=()=>goToVerse(Math.min(curVerse+1,VERSES.length-1));
+document.getElementById('btn-prev').onclick=()=>goToVerse(Math.max(curVerse-1,0));
+
+// Sync song position with verses when skipping
+function syncSongToVerse(idx){
+  // rough ~24s per verse (80bpm, 8 bars)
+  const estTime=idx*24;
+  if(songEl.duration && estTime<songEl.duration){
+    songEl.currentTime=estTime;
+  }
+}
+
+// ── Orbit Controls ────────────────────────────────
+let isDrag=false,prevM={x:0,y:0};
+let theta=0,phi=0.35,camR=13,tTheta=0,tPhi=0.35;
+const cWrap=renderer.domElement;
+cWrap.addEventListener('mousedown',e=>{isDrag=true;prevM={x:e.clientX,y:e.clientY};});
+document.addEventListener('mousemove',e=>{
+  if(!isDrag) return;
+  tTheta-=(e.clientX-prevM.x)*0.005;
+  tPhi-=(e.clientY-prevM.y)*0.004;
+  tPhi=Math.max(0.05,Math.min(1.1,tPhi));
+  prevM={x:e.clientX,y:e.clientY};
+});
+document.addEventListener('mouseup',()=>isDrag=false);
+document.addEventListener('wheel',e=>{camR=Math.max(5,Math.min(22,camR+e.deltaY*0.01));},{passive:true});
+cWrap.addEventListener('touchstart',e=>{isDrag=true;prevM={x:e.touches[0].clientX,y:e.touches[0].clientY};});
+document.addEventListener('touchmove',e=>{
+  if(!isDrag) return;
+  tTheta-=(e.touches[0].clientX-prevM.x)*0.005;
+  tPhi-=(e.touches[0].clientY-prevM.y)*0.004;
+  tPhi=Math.max(0.05,Math.min(1.1,tPhi));
+  prevM={x:e.touches[0].clientX,y:e.touches[0].clientY};
+},{passive:true});
+document.addEventListener('touchend',()=>isDrag=false);
+
+// ── Start button ──────────────────────────────────
+document.getElementById('start-btn').onclick=()=>{
+  const ov=document.getElementById('intro-overlay');
+  ov.classList.add('fadeout');
+  setTimeout(()=>ov.style.display='none',1900);
+  playing=true;
+  document.getElementById('btn-play').textContent='⏸';
+  initAudio();
+  songEl.volume=0.8;
+  songEl.play().catch(()=>{});
+  goToVerse(0);
+};
+
+// ════════════════════════════════════════════════════
+// ANIMATE
+// ════════════════════════════════════════════════════
+const clock=new THREE.Clock();
+
+function animate(){
+  requestAnimationFrame(animate);
+  const t=clock.getElapsedTime();
+
+  // Audio amp
+  audioAmp=getAudioAmp();
+
+  // Camera orbit
+  if(!isDrag) tTheta+=0.0025;
+  theta+=(tTheta-theta)*0.05;
+  phi+=(tPhi-phi)*0.05;
+  camera.position.set(
+    Math.sin(theta)*Math.cos(phi)*camR,
+    Math.sin(phi)*camR*0.65+1.5,
+    Math.cos(theta)*Math.cos(phi)*camR
+  );
+  camera.lookAt(0,2.5,0);
+
+  // Globe rotation - smooth toward target country
+  globeRotY+=(targetRotY-globeRotY)*0.015;
+  // Slight continuous wobble
+  const wobble=(curVerse===0||curVerse===11)?0.001:0.0002;
+  globeRotY+=wobble;
+  earth.rotation.y=globeRotY;
+  wire.rotation.y=globeRotY+t*0.04;
+  wire.rotation.x=t*0.012;
+
+  // Rings
+  rings.forEach((r,i)=>r.setRotationFromAxisAngle(r.userData.axis,t*r.userData.speed));
+
+  // Holo panels
+  holoMeshes.forEach(m=>{
+    m.material.uniforms.uTime.value=t;
+    m.material.uniforms.uAmp.value=audioAmp;
+    m.rotateYToCamera(camera);
+  });
+
+  // Active dot pulse
+  dotMeshes.forEach(({mesh,verse})=>{
+    const act=verse.id===curVerse;
+    const scale=act?1+0.45*Math.abs(Math.sin(t*3.5+audioAmp*5)):1;
+    mesh.scale.setScalar(scale);
+    mesh.material.color.setHex(act?0x00ffcc:0xd4a84b);
+  });
+
+  // Platform ring
+  platRing.material.opacity=0.35+0.3*Math.sin(t*2.0+audioAmp*4);
+
+  // Grid + particles
+  gridFloor.material.uniforms.uTime.value=t;
+  pMat.uniforms.uTime.value=t;
+
+  // Chorus flash
+  if(curVerse===11){
+    const flash=0.5+0.5*Math.sin(t*2.0);
+    earthMat.emissiveIntensity=0.3+0.4*flash*audioAmp;
+  } else {
+    earthMat.emissiveIntensity=0.2+audioAmp*0.5;
+  }
+
+  updateFlagLabels();
+  renderer.render(scene,camera);
+}
+
+window.addEventListener('resize',()=>{
+  const W=window.innerWidth,H=window.innerHeight;
+  renderer.setSize(W,H);
+  camera.aspect=W/H; camera.updateProjectionMatrix();
+});
+
+goToVerse(0);
+animate();
+</script>
+</body>
+</html>

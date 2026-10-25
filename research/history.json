@@ -1,0 +1,71 @@
+[
+  {
+    "hash": "fa84b2c21d2b9a0177a75a7e62d1ecc6bce8aa78156d793ecf67378e25b3f39f",
+    "date": "2026-02-28",
+    "note": "Initial launch",
+    "path": "/"
+  },
+  {
+    "hash": "e46e0dc6b047ffb4d01a7b46322d4d825f822db2c7dcadd379f986253f869a5a",
+    "date": "2026-03-05",
+    "note": "Site updated",
+    "path": "/"
+  },
+  {
+    "hash": "748d230ed1e3cc8a00fb5081c14a273a0a634ad0dd5b8b32808447b6edfd0bb6",
+    "date": "2026-03-19",
+    "note": "Added conscience.core A + B · SOS The Resistance · Los Nombres memorial · player lyrics panel · nav link · song cards 11–13",
+    "path": "/"
+  },
+  {
+    "hash": "dcddd67a7e8b662f875655fd19b51ca43d1bd0179a76e705b56e418684d66315",
+    "date": "2026-06-18",
+    "note": "Netlify Functions restored · BTS font contrast improved · hash verification active",
+    "path": "/"
+  },
+  {
+    "path": "/one-table-hologram.html",
+    "hash": "47f8280ca77c6e82a621615a2b0f71c7c8b37a463ac6ad064074e94a0ba91279",
+    "date": "2026-06-19",
+    "note": "Primary One Table page before texture restoration",
+    "source": "https://github.com/inoculate23/the-claude-manifesto/blob/a6c1aa1fcac947a8753878e86f039a41fe9e93fe/one-table-hologram.html"
+  },
+  {
+    "path": "/one-table-hologram.html",
+    "hash": "f21abc25e08c51271fa33b9f89a7a09443e830f4901eb9e590d31c14a9515c27",
+    "date": "2026-10-24",
+    "note": "Restored Earth and cloud imagery using bundled assets after external host returned 403; replaced unavailable starfield image with local stars"
+  },
+  {
+    "path": "/one-table-globe.html",
+    "hash": "44c8db377369789b5006cae06dc5cbf8b505156d830c8c164fd2e81596f90b5c",
+    "date": "2026-10-24",
+    "note": "Published unused alternate globe prototype for public research; corrected audio path, restored Earth imagery, and labeled alternate"
+  },
+  {
+    "path": "/assets/textures/earth_clouds_1024.png",
+    "hash": "7d3b82ef6b3feb506fc06f02a744aed3d864e23e7417075005f4082a7ff935a4",
+    "date": "2026-10-24",
+    "note": "Bundled texture from Three.js r128 examples",
+    "source": "https://github.com/mrdoob/three.js/blob/r128/examples/textures/planets/earth_clouds_1024.png"
+  },
+  {
+    "path": "/assets/textures/earth_atmos_2048.jpg",
+    "hash": "2faa400d1eade3bc44caf6750d1b772bd9bbb6d87362c02bc7c3304e78fa0a9d",
+    "date": "2026-10-24",
+    "note": "Bundled texture from Three.js r128 examples",
+    "source": "https://github.com/mrdoob/three.js/blob/r128/examples/textures/planets/earth_atmos_2048.jpg"
+  },
+  {
+    "path": "/research/one-table-globe-original.html",
+    "hash": "33799b407bb7c5dbb1a8c963fa66f2e6023c36e75a90d9e7c8321b79e622e2cf",
+    "date": "2026-10-24",
+    "note": "Original unused prototype source, preserved before audio and texture repairs; archival download retains original missing 1.aac reference"
+  },
+  {
+    "path": "/bg-circuit.png",
+    "hash": "76dcf529e4ff1e93d51de446d62838cbd125b1292f2a5abbb064f62e546de73b",
+    "date": "2026-10-24",
+    "note": "Restored existing circuit artwork referenced by the primary page; asset was absent from the published repository"
+  }
+]
