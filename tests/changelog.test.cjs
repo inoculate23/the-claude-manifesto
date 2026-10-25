@@ -17,9 +17,14 @@ function harness(){
   require(name){if(name==='@netlify/blobs')return {getStore(options){assert.equal(options.consistency,'strong');return db;}};if(name==='../research/history.json')return seed;return require(name);},
   async fetch(url){requests++;return {ok:true,arrayBuffer:async()=>Buffer.from(url)};}
  };
- vm.runInNewContext(fs.readFileSync(path.join(root,'lib/changelog.js'),'utf8'),context);
+ const source=fs.readFileSync(path.join(root,'lib/changelog.mjs'),'utf8')
+  .replace("import { getStore } from '@netlify/blobs';","const {getStore}=require('@netlify/blobs');")
+  .replace("import { createHash } from 'node:crypto';","const {createHash}=require('node:crypto');")
+  .replace("import seed from '../research/history.json' with { type: 'json' };","const seed=require('../research/history.json');")
+  .replace("export {ORIGIN,paths,response,history,record,merge};","module.exports={ORIGIN,paths,response,history,record,merge};");
+ vm.runInNewContext(source,context);
  const helper=context.module.exports;
- function handler(name){const c={module:{exports:{}},exports:{},console,require:()=>helper};c.exports=c.module.exports;vm.runInNewContext(fs.readFileSync(path.join(root,'lib/hash-handlers.js'),'utf8'),c);return c.module.exports[name==='hash-update'?'update':'read'];}
+ function handler(name){const c={module:{exports:{}},exports:{},console,require:()=>helper};c.exports=c.module.exports;vm.runInNewContext(fs.readFileSync(path.join(root,'lib/hash-handlers.mjs'),'utf8').replace("import {ORIGIN,paths,response,record,history} from './changelog.mjs';","const {ORIGIN,paths,response,record,history}=require('./changelog');").replace('export {update,read};','module.exports={update,read};'),c);return c.module.exports[name==='hash-update'?'update':'read'];}
  return {entries,helper,update:handler('hash-update'),history:handler('hash-history'),useBytes(bytes){context.fetch=async()=>({ok:true,arrayBuffer:async()=>bytes});},fail(){unavailable=true;},get requests(){return requests;}};
 }
 test('preserves seed and legacy history across new records and reloads',async()=>{

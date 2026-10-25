@@ -1,4 +1,4 @@
-import handlers from '../../lib/hash-handlers.js';
+import * as handlers from '../../lib/hash-handlers.mjs';
 export default async request => {
  const event = {
   httpMethod: request.method,
